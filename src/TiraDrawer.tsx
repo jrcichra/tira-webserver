@@ -1,11 +1,15 @@
-import { Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
+import { Collapse, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import GroupIcon from '@mui/icons-material/Group';
+import NoteIcon from '@mui/icons-material/Note';
 import PublicIcon from '@mui/icons-material/Public';
 import FeedIcon from '@mui/icons-material/Feed';
-import { drawerWidth } from "./App";
+import { drawerWidth } from "./Dashboard";
+import CategoriesList from "./categories/CategoriesList"
 import { useState } from "react";
+import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -34,6 +38,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function TiraDrawer({ open, toggleDrawer }: { open: boolean, toggleDrawer: () => void }) {
+  const [categoriesOpen, setCategoriesOpen] = useState(true);
+  const toggleCategories = () => {
+    setCategoriesOpen(!categoriesOpen);
+  }
+
   return (
     <Drawer variant="permanent" open={open}>
       <Toolbar
@@ -50,18 +59,32 @@ export default function TiraDrawer({ open, toggleDrawer }: { open: boolean, togg
       </Toolbar>
       <Divider />
       <List>
-        <ListItem button>
+        <ListItemButton>
           <ListItemIcon>
             <PublicIcon />
           </ListItemIcon>
           <ListItemText primary='Dashboard' />
-        </ListItem>
-        <ListItem button>
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <NoteIcon />
+          </ListItemIcon>
+          <ListItemText primary='Tickets' />
+        </ListItemButton>
+        <ListItemButton onClick={toggleCategories}>
           <ListItemIcon>
             <FeedIcon />
           </ListItemIcon>
           <ListItemText primary='Categories' />
-        </ListItem>
+          {categoriesOpen ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <CategoriesList open={categoriesOpen} />
+        <ListItemButton>
+          <ListItemIcon>
+            <GroupIcon />
+          </ListItemIcon>
+          <ListItemText primary='Users' />
+        </ListItemButton>
       </List>
       <Divider />
     </Drawer>

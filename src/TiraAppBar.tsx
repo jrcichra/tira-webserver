@@ -6,7 +6,8 @@ import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
 import CreateMenu from './CreateMenu';
 import { useState } from 'react';
-import { drawerWidth } from './App';
+import { drawerWidth } from './Dashboard';
+import { Link } from 'react-router-dom';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -30,7 +31,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function TiraAppBar({ open, toggleDrawer }: { open: boolean, toggleDrawer: () => void }) {
+export default function TiraAppBar({loggedIn, drawerOpen, toggleDrawer }: {loggedIn: boolean, drawerOpen: boolean, toggleDrawer: () => void}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -41,8 +42,52 @@ export default function TiraAppBar({ open, toggleDrawer }: { open: boolean, togg
     setAnchorEl(null);
   };
 
+  var rightSection;
+
+  if (loggedIn) {
+    rightSection = (
+      <>
+        <Button
+            variant="contained"
+            color='secondary'
+            startIcon={<AddIcon />}
+            onClick={handleMenu}
+            sx={{
+              mr: 2,
+              alignItems: 'flex-start'
+            }}
+          >
+          Create
+        </Button>
+        <IconButton
+          size='large'
+          color='inherit'
+          aria-label='account'
+        >
+          <AccountCircleIcon />
+        </IconButton>
+        <CreateMenu anchorEl={anchorEl} handleClose={handleClose} />
+      </>
+    );
+  } else {   
+    rightSection = (
+      <Button
+      variant="contained"
+      color='secondary'
+      component={Link}
+      to='/login'
+      sx={{
+        mr: 2,
+        alignItems: 'flex-start'
+      }}
+    >
+      Login
+    </Button>
+    )
+  }
+
   return (
-    <AppBar position="absolute" open={open}>
+    <AppBar position="absolute" open={drawerOpen}>
       <Toolbar
         sx={{
           pr: '24px', // keep right padding when drawer closed
@@ -55,7 +100,7 @@ export default function TiraAppBar({ open, toggleDrawer }: { open: boolean, togg
           onClick={toggleDrawer}
           sx={{
             marginRight: '36px',
-            ...(open && { display: 'none' }),
+            ...(drawerOpen && { display: 'none' }),
           }}
         >
           <MenuIcon />
@@ -69,26 +114,7 @@ export default function TiraAppBar({ open, toggleDrawer }: { open: boolean, togg
         >
           Tira Dashboard
         </Typography>
-        <Button
-          variant="contained"
-          color='secondary'
-          startIcon={<AddIcon />}
-          onClick={handleMenu}
-          sx={{
-            mr: 2,
-            alignItems: 'flex-start'
-          }}
-        >
-          Create
-        </Button>
-        <IconButton
-          size='large'
-          color='inherit'
-          aria-label='account'
-        >
-          <AccountCircleIcon />
-        </IconButton>
-        <CreateMenu anchorEl={anchorEl} handleClose={handleClose} />
+        {rightSection}
       </Toolbar>
     </AppBar>
   )

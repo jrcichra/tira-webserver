@@ -22,6 +22,8 @@ import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import TiraAppBar from './TiraAppBar';
+import TiraDrawer from './TiraDrawer';
 
 function Copyright(props: any) {
   return (
@@ -98,61 +100,8 @@ function DashboardContent() {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: '24px', // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Tira Dashboard
-            </Typography>
-            <IconButton color="inherit">
-              <AccountCircleIcon />
-            </IconButton>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List>{mainListItems}</List>
-          <Divider />
-          <List>{secondaryListItems}</List>
-        </Drawer>
+        <TiraAppBar loggedIn={true} drawerOpen={open} toggleDrawer={toggleDrawer} />
+        <TiraDrawer open={open} toggleDrawer={toggleDrawer} />
         <Box
           component="main"
           sx={{
@@ -178,7 +127,8 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Chart />
+                  {/* <Chart /> */}
+                  <h1>jenny</h1>
                 </Paper>
               </Grid>
               {/* Recent Deposits */}
@@ -191,13 +141,15 @@ function DashboardContent() {
                     height: 240,
                   }}
                 >
-                  <Deposits />
+                  {/* <Deposits /> */}
+                  <h1>justin</h1>
                 </Paper>
               </Grid>
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
+                  {/* <Orders /> */}
+                  <h1>tim</h1>
                 </Paper>
               </Grid>
             </Grid>

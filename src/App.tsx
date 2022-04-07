@@ -1,20 +1,29 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Base from "./Base";
 import LoginPage from "./LoginPage";
+import * as cookie from "cookie";
+import Dashboard from "./Dashboard";
 
 const mdTheme = createTheme();
 
 export default function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const cookies = cookie.parse(document.cookie);
+    const [loggedIn, setLoggedIn] = useState('tirauth' in cookies);
 
     return (
         <ThemeProvider theme={mdTheme}>
-            <Routes>
-                <Route path="/" element={<Dashboard loggedIn={loggedIn} />} />
-                <Route path="/login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
-            </Routes>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Base loggedIn={loggedIn} />}>
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="tickets" element={<h1>Tickets</h1>} />
+                        <Route path="users" element={<h1>Users</h1>} />
+                    </Route>
+                    <Route path="/login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
+                </Routes>
+            </BrowserRouter>
         </ThemeProvider>
     )
 }

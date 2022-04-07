@@ -6,10 +6,11 @@ import GroupIcon from '@mui/icons-material/Group';
 import NoteIcon from '@mui/icons-material/Note';
 import PublicIcon from '@mui/icons-material/Public';
 import FeedIcon from '@mui/icons-material/Feed';
-import { drawerWidth } from "./Dashboard";
+import { drawerWidth } from "./Base";
 import CategoriesList from "./categories/CategoriesList"
 import { useState } from "react";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -59,13 +60,13 @@ export default function TiraDrawer({ open, toggleDrawer }: { open: boolean, togg
       </Toolbar>
       <Divider />
       <List>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/dashboard">
           <ListItemIcon>
             <PublicIcon />
           </ListItemIcon>
           <ListItemText primary='Dashboard' />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton component={Link} to="/tickets">
           <ListItemIcon>
             <NoteIcon />
           </ListItemIcon>
@@ -79,7 +80,7 @@ export default function TiraDrawer({ open, toggleDrawer }: { open: boolean, togg
           {categoriesOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <CategoriesList open={categoriesOpen} />
-        <ListItemButton>
+        <ListItemButton component={Link} to="/users">
           <ListItemIcon>
             <GroupIcon />
           </ListItemIcon>

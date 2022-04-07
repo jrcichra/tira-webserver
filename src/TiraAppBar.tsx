@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
 import CreateMenu from './CreateMenu';
 import { useState } from 'react';
-import { drawerWidth } from './Dashboard';
+import { drawerWidth } from './Base';
 import { Link } from 'react-router-dom';
 
 interface AppBarProps extends MuiAppBarProps {

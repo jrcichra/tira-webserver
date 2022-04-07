@@ -5,6 +5,8 @@ import Base from "./Base";
 import LoginPage from "./LoginPage";
 import * as cookie from "cookie";
 import Dashboard from "./Dashboard";
+import Tickets from "./Tickets";
+import Users from "./Users";
 
 const mdTheme = createTheme();
 
@@ -18,8 +20,8 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Base loggedIn={loggedIn} />}>
                         <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="tickets" element={<h1>Tickets</h1>} />
-                        <Route path="users" element={<h1>Users</h1>} />
+                        <Route path="tickets" element={<Tickets />} />
+                        <Route path="users" element={<Users />} />
                     </Route>
                     <Route path="/login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
                 </Routes>

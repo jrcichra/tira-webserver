@@ -13,7 +13,7 @@ export default function DashBoard() {
                     }}
                 >
                     <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                        Open Tickets Reported By You
+                        Open Tickets Assigned To You
                     </Typography>
                 </Paper>
             </Grid>

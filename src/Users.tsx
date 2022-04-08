@@ -14,14 +14,15 @@ export default function Users() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/users")
+        fetch("http://localhost:8000/users")
             .then(response => response.json())
             .then(data => setUsers(data))
-            .then(() => setLoading(false));
+            .then(() => setLoading(false))
+            .catch(() => console.log("tim"));
     }, []);
 
     return (
-        <Grid spacing={3}>
+        <Grid>
             <Paper
                 sx={{
                     p: 2,

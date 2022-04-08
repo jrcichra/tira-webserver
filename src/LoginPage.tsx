@@ -49,7 +49,7 @@ export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolea
         }
 
         console.log(loginJSON);
-        fetch("http://localhost:3000/api/login", {
+        fetch("http://localhost:8000/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ export default function CategoriesList({ open }: { open: boolean }) {
     let [categories, setCategories] = useState<any[]>([])
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/categories?archived=false")
+        fetch("http://localhost:8000/categories?archived=false")
             .then(response => response.json())
             .then(data => setCategories(data))
     }, []);

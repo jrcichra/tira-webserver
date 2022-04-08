@@ -2,26 +2,37 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 
+interface Ticket {
+    id: number,
+    category_id?: number,
+    subject: string,
+    description: string,
+    status: string,
+    priority: string,
+    created: string,
+    reporter_id: number,
+}
+
 const columns: GridColDef[] = [
     { field: 'subject', headerName: 'Subject', width: 130 },
-    { field: 'category_id', headerName: 'Category', width: 130, valueGetter: (params: GridValueGetterParams) => params.row.category_id ?? 'N/A' },
+    { field: 'category_id', headerName: 'Category', width: 130, valueGetter: (params: GridValueGetterParams<number, Ticket>) => params.row.category_id ?? 'N/A' },
     { field: 'status', headerName: 'Status', width: 130 },
     { field: 'reporter_id', headerName: 'Reported By', width: 130 },
 ]
 
 export default function Tickets() {
-    const [tickets, setTickets] = useState([]);
+    const [tickets, setTickets] = useState<Ticket[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/tickets")
+        fetch("http://localhost:8000/tickets")
             .then(response => response.json())
             .then(data => setTickets(data))
             .then(() => setLoading(false));
     }, []);
 
     return (
-        <Grid spacing={3}>
+        <Grid>
             <Paper
                 sx={{
                     p: 2,

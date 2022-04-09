@@ -12,12 +12,12 @@ export default function CreateTicketPage() {
         priority: ''
     });
 
-    const handleDescriptionChange = (value: string) => {
-        setFields({...fields, description: value});
+    const handleFieldChange = (key: string) => (value: string) => {
+        setFields({...fields, [key]: value});
     }
 
     const handleTextFieldChange = (key: string) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFields({...fields, [key]: event.target.value});
+        handleFieldChange(key)(event.target.value);
     }
 
     const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
@@ -36,7 +36,11 @@ export default function CreateTicketPage() {
         .then(response => {
             if(response.ok) {
                 navigate('/')
+            } else {
+                return response.json()
             }
+        }).then(json => {
+            console.log(json);
         });
     }
 
@@ -58,7 +62,7 @@ export default function CreateTicketPage() {
                 <Box sx={{ mt: 2 }}>
                     <ReactQuill
                         value={fields.description}
-                        onChange={handleDescriptionChange}
+                        onChange={handleFieldChange('description')}
                         modules={{
                             toolbar: [
                                 [{ 'header': [1, 2, false] }],

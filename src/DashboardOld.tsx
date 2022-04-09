@@ -100,8 +100,8 @@ function DashboardContent() {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <TiraAppBar loggedIn={true} drawerOpen={open} toggleDrawer={toggleDrawer} />
-        <TiraDrawer open={open} toggleDrawer={toggleDrawer} />
+        {/* <TiraAppBar loggedIn={true} drawerOpen={open} toggleDrawer={toggleDrawer} /> */}
+        {/* <TiraDrawer open={open} toggleDrawer={toggleDrawer} /> */}
         <Box
           component="main"
           sx={{

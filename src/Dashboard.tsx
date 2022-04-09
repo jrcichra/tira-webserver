@@ -1,6 +1,7 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "./EnvironmentVariables";
 
 interface Assignment {
     id: number,
@@ -23,7 +24,7 @@ export default function DashBoard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:8000/users/1/assignments")
+        fetch(`${API_BASE_URL}/users/1/assignments`)
             .then(response => response.json())
             .then(data => setAssignments(data))
             .then(() => setLoading(false));

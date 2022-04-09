@@ -1,6 +1,7 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import { GridColDef, GridValueGetterParams, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "./EnvironmentVariables";
 
 interface User {
     id: number,
@@ -36,7 +37,7 @@ export default function Users() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:8000/users")
+        fetch(`${API_BASE_URL}/users`)
             .then(response => response.json())
             .then(data => setUsers(data))
             .then(() => setLoading(false))

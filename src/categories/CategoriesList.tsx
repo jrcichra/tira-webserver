@@ -1,12 +1,13 @@
 import { StarBorder } from "@mui/icons-material"
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { useEffect, useState } from "react"
+import { API_BASE_URL } from "../EnvironmentVariables";
 
 export default function CategoriesList({ open }: { open: boolean }) {
     let [categories, setCategories] = useState<any[]>([])
 
     useEffect(() => {
-        fetch("http://localhost:8000/categories?archived=false")
+        fetch(`${API_BASE_URL}/categories?archived=false`)
             .then(response => response.json())
             .then(data => setCategories(data))
     }, []);

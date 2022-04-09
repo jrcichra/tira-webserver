@@ -3,6 +3,7 @@ import { ChangeEvent, MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PasswordTextField from "./PasswordTextField";
 import SHA256 from 'crypto-js/sha256';
+import { API_BASE_URL } from "./EnvironmentVariables";
 
 export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolean) => void}) {
     let navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolea
         }
 
         console.log(loginJSON);
-        fetch("http://localhost:8000/login", {
+        fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

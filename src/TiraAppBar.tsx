@@ -8,6 +8,7 @@ import CreateMenu from './CreateMenu';
 import { useState } from 'react';
 import { drawerWidth } from './Base';
 import { Link } from 'react-router-dom';
+import ProfilePicture from './ProfilePicture';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -59,13 +60,7 @@ export default function TiraAppBar({loggedIn, drawerOpen, toggleDrawer }: {logge
           >
           Create
         </Button>
-        <IconButton
-          size='large'
-          color='inherit'
-          aria-label='account'
-        >
-          <AccountCircleIcon />
-        </IconButton>
+        <ProfilePicture />
         <CreateMenu anchorEl={anchorEl} handleClose={handleClose} />
       </>
     );

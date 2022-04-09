@@ -2,17 +2,7 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "./EnvironmentVariables";
-
-interface Assignment {
-    id: number,
-    category_id?: number,
-    subject: string,
-    description: string,
-    status: string,
-    priority: string,
-    created: string,
-    reporter_id: number,
-}
+import { Assignment } from "./utils/Types";
 
 const assignmentsColumns: GridColDef[] = [
     { field: 'ticket_id', headerName: 'Ticket ID', width: 130 },
@@ -24,10 +14,10 @@ export default function DashBoard() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/users/1/assignments`)
+        fetch(`${API_BASE_URL}/users/assignments`)
             .then(response => response.json())
-            .then(data => setAssignments(data))
-            .then(() => setLoading(false));
+            .then((data: Assignment[]) => setAssignments(data))
+            .finally(() => setLoading(false));
     }, []);
 
     return (

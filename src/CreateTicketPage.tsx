@@ -1,27 +1,29 @@
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { MouseEvent, useState, useRef, useEffect, useMemo } from "react";
+import { MouseEvent, useState, useRef, useEffect, useMemo, ChangeEvent } from "react";
 import * as ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
 
 export default function CreateTicketPage() {
-    const [subject, setSubject] = useState('');
-    const [description, setDescription] = useState('');
-    const [priority, setPriority] = useState('');
+    const [fields, setFields] = useState({
+        subject: '',
+        description: '',
+        priority: ''
+    });
 
-    let navigate = useNavigate();
+    const handleDescriptionChange = (value: string) => {
+        setFields({...fields, description: value});
+    }
 
-    const handleChange = (description: string) => {
-        setDescription(description);
+    const handleTextFieldChange = (key: string) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setFields({...fields, [key]: event.target.value});
     }
 
     const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
         const ticket = {
-            subject,
-            description,
             status: 'OPEN',
-            priority
+            ...fields
         };
 
         fetch(`${API_BASE_URL}/tickets`, {
@@ -38,6 +40,8 @@ export default function CreateTicketPage() {
         });
     }
 
+    let navigate = useNavigate();
+
     return (
         <Grid>
             <Paper
@@ -50,11 +54,11 @@ export default function CreateTicketPage() {
                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
                     Create new ticket
                 </Typography>
-                <TextField id="outlined-basic" label="Subject" variant="outlined" />
+                <TextField value={fields.subject} onChange={handleTextFieldChange('subject')} id="outlined-basic" label="Subject" variant="outlined" />
                 <Box sx={{ mt: 2 }}>
                     <ReactQuill
-                        value={description}
-                        onChange={handleChange}
+                        value={fields.description}
+                        onChange={handleDescriptionChange}
                         modules={{
                             toolbar: [
                                 [{ 'header': [1, 2, false] }],
@@ -66,7 +70,7 @@ export default function CreateTicketPage() {
                         }}
                     />
                 </Box>
-                <TextField margin="normal" id="outlined-basic" label="Priority" variant="outlined" />
+                <TextField value={fields.priority} onChange={handleTextFieldChange('priority')} margin="normal" id="outlined-basic" label="Priority" variant="outlined" />
                 <Button
                     onClick={handleSubmit}
                     variant="contained"

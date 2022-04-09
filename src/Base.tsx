@@ -6,6 +6,7 @@ import TiraDrawer from './TiraDrawer';
 import TiraAppBar from './TiraAppBar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
+import { Category } from './Types';
 
 export const drawerWidth = 240;
 
@@ -14,7 +15,7 @@ function Copyright(props: any) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Timmy Joe
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -22,7 +23,7 @@ function Copyright(props: any) {
   );
 }
 
-export default function Base({loggedIn}: {loggedIn: boolean}) {
+export default function Base({loggedIn, categories, setCategories}: {loggedIn: boolean, categories: Category[], setCategories: (category: Category[]) => void }) {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -32,7 +33,7 @@ export default function Base({loggedIn}: {loggedIn: boolean}) {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <TiraAppBar loggedIn={loggedIn} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
-        <TiraDrawer open={drawerOpen} toggleDrawer={toggleDrawer} />
+        <TiraDrawer open={drawerOpen} toggleDrawer={toggleDrawer} categories={categories} setCategories={setCategories} />
         <Box
           component="main"
           sx={{

@@ -1,5 +1,6 @@
 import { Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function CreateMenu({anchorEl, handleClose}: {anchorEl: null | HTMLElement, handleClose: () => void}) {
     return (
@@ -18,8 +19,8 @@ export default function CreateMenu({anchorEl, handleClose}: {anchorEl: null | HT
             open={Boolean(anchorEl)}
             onClose={handleClose}
         >
-            <MenuItem>New Ticket</MenuItem>
-            <MenuItem>New Category</MenuItem>
+            <MenuItem onClick={handleClose} component={Link} to='/tickets/new'>New Ticket</MenuItem>
+            <MenuItem onClick={handleClose} component={Link} to='/categories/new'>New Category</MenuItem>
         </Menu>
     );
 }

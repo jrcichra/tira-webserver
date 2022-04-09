@@ -9,23 +9,29 @@ import TicketsPage from "./TicketsPage";
 import Users from "./Users";
 import TicketPage from "./TicketPage";
 import CreateTicketPage from "./CreateTicketPage";
+import CreateNewCategory from "./CreateNewCategory";
+import { Category } from "./Types";
 
 const mdTheme = createTheme();
 
 export default function App() {
     const cookies = cookie.parse(document.cookie);
     const [loggedIn, setLoggedIn] = useState('tirauth' in cookies);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     return (
         <ThemeProvider theme={mdTheme}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Base loggedIn={loggedIn} />}>
+                    <Route path="/" element={<Base loggedIn={loggedIn} categories={categories} setCategories={setCategories} />}>
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="tickets">
                             <Route index element={<TicketsPage />} />
                             <Route path="new" element={<CreateTicketPage />} />
                             <Route path=":ticketId" element={<TicketPage />} />
+                        </Route>
+                        <Route path="categories">
+                            <Route path="new" element={<CreateNewCategory setCategories={setCategories} />} />
                         </Route>
                         <Route path="users" element={<Users />} />
                     </Route>

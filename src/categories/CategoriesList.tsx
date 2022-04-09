@@ -2,17 +2,16 @@ import { StarBorder } from "@mui/icons-material"
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { useEffect, useState } from "react"
 import { API_BASE_URL } from "../EnvironmentVariables";
+import { Category } from "../Types";
 
-export default function CategoriesList({ open }: { open: boolean }) {
-    let [categories, setCategories] = useState<any[]>([])
-
+export default function CategoriesList({ open, categories, setCategories }: { open: boolean, categories: Category[], setCategories: (category: Category[]) => void }) {
     useEffect(() => {
         fetch(`${API_BASE_URL}/categories?archived=false`)
             .then(response => response.json())
-            .then(data => setCategories(data))
+            .then((data: Category[]) => setCategories(data))
     }, []);
 
-    const categoryElements = categories.map((c: any) => (
+    const categoryElements = categories.map((c: Category) => (
         <ListItemButton key={c.id} sx={{ pl: 4 }}>
             <ListItemIcon>
                 <StarBorder />

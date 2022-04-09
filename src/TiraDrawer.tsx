@@ -11,6 +11,7 @@ import CategoriesList from "./categories/CategoriesList"
 import { useState } from "react";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { Category } from "./Types";
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -38,7 +39,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function TiraDrawer({ open, toggleDrawer }: { open: boolean, toggleDrawer: () => void }) {
+export default function TiraDrawer({ open, toggleDrawer, categories, setCategories }: { open: boolean, toggleDrawer: () => void, categories: Category[], setCategories: (category: Category[]) => void }) {
   const [categoriesOpen, setCategoriesOpen] = useState(true);
   const toggleCategories = () => {
     setCategoriesOpen(!categoriesOpen);
@@ -79,7 +80,7 @@ export default function TiraDrawer({ open, toggleDrawer }: { open: boolean, togg
           <ListItemText primary='Categories' />
           {categoriesOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
-        <CategoriesList open={categoriesOpen} />
+        <CategoriesList open={categoriesOpen} categories={categories} setCategories={setCategories} />
         <ListItemButton component={Link} to="/users">
           <ListItemIcon>
             <GroupIcon />

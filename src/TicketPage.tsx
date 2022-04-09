@@ -6,7 +6,7 @@ import { API_BASE_URL } from "./EnvironmentVariables";
 import { Ticket } from "./TicketsPage";
 
 export default function TicketPage() {
-    const [ticket, setTicket] = useState<Ticket|null>(null);
+    const [ticket, setTicket] = useState<Ticket|undefined>();
 
     let params = useParams();
     let ticketIdStr = params.ticketId;
@@ -41,7 +41,7 @@ export default function TicketPage() {
                 </Typography>
                 Description:
                 <br/>
-                {ticket?.description}
+                {ticket && <div dangerouslySetInnerHTML={{ __html: ticket?.description }} />}
                 <br/>
                 Category:
                 <br/>

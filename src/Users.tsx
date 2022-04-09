@@ -12,7 +12,7 @@ interface User {
     archived: boolean,
 }
 
-const columns: GridColDef[] = [
+const columns: GridColDef<User>[] = [
     { field: 'username', headerName: 'Username', width: 130 },
     {
         field: 'name',
@@ -24,11 +24,11 @@ const columns: GridColDef[] = [
         field: 'email_address',
         headerName: 'Email Address',
         width: 130,        
-        renderCell: (params: GridValueGetterParams<string>) => (
+        renderCell: (params: GridValueGetterParams<string, User>) => (
             <a href={"mailto:" + params.value}>{params.value}</a>
         ),
     },
-    { field: 'username', headerName: 'Username', width: 130 },
+    { field: 'created', headerName: 'Created', width: 230 },
 ]
 
 export default function Users() {

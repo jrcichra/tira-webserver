@@ -15,7 +15,7 @@ interface Ticket {
 
 const columns: GridColDef[] = [
     { field: 'subject', headerName: 'Subject', width: 130 },
-    { field: 'category_id', headerName: 'Category', width: 130, valueGetter: (params: GridValueGetterParams<number, Ticket>) => params.row.category_id ?? 'N/A' },
+    { field: 'category_id', headerName: 'Category', width: 130, valueGetter: (params: GridValueGetterParams<string, Ticket>) => params.row.category_id ?? 'N/A' },
     { field: 'status', headerName: 'Status', width: 130 },
     { field: 'reporter_id', headerName: 'Reported By', width: 130 },
 ]

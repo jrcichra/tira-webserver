@@ -2,15 +2,37 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { GridColDef, GridValueGetterParams, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 
+interface User {
+    id: number,
+    username: string,
+    email_address: string,
+    first_name: string,
+    last_name: string,
+    created: string,
+    archived: boolean,
+}
+
 const columns: GridColDef[] = [
     { field: 'username', headerName: 'Username', width: 130 },
-    { field: 'password', headerName: 'Password', width: 230 },
-    { field: 'email_address', headerName: 'Email Address', width: 130 },
-    { field: 'name', headerName: 'Name', width: 130, valueGetter: (params: GridValueGetterParams) => `${params.row.first_name} ${params.row.last_name}` },
+    {
+        field: 'name',
+        headerName: 'Name',
+        width: 130,
+        valueGetter: (params: GridValueGetterParams<string, User>) => `${params.row.first_name} ${params.row.last_name}`,
+    },
+    {
+        field: 'email_address',
+        headerName: 'Email Address',
+        width: 130,        
+        renderCell: (params: GridValueGetterParams<string>) => (
+            <a href={"mailto:" + params.value}>{params.value}</a>
+        ),
+    },
+    { field: 'username', headerName: 'Username', width: 130 },
 ]
 
 export default function Users() {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -38,6 +60,7 @@ export default function Users() {
                     rows={users}
                     columns={columns}
                     loading={loading}
+                    disableSelectionOnClick
                 />
             </Paper>
         </Grid>

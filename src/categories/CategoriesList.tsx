@@ -2,7 +2,7 @@ import { StarBorder } from "@mui/icons-material"
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { useEffect, useState } from "react"
 import { API_BASE_URL } from "../EnvironmentVariables";
-import { Category } from "../Types";
+import { Category } from "../utils/Types";
 
 export default function CategoriesList({ open, categories, setCategories }: { open: boolean, categories: Category[], setCategories: (category: Category[]) => void }) {
     useEffect(() => {

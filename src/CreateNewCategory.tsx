@@ -4,7 +4,7 @@ import * as ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
-import { Category } from "./Types";
+import { Category } from "./utils/Types";
 
 export default function CreateNewCategory({ setCategories }: { setCategories: (category: Category[]) => void }) {
     const [fields, setFields] = useState({ 

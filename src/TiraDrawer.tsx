@@ -11,7 +11,7 @@ import CategoriesList from "./categories/CategoriesList"
 import { useState } from "react";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { Category } from "./Types";
+import { Category } from "./utils/Types";
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({

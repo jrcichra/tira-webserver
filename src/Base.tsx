@@ -6,7 +6,7 @@ import TiraDrawer from './TiraDrawer';
 import TiraAppBar from './TiraAppBar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Category } from './Types';
+import { Category } from './utils/Types';
 
 export const drawerWidth = 240;
 

@@ -10,7 +10,7 @@ import Users from "./Users";
 import TicketPage from "./TicketPage";
 import CreateTicketPage from "./CreateTicketPage";
 import CreateNewCategory from "./CreateNewCategory";
-import { Category } from "./Types";
+import { Category } from "./utils/Types";
 
 const mdTheme = createTheme();
 

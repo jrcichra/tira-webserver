@@ -10,20 +10,32 @@ import Users from "./Users";
 import TicketPage from "./TicketPage";
 import CreateTicketPage from "./CreateTicketPage";
 import CreateNewCategory from "./CreateNewCategory";
-import { Category } from "./utils/Types";
+import { Category, User } from "./utils/Types";
+import React from "react";
+import { API_BASE_URL } from "./EnvironmentVariables";
 
 const mdTheme = createTheme();
-
+ 
 export default function App() {
-    const cookies = cookie.parse(document.cookie);
-    const [loggedIn, setLoggedIn] = useState('tirauth' in cookies);
-    const [categories, setCategories] = useState<Category[]>([]);
+    const [user, setUser] = React.useState<User|undefined>();
+    const [categories, setCategories] = React.useState<Category[]>([]);
+
+    React.useEffect(() => {
+        const cookies = cookie.parse(document.cookie);
+
+        fetch(`${API_BASE_URL}/users/current`)
+            .then(response => {
+                if(response.ok) {
+                    response.json().then((data: User) => setUser(data))
+                }
+            });
+    }, []);
 
     return (
         <ThemeProvider theme={mdTheme}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Base loggedIn={loggedIn} categories={categories} setCategories={setCategories} />}>
+                    <Route path="/" element={<Base user={user} categories={categories} setCategories={setCategories} />}>
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="tickets">
                             <Route index element={<TicketsPage />} />
@@ -35,7 +47,7 @@ export default function App() {
                         </Route>
                         <Route path="users" element={<Users />} />
                     </Route>
-                    <Route path="/login" element={<LoginPage setLoggedIn={setLoggedIn} />} />
+                    <Route path="/login" element={<LoginPage setUser={setUser} />} />
                     <Route path="*" element={<h1>Page not found</h1>} />
                 </Routes>
             </BrowserRouter>

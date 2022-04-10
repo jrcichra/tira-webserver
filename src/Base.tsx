@@ -6,7 +6,7 @@ import TiraDrawer from './TiraDrawer';
 import TiraAppBar from './TiraAppBar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { Category } from './utils/Types';
+import { Category, User } from './utils/Types';
 
 export const drawerWidth = 240;
 
@@ -23,7 +23,7 @@ function Copyright(props: any) {
   );
 }
 
-export default function Base({loggedIn, categories, setCategories}: {loggedIn: boolean, categories: Category[], setCategories: (category: Category[]) => void }) {
+export default function Base({user, categories, setCategories}: {user?: User, categories: Category[], setCategories: (category: Category[]) => void }) {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -32,7 +32,7 @@ export default function Base({loggedIn, categories, setCategories}: {loggedIn: b
   return (
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <TiraAppBar loggedIn={loggedIn} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
+        <TiraAppBar user={user} drawerOpen={drawerOpen} toggleDrawer={toggleDrawer} />
         <TiraDrawer open={drawerOpen} toggleDrawer={toggleDrawer} categories={categories} setCategories={setCategories} />
         <Box
           component="main"

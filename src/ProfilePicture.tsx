@@ -1,9 +1,10 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { IconButton } from "@mui/material";
+import { Avatar, IconButton } from "@mui/material";
 import React from 'react';
 import ProfilePictureMenu from './ProfilePictureMenu';
+import { User } from './utils/Types';
 
-export default function ProfilePicture() {
+export default function ProfilePicture({user}: {user: User}) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -22,7 +23,7 @@ export default function ProfilePicture() {
                 aria-label='account'
                 onClick={handleMenu}
             >
-                <AccountCircleIcon />
+                <Avatar></Avatar>
             </IconButton>
             <ProfilePictureMenu anchorEl={anchorEl} handleClose={handleClose} />
         </>

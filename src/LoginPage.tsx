@@ -4,9 +4,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PasswordTextField from "./PasswordTextField";
 import SHA256 from 'crypto-js/sha256';
 import { API_BASE_URL } from "./EnvironmentVariables";
+import { User } from "./utils/Types";
 
-export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolean) => void}) {
-    const data = useLocation().state as any;
+export default function LoginPage({setUser}: {setUser: (user: User) => void}) {
+    const linkState = useLocation().state as any;
 
     let navigate = useNavigate();
 
@@ -63,13 +64,15 @@ export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolea
         .then(response => {
             console.log('Success:', response);
             if(response.ok) {
-                setLoggedIn(true)
-
-                if(data && data.prevPath) {
-                    navigate(data.prevPath)
-                } else {
-                    navigate("/dashboard")
-                }
+                response.json().then((data: User) => {
+                    setUser(data);
+    
+                    if(linkState && linkState.prevPath) {
+                        navigate(linkState.prevPath)
+                    } else {
+                        navigate("/dashboard")
+                    }
+                })
             } else {
                 setLoginFailure(true);
             }

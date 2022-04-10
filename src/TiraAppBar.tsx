@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { drawerWidth } from './Base';
 import { Link } from 'react-router-dom';
 import ProfilePicture from './ProfilePicture';
+import { User } from './utils/Types';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -32,7 +33,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-export default function TiraAppBar({loggedIn, drawerOpen, toggleDrawer }: {loggedIn: boolean, drawerOpen: boolean, toggleDrawer: () => void}) {
+export default function TiraAppBar({user, drawerOpen, toggleDrawer }: {user?: User, drawerOpen: boolean, toggleDrawer: () => void}) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -45,7 +46,7 @@ export default function TiraAppBar({loggedIn, drawerOpen, toggleDrawer }: {logge
 
   var rightSection;
 
-  if (loggedIn) {
+  if (user) {
     rightSection = (
       <>
         <Button
@@ -60,7 +61,7 @@ export default function TiraAppBar({loggedIn, drawerOpen, toggleDrawer }: {logge
           >
           Create
         </Button>
-        <ProfilePicture />
+        <ProfilePicture user={user} />
         <CreateMenu anchorEl={anchorEl} handleClose={handleClose} />
       </>
     );

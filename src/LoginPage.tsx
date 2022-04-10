@@ -1,11 +1,13 @@
 import { Box, Button, Container, TextField } from "@mui/material";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PasswordTextField from "./PasswordTextField";
 import SHA256 from 'crypto-js/sha256';
 import { API_BASE_URL } from "./EnvironmentVariables";
 
 export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolean) => void}) {
+    const data = useLocation().state as any;
+
     let navigate = useNavigate();
 
     const [username, setUsername] = useState('');
@@ -61,7 +63,12 @@ export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolea
             console.log('Success:', response);
             if(response.ok) {
                 setLoggedIn(true)
-                navigate("/")
+
+                if(data && data.prevPath) {
+                    navigate(data.prevPath)
+                } else {
+                    navigate("/dashboard")
+                }
             } else {
                 setLoginFailure(true);
             }

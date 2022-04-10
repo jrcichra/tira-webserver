@@ -71,6 +71,9 @@ export default function TiraAppBar({loggedIn, drawerOpen, toggleDrawer }: {logge
       color='secondary'
       component={Link}
       to='/login'
+      state={{
+        prevPath: location.pathname
+      }}
       sx={{
         mr: 2,
         alignItems: 'flex-start'

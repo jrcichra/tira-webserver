@@ -66,6 +66,7 @@ export default function CreateTicketPage({categories, setCategories}: {categorie
         const ticket = {
             ...fields,
             status: 'Backlog',
+            assignee_ids: selectionModel,
             category_id: selectedCategoryId === 0 ? null : selectedCategoryId
         };
 

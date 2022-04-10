@@ -1,23 +1,30 @@
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import React from "react";
 import { MouseEvent, useState, useRef, useEffect, useMemo, ChangeEvent } from "react";
 import * as ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
-import { CreatedTicket } from "./utils/Types";
+import { CreatedTicket, ErrorMessage } from "./utils/Types";
 
 export default function CreateTicketPage() {
-    const [fields, setFields] = useState({
+    const [fields, setFields] = React.useState({
         subject: '',
         description: '',
-        priority: ''
+        category: undefined,
+        priority: 'Low'
     });
+    const [error, setError] = React.useState<string | undefined>();
 
     const handleFieldChange = (key: string) => (value: string) => {
-        setFields({...fields, [key]: value});
+        setFields({ ...fields, [key]: value });
     }
 
     const handleTextFieldChange = (key: string) => (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        handleFieldChange(key)(event.target.value);
+    }
+
+    const handleSelectFieldChange = (key: string) => (event: SelectChangeEvent) => {
         handleFieldChange(key)(event.target.value);
     }
 
@@ -25,7 +32,7 @@ export default function CreateTicketPage() {
 
     const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
         const ticket = {
-            status: 'OPEN',
+            status: 'Backlog',
             ...fields
         };
 
@@ -36,13 +43,17 @@ export default function CreateTicketPage() {
             },
             body: JSON.stringify(ticket)
         })
-        .then(response => {
-            if(response.ok) {
-                response.json().then((data: CreatedTicket) => {
-                    navigate(`/tickets/${data.id}`);
-                })
-            }
-        })
+            .then(response => {
+                if (response.ok) {
+                    response.json().then((data: CreatedTicket) => {
+                        navigate(`/tickets/${data.id}`);
+                    })
+                } else {
+                    response.json().then((data: ErrorMessage) => {
+                        setError(data.message);
+                    })
+                }
+            })
     }
 
     return (
@@ -58,7 +69,7 @@ export default function CreateTicketPage() {
                     Create New Ticket
                 </Typography>
                 <TextField value={fields.subject} onChange={handleTextFieldChange('subject')} margin='normal' id="outlined-basic" label="Subject" variant="outlined" />
-                <Box sx={{ mt: 2 }}>
+                <Box sx={{ mt: 2, mb: 2 }}>
                     <ReactQuill
                         value={fields.description}
                         onChange={handleFieldChange('description')}
@@ -66,15 +77,31 @@ export default function CreateTicketPage() {
                         modules={{
                             toolbar: [
                                 [{ 'header': [1, 2, false] }],
-                                ['bold', 'italic', 'underline','strike', 'blockquote'],
-                                [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
                                 ['link', 'image'],
                                 ['clean']
                             ],
                         }}
                     />
                 </Box>
-                <TextField value={fields.priority} onChange={handleTextFieldChange('priority')} margin="normal" id="outlined-basic" label="Priority" variant="outlined" />
+                <FormControl margin="normal" fullWidth>
+                    <InputLabel>Priority</InputLabel>
+                    <Select
+                        value={fields.priority}
+                        label="Priority"
+                        onChange={handleSelectFieldChange('priority')}
+                    >
+                        <MenuItem value={'Low'}>Low</MenuItem>
+                        <MenuItem value={'Medium'}>Medium</MenuItem>
+                        <MenuItem value={'High'}>High</MenuItem>
+                    </Select>
+                </FormControl>
+                {error &&
+                    <Typography align="center" component="h2" variant="h6" color="error">
+                        ERROR: {error}
+                    </Typography>
+                }
                 <Button
                     onClick={handleSubmit}
                     variant="contained"

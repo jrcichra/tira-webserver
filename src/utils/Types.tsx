@@ -28,3 +28,11 @@ export interface Ticket {
     created: string,
     reporter_id: number,
 }
+
+export interface CreatedTicket {
+    id: number
+}
+
+export interface ErrorMessage {
+    message: string
+}

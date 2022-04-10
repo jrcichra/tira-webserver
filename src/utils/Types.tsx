@@ -36,3 +36,13 @@ export interface CreatedTicket {
 export interface ErrorMessage {
     message: string
 }
+
+export interface User {
+    id: number,
+    username: string,
+    email_address: string,
+    first_name: string,
+    last_name: string,
+    created: string,
+    archived: boolean,
+}

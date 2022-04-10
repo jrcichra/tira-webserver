@@ -2,8 +2,7 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "./EnvironmentVariables";
-import { Ticket } from "./TicketsPage";
-import { Assignment } from "./utils/Types";
+import { Assignment, Ticket } from "./utils/Types";
 
 const assignmentsColumns: GridColDef[] = [
     { field: 'ticket_id', headerName: 'Ticket ID', width: 130 },

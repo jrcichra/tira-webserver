@@ -2,16 +2,7 @@ import { Grid, Paper, Typography } from "@mui/material";
 import { GridColDef, GridValueGetterParams, DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "./EnvironmentVariables";
-
-interface User {
-    id: number,
-    username: string,
-    email_address: string,
-    first_name: string,
-    last_name: string,
-    created: string,
-    archived: boolean,
-}
+import { User } from "./utils/Types";
 
 const columns: GridColDef<User>[] = [
     { field: 'username', headerName: 'Username', width: 130 },

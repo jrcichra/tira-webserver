@@ -4,6 +4,7 @@ import * as ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
+import { CreatedTicket } from "./utils/Types";
 
 export default function CreateTicketPage() {
     const [fields, setFields] = useState({
@@ -20,6 +21,8 @@ export default function CreateTicketPage() {
         handleFieldChange(key)(event.target.value);
     }
 
+    let navigate = useNavigate();
+
     const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
         const ticket = {
             status: 'OPEN',
@@ -35,16 +38,12 @@ export default function CreateTicketPage() {
         })
         .then(response => {
             if(response.ok) {
-                navigate('/')
-            } else {
-                return response.json()
+                response.json().then((data: CreatedTicket) => {
+                    navigate(`/tickets/${data.id}`);
+                })
             }
-        }).then(json => {
-            console.log(json);
-        });
+        })
     }
-
-    let navigate = useNavigate();
 
     return (
         <Grid>
@@ -56,13 +55,14 @@ export default function CreateTicketPage() {
                 }}
             >
                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                    Create new ticket
+                    Create New Ticket
                 </Typography>
-                <TextField value={fields.subject} onChange={handleTextFieldChange('subject')} id="outlined-basic" label="Subject" variant="outlined" />
+                <TextField value={fields.subject} onChange={handleTextFieldChange('subject')} margin='normal' id="outlined-basic" label="Subject" variant="outlined" />
                 <Box sx={{ mt: 2 }}>
                     <ReactQuill
                         value={fields.description}
                         onChange={handleFieldChange('description')}
+                        placeholder='Description'
                         modules={{
                             toolbar: [
                                 [{ 'header': [1, 2, false] }],

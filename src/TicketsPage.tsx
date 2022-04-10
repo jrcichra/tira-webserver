@@ -3,17 +3,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
-
-export interface Ticket {
-    id: number,
-    category_id?: number,
-    subject: string,
-    description: string,
-    status: string,
-    priority: string,
-    created: string,
-    reporter_id: number,
-}
+import { Ticket } from "./utils/Types";
 
 const columns: GridColDef[] = [
     {

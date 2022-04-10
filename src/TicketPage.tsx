@@ -3,7 +3,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
-import { Ticket } from "./TicketsPage";
+import { Ticket } from "./utils/Types";
 
 export default function TicketPage() {
     const [ticket, setTicket] = useState<Ticket|undefined>();

@@ -17,3 +17,14 @@ export interface Category {
     created: string,
     archived: boolean,
 }
+
+export interface Ticket {
+    id: number,
+    category_id?: number,
+    subject: string,
+    description: string,
+    status: string,
+    priority: string,
+    created: string,
+    reporter_id: number,
+}

@@ -27,7 +27,7 @@ export default function App() {
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="tickets">
                             <Route index element={<TicketsPage />} />
-                            <Route path="new" element={<CreateTicketPage />} />
+                            <Route path="new" element={<CreateTicketPage categories={categories} setCategories={setCategories} />} />
                             <Route path=":ticketId" element={<TicketPage />} />
                         </Route>
                         <Route path="categories">

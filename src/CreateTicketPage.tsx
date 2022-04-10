@@ -4,17 +4,18 @@ import { MouseEvent, useState, useRef, useEffect, useMemo, ChangeEvent } from "r
 import * as ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
+import CategorySelect from "./CategorySelect";
 import { API_BASE_URL } from "./EnvironmentVariables";
-import { CreatedTicket, ErrorMessage } from "./utils/Types";
+import { Category, CreatedTicket, ErrorMessage } from "./utils/Types";
 
-export default function CreateTicketPage() {
+export default function CreateTicketPage({categories, setCategories}: {categories: Category[], setCategories: (category: Category[]) => void }) {
     const [fields, setFields] = React.useState({
         subject: '',
         description: '',
-        category: undefined,
-        priority: 'Low'
+        priority: 'Low',
     });
     const [error, setError] = React.useState<string | undefined>();
+    const [selectedCategoryId, setSelectedCategoryId] = React.useState<number>(0);
 
     const handleFieldChange = (key: string) => (value: string) => {
         setFields({ ...fields, [key]: value });
@@ -28,12 +29,22 @@ export default function CreateTicketPage() {
         handleFieldChange(key)(event.target.value);
     }
 
+    const handleCategorySelectChange = (event: SelectChangeEvent<number>) => {
+        let value = event.target.value;
+        if(typeof value === 'string') {
+            value = parseInt(value);
+        }
+
+        setSelectedCategoryId(value);
+    }
+
     let navigate = useNavigate();
 
     const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
         const ticket = {
+            ...fields,
             status: 'Backlog',
-            ...fields
+            category_id: selectedCategoryId === 0 ? null : selectedCategoryId
         };
 
         fetch(`${API_BASE_URL}/tickets`, {
@@ -97,6 +108,7 @@ export default function CreateTicketPage() {
                         <MenuItem value={'High'}>High</MenuItem>
                     </Select>
                 </FormControl>
+                <CategorySelect categories={categories} selectedIndex={selectedCategoryId} onChange={handleCategorySelectChange} />
                 {error &&
                     <Typography align="center" component="h2" variant="h6" color="error">
                         ERROR: {error}

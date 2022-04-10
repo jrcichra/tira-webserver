@@ -1,5 +1,5 @@
 import { Box, Button, Container, TextField } from "@mui/material";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PasswordTextField from "./PasswordTextField";
 import SHA256 from 'crypto-js/sha256';
@@ -39,7 +39,8 @@ export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolea
         return true;
     }
 
-    const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         setLoginFailure(false);
 
         if(!verifyFields()) {
@@ -89,23 +90,25 @@ export default function LoginPage({setLoggedIn}: {setLoggedIn: (loggedIn: boolea
                 }}
             >
                 <h1>Login</h1>
-                <Box sx={{mt: 1}}>
-                    <TextField value={username} onChange={handleUsernameChange} error={usernameError} helperText={usernameError ? 'Username is required' : ''} margin="normal" id="outlined-basic" label="Username" variant="outlined" fullWidth />
-                    <PasswordTextField value={password} onChange={handlePasswordChange} error={passwordError}  />
-                </Box>
-                {loginFailure && <span>Login Failed</span>}
-                <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    color='primary'
-                    sx={{
-                        mt: 2,
-                        alignItems: 'flex-start'
-                    }}
-                    fullWidth
-                >
-                    Log in
-                </Button>
+                <form onSubmit={handleSubmit}>
+                    <Box sx={{mt: 1}}>
+                        <TextField value={username} onChange={handleUsernameChange} error={usernameError} helperText={usernameError ? 'Username is required' : ''} margin="normal" id="outlined-basic" label="Username" variant="outlined" fullWidth />
+                        <PasswordTextField value={password} onChange={handlePasswordChange} error={passwordError}  />
+                    </Box>
+                    {loginFailure && <span>Login Failed</span>}
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color='primary'
+                        sx={{
+                            mt: 2,
+                            alignItems: 'flex-start'
+                        }}
+                        fullWidth
+                    >
+                        Log in
+                    </Button>
+                </form>
             </Box >
         </Container >
     )

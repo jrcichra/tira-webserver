@@ -48,7 +48,7 @@ export default function TicketsPage() {
                     p: 2,
                     display: 'flex',
                     flexDirection: 'column',
-                    height: 240,
+                    height: 740,
                 }}
             >
                 <Typography component="h2" variant="h6" color="primary" gutterBottom>

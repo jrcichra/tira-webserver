@@ -18,6 +18,14 @@ export interface Category {
     archived: boolean,
 }
 
+export interface Comment {
+    id: number,
+    ticket_id: number,
+    commenter_id: number,
+    content: string,
+    commented: string
+}
+
 export interface Ticket {
     id: number,
     category_id?: number,

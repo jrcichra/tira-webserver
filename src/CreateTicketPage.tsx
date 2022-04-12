@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import CategorySelect from "./CategorySelect";
 import { API_BASE_URL } from "./EnvironmentVariables";
 import { Category, CreatedTicket, ErrorMessage, User } from "./utils/Types";
+import Wysiwyg from "./Wysiwyg";
 
 const columns: GridColDef<User>[] = [
     { field: 'username', headerName: 'Username', width: 130 },
@@ -113,19 +114,10 @@ export default function CreateTicketPage({categories, setCategories}: {categorie
                 </Typography>
                 <TextField value={fields.subject} onChange={handleTextFieldChange('subject')} margin='normal' id="outlined-basic" label="Subject" variant="outlined" />
                 <Box sx={{ mt: 2, mb: 2 }}>
-                    <ReactQuill
+                    <Wysiwyg
                         value={fields.description}
                         onChange={handleFieldChange('description')}
                         placeholder='Description'
-                        modules={{
-                            toolbar: [
-                                [{ 'header': [1, 2, false] }],
-                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-                                ['link', 'image'],
-                                ['clean']
-                            ],
-                        }}
                     />
                 </Box>
                 <FormControl margin="normal" fullWidth>

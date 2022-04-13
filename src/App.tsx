@@ -1,5 +1,4 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Base from "./Base";
 import LoginPage from "./LoginPage";
@@ -21,8 +20,6 @@ export default function App() {
     const [categories, setCategories] = React.useState<Category[]>([]);
 
     React.useEffect(() => {
-        const cookies = cookie.parse(document.cookie);
-
         fetch(`${API_BASE_URL}/users/current`)
             .then(response => {
                 if(response.ok) {
@@ -39,8 +36,8 @@ export default function App() {
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="tickets">
                             <Route index element={<TicketsPage />} />
-                            <Route path="new" element={<CreateTicketPage categories={categories} setCategories={setCategories} />} />
-                            <Route path=":ticketId" element={<TicketPage />} />
+                            <Route path="new" element={<CreateTicketPage categories={categories}/>} />
+                            <Route path=":ticketId" element={<TicketPage user={user}/>} />
                         </Route>
                         <Route path="categories">
                             <Route path="new" element={<CreateNewCategory setCategories={setCategories} />} />

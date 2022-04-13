@@ -1,6 +1,5 @@
 
-import { Container, CssBaseline, Grid, Link, Paper, Toolbar, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Container, CssBaseline,  Link,  Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import TiraDrawer from './TiraDrawer';
 import TiraAppBar from './TiraAppBar';

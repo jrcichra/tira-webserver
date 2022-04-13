@@ -1,6 +1,5 @@
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { MouseEvent, useState, useRef, useEffect, useMemo, ChangeEvent } from "react";
-import * as ReactQuill from 'react-quill';
+import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { useState, ChangeEvent } from "react";
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
@@ -16,7 +15,7 @@ export default function CreateNewCategory({ setCategories }: { setCategories: (c
         setFields({...fields, [key]: event.target.value});
     }
 
-    const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = () => {
         fetch(`${API_BASE_URL}/categories`, {
             method: 'POST',
             headers: {
@@ -30,7 +29,7 @@ export default function CreateNewCategory({ setCategories }: { setCategories: (c
         })
     }
 
-    let navigate = useNavigate();
+    useNavigate();
 
     return (
         <Grid>

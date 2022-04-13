@@ -1,5 +1,4 @@
 import { Menu, MenuItem } from "@mui/material";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function CreateMenu({anchorEl, handleClose}: {anchorEl: null | HTMLElement, handleClose: () => void}) {

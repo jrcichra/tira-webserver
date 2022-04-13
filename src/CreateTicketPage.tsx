@@ -1,8 +1,7 @@
 import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridRowId, GridSelectionModel, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridSelectionModel, GridValueGetterParams } from "@mui/x-data-grid";
 import React from "react";
-import { MouseEvent, useState, useRef, useEffect, useMemo, ChangeEvent } from "react";
-import * as ReactQuill from 'react-quill';
+import { MouseEvent, useState, useEffect, ChangeEvent } from "react";
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import CategorySelect from "./CategorySelect";
@@ -29,7 +28,7 @@ const columns: GridColDef<User>[] = [
     { field: 'created', headerName: 'Created', width: 230 },
 ]
 
-export default function CreateTicketPage({categories, setCategories}: {categories: Category[], setCategories: (category: Category[]) => void }) {
+export default function CreateTicketPage({categories}: {categories: Category[]}) {
     const [fields, setFields] = React.useState({
         subject: '',
         description: '',
@@ -63,7 +62,7 @@ export default function CreateTicketPage({categories, setCategories}: {categorie
 
     let navigate = useNavigate();
 
-    const handleSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = () => {
         const ticket = {
             ...fields,
             status: 'Backlog',

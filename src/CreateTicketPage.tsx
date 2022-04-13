@@ -28,7 +28,7 @@ const columns: GridColDef<User>[] = [
     { field: 'created', headerName: 'Created', width: 230 },
 ]
 
-export default function CreateTicketPage({categories}: {categories: Category[]}) {
+export default function CreateTicketPage({categories, setCategories}: {categories: Category[], setCategories: (category: Category[]) => void }) {
     const [fields, setFields] = React.useState({
         subject: '',
         description: '',

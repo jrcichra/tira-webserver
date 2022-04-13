@@ -1,4 +1,4 @@
-import ReactQuill from "react-quill";
+import ReactQuill from 'react-quill';
 import { API_BASE_URL } from "./EnvironmentVariables";
 
 export default function Wysiwyg({ value, onChange, placeholder }: { value: string, onChange: (value: string) => void, placeholder?: string }) {
@@ -39,6 +39,7 @@ export default function Wysiwyg({ value, onChange, placeholder }: { value: strin
     };
 
     return (
+        // @ts-ignore
         <ReactQuill
             ref={(el) => {
                 quillObj = el;

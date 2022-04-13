@@ -7,7 +7,7 @@ import { API_BASE_URL } from "./EnvironmentVariables";
 import { Comment, Ticket, User } from "./utils/Types";
 import Wysiwyg from "./Wysiwyg";
 
-export default function TicketPage({ user }: { user: User|undefined }) {
+export default function TicketPage({ user }: { user: User | undefined }) {
     const [ticket, setTicket] = useState<Ticket | undefined>();
     const [comments, setComments] = useState<Comment[] | undefined>();
     const [comment, setComment] = useState('');

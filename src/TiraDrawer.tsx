@@ -1,5 +1,5 @@
-import { Collapse, Divider, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { Divider, IconButton, List,  ListItemButton, ListItemIcon, ListItemText, Toolbar } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import GroupIcon from '@mui/icons-material/Group';
@@ -9,7 +9,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import { drawerWidth } from "./Base";
 import CategoriesList from "./categories/CategoriesList"
 import { useState } from "react";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { Category } from "./utils/Types";
 

@@ -1,6 +1,6 @@
 import { StarBorder } from "@mui/icons-material"
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { API_BASE_URL } from "../EnvironmentVariables";
 import { Category } from "../utils/Types";
 

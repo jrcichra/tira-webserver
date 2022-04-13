@@ -1,8 +1,6 @@
 import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { API_BASE_URL } from "./EnvironmentVariables";
 import { Comment, Ticket, User } from "./utils/Types";
 import Wysiwyg from "./Wysiwyg";
@@ -117,6 +115,17 @@ export default function TicketPage({ user }: { user: User | undefined }) {
                     {ticket?.status}
                     <br />
                     {ticket?.reporter_id}
+                    <br />
+                    <Button
+                        onClick={handleSubmitComment}
+                        variant="contained"
+                        color='primary'
+                        sx={{
+                            mt: 2
+                        }}
+                    >
+                        Edit Ticket
+                    </Button>
                 </Paper>
             </Grid>
             <Grid item lg={12}>

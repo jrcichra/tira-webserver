@@ -6,27 +6,9 @@ import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from "react-router-dom";
 import CategorySelect from "./CategorySelect";
 import { API_BASE_URL } from "./EnvironmentVariables";
+import UsersTable from "./tables/UsersTable";
 import { Category, CreatedTicket, ErrorMessage, User } from "./utils/Types";
 import Wysiwyg from "./Wysiwyg";
-
-const columns: GridColDef<User>[] = [
-    { field: 'username', headerName: 'Username', width: 130 },
-    {
-        field: 'name',
-        headerName: 'Name',
-        width: 130,
-        valueGetter: (params: GridValueGetterParams<string, User>) => `${params.row.first_name} ${params.row.last_name}`,
-    },
-    {
-        field: 'email_address',
-        headerName: 'Email Address',
-        width: 130,        
-        renderCell: (params: GridValueGetterParams<string, User>) => (
-            <a href={"mailto:" + params.value}>{params.value}</a>
-        ),
-    },
-    { field: 'created', headerName: 'Created', width: 230 },
-]
 
 export default function CreateTicketPage({categories, setCategories}: {categories: Category[], setCategories: (category: Category[]) => void }) {
     const [fields, setFields] = React.useState({
@@ -132,17 +114,15 @@ export default function CreateTicketPage({categories, setCategories}: {categorie
                     </Select>
                 </FormControl>
                 <CategorySelect categories={categories} selectedIndex={selectedCategoryId} onChange={handleCategorySelectChange} />
-                <Box sx={{ height: 280 }}>
-                    <DataGrid
-                        rows={users}
-                        columns={columns}
-                        checkboxSelection
-                        selectionModel={selectionModel}
-                        onSelectionModelChange={(newSelectionModel: GridSelectionModel) => {
-                            setSelectionModel(newSelectionModel);
-                        }}
-                    />
-                </Box>
+                <UsersTable
+                    autoHeight
+                    users={users}
+                    checkboxSelection
+                    selectionModel={selectionModel}
+                    onSelectionModelChange={(newSelectionModel: GridSelectionModel) => {
+                        setSelectionModel(newSelectionModel);
+                    }}
+                />
                 {error &&
                     <Typography align="center" component="h2" variant="h6" color="error">
                         ERROR: {error}

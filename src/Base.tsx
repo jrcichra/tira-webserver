@@ -4,30 +4,30 @@ import {
   Link,
   Toolbar,
   Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import TiraDrawer from "./TiraDrawer";
-import TiraAppBar from "./TiraAppBar";
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { Category, User } from "./utils/Types";
+} from '@mui/material';
+import { Box } from '@mui/system';
+import TiraDrawer from './TiraDrawer';
+import TiraAppBar from './TiraAppBar';
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Category, User } from './utils/Types';
 
 export const drawerWidth = 240;
 
 function Copyright(props: any) {
   return (
     <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
+      variant='body2'
+      color='text.secondary'
+      align='center'
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      {'Copyright © '}
+      <Link color='inherit' href='https://mui.com/'>
         Timmy Joe
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
   );
 }
@@ -47,7 +47,7 @@ export default function Base({
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <TiraAppBar
         user={user}
@@ -61,15 +61,15 @@ export default function Base({
         setCategories={setCategories}
       />
       <Box
-        component="main"
+        component='main'
         sx={{
           backgroundColor: (theme) =>
-            theme.palette.mode === "light"
+            theme.palette.mode === 'light'
               ? theme.palette.grey[100]
               : theme.palette.grey[900],
           flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
+          height: '100vh',
+          overflow: 'auto',
         }}
       >
         <Toolbar />

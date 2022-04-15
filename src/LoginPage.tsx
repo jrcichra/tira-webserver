@@ -1,10 +1,10 @@
-import { Box, Button, Container, TextField } from "@mui/material";
-import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import PasswordTextField from "./PasswordTextField";
-import SHA256 from "crypto-js/sha256";
-import { API_BASE_URL } from "./EnvironmentVariables";
-import { User } from "./utils/Types";
+import { Box, Button, Container, TextField } from '@mui/material';
+import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import PasswordTextField from './PasswordTextField';
+import SHA256 from 'crypto-js/sha256';
+import { API_BASE_URL } from './EnvironmentVariables';
+import { User } from './utils/Types';
 
 export default function LoginPage({
   setUser,
@@ -15,10 +15,10 @@ export default function LoginPage({
 
   let navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState(false);
 
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
   const [loginFailure, setLoginFailure] = useState(false);
@@ -63,14 +63,14 @@ export default function LoginPage({
 
     console.log(loginJSON);
     fetch(`${API_BASE_URL}/login`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(loginJSON),
     })
       .then((response) => {
-        console.log("Success:", response);
+        console.log('Success:', response);
         if (response.ok) {
           response.json().then((data: User) => {
             setUser(data);
@@ -78,7 +78,7 @@ export default function LoginPage({
             if (linkState && linkState.prevPath) {
               navigate(linkState.prevPath);
             } else {
-              navigate("/dashboard");
+              navigate('/dashboard');
             }
           });
         } else {
@@ -86,18 +86,18 @@ export default function LoginPage({
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component='main' maxWidth='xs'>
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <h1>Login</h1>
@@ -107,11 +107,11 @@ export default function LoginPage({
               value={username}
               onChange={handleUsernameChange}
               error={usernameError}
-              helperText={usernameError ? "Username is required" : ""}
-              margin="normal"
-              id="outlined-basic"
-              label="Username"
-              variant="outlined"
+              helperText={usernameError ? 'Username is required' : ''}
+              margin='normal'
+              id='outlined-basic'
+              label='Username'
+              variant='outlined'
               fullWidth
             />
             <PasswordTextField
@@ -122,12 +122,12 @@ export default function LoginPage({
           </Box>
           {loginFailure && <span>Login Failed</span>}
           <Button
-            type="submit"
-            variant="contained"
-            color="primary"
+            type='submit'
+            variant='contained'
+            color='primary'
             sx={{
               mt: 2,
-              alignItems: "flex-start",
+              alignItems: 'flex-start',
             }}
             fullWidth
           >

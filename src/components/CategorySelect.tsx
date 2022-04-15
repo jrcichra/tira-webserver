@@ -1,4 +1,4 @@
-import RefreshIcon from "@mui/icons-material/Refresh";
+import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   FormControl,
   InputLabel,
@@ -8,10 +8,10 @@ import {
   IconButton,
   InputAdornment,
   FormHelperText,
-} from "@mui/material";
-import React from "react";
-import { API_BASE_URL } from "../EnvironmentVariables";
-import { Category, ErrorMessage } from "../utils/Types";
+} from '@mui/material';
+import React from 'react';
+import { API_BASE_URL } from '../EnvironmentVariables';
+import { Category, ErrorMessage } from '../utils/Types';
 
 export default function CategorySelect({
   categories,
@@ -24,10 +24,10 @@ export default function CategorySelect({
   selectedIndex: number;
   onChange: (event: SelectChangeEvent<number>) => void;
 }) {
-  const [errorMessage, setErrorMessage] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState('');
 
   const handleRefreshButtonClick = async () => {
-    setErrorMessage("");
+    setErrorMessage('');
     try {
       const response = await fetch(`${API_BASE_URL}/categories?archived=false`);
       if (response.ok) {
@@ -39,13 +39,13 @@ export default function CategorySelect({
       }
     } catch (e) {
       console.error(e);
-      if (typeof e === "string") {
+      if (typeof e === 'string') {
         setErrorMessage(e);
       }
     }
   };
 
-  const error = errorMessage != "";
+  const error = errorMessage != '';
 
   const categoryElements = categories.map((c: Category) => (
     <MenuItem key={c.id} value={c.id}>
@@ -60,16 +60,16 @@ export default function CategorySelect({
   );
 
   return (
-    <FormControl margin="normal" fullWidth>
+    <FormControl margin='normal' fullWidth>
       <InputLabel>Category</InputLabel>
       <Select
         value={selectedIndex}
-        label="Category"
+        label='Category'
         onChange={onChange}
         error={error}
         endAdornment={
-          <InputAdornment position="end" sx={{ mr: 3 }}>
-            <IconButton onClick={handleRefreshButtonClick} edge="end">
+          <InputAdornment position='end' sx={{ mr: 3 }}>
+            <IconButton onClick={handleRefreshButtonClick} edge='end'>
               <RefreshIcon />
             </IconButton>
           </InputAdornment>

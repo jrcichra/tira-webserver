@@ -1,5 +1,5 @@
-import ReactQuill from "react-quill";
-import { API_BASE_URL } from "./EnvironmentVariables";
+import ReactQuill from 'react-quill';
+import { API_BASE_URL } from './EnvironmentVariables';
 
 export default function Wysiwyg({
   value,
@@ -13,10 +13,10 @@ export default function Wysiwyg({
   var quillObj: ReactQuill | null;
 
   const handleImageUpload = async () => {
-    const input = document.createElement("input");
+    const input = document.createElement('input');
 
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
     input.click();
 
     input.onchange = async () => {
@@ -37,7 +37,7 @@ export default function Wysiwyg({
             const filename = fileNamePredecessor + file.name;
 
             const response = await fetch(`${API_BASE_URL}/images/${filename}`, {
-              method: "POST",
+              method: 'POST',
               body: file,
             });
 
@@ -46,7 +46,7 @@ export default function Wysiwyg({
                 .getEditor()
                 .insertEmbed(
                   range.index,
-                  "image",
+                  'image',
                   `${API_BASE_URL}/images/${filename}`
                 );
             }
@@ -69,15 +69,15 @@ export default function Wysiwyg({
         toolbar: {
           container: [
             [{ header: [1, 2, false] }],
-            ["bold", "italic", "underline", "strike", "blockquote"],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
             [
-              { list: "ordered" },
-              { list: "bullet" },
-              { indent: "-1" },
-              { indent: "+1" },
+              { list: 'ordered' },
+              { list: 'bullet' },
+              { indent: '-1' },
+              { indent: '+1' },
             ],
-            ["link", "image"],
-            ["clean"],
+            ['link', 'image'],
+            ['clean'],
           ],
           handlers: {
             image: handleImageUpload,

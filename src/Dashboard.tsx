@@ -1,19 +1,19 @@
-import { Grid, Paper, Typography } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
-import { API_BASE_URL } from "./EnvironmentVariables";
-import { Assignment, Ticket } from "./utils/Types";
+import { Grid, Paper, Typography } from '@mui/material';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { API_BASE_URL } from './EnvironmentVariables';
+import { Assignment, Ticket } from './utils/Types';
 
 const assignmentsColumns: GridColDef[] = [
-  { field: "ticket_id", headerName: "Ticket ID", width: 130 },
-  { field: "assigned", headerName: "Assigned", width: 130 },
+  { field: 'ticket_id', headerName: 'Ticket ID', width: 130 },
+  { field: 'assigned', headerName: 'Assigned', width: 130 },
 ];
 
 const reportedTicketsColumns: GridColDef[] = [
-  { field: "category_id", headerName: "Category", width: 130 },
-  { field: "subject", headerName: "Subject", width: 130 },
-  { field: "status", headerName: "Status", width: 130 },
-  { field: "priority", headerName: "Priority", width: 130 },
+  { field: 'category_id', headerName: 'Category', width: 130 },
+  { field: 'subject', headerName: 'Subject', width: 130 },
+  { field: 'status', headerName: 'Status', width: 130 },
+  { field: 'priority', headerName: 'Priority', width: 130 },
 ];
 
 export default function DashBoard() {
@@ -40,12 +40,12 @@ export default function DashBoard() {
         <Paper
           sx={{
             p: 2,
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
             height: 240,
           }}
         >
-          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+          <Typography component='h2' variant='h6' color='primary' gutterBottom>
             Open Tickets Assigned To You
           </Typography>
           <DataGrid
@@ -59,12 +59,12 @@ export default function DashBoard() {
         <Paper
           sx={{
             p: 2,
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
             height: 240,
           }}
         >
-          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+          <Typography component='h2' variant='h6' color='primary' gutterBottom>
             Open Tickets Reported By You
           </Typography>
           <DataGrid
@@ -75,8 +75,8 @@ export default function DashBoard() {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+          <Typography component='h2' variant='h6' color='primary' gutterBottom>
             All Open Tickets
           </Typography>
         </Paper>

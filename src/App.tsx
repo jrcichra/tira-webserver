@@ -1,16 +1,16 @@
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Base from "./Base";
-import LoginPage from "./LoginPage";
-import Dashboard from "./Dashboard";
-import TicketsPage from "./TicketsPage";
-import Users from "./Users";
-import TicketPage from "./TicketPage";
-import CreateTicketPage from "./pages/CreateTicketPage";
-import CreateNewCategory from "./CreateNewCategory";
-import { Category, User } from "./utils/Types";
-import React from "react";
-import { API_BASE_URL } from "./EnvironmentVariables";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Base from './Base';
+import LoginPage from './LoginPage';
+import Dashboard from './Dashboard';
+import TicketsPage from './TicketsPage';
+import Users from './Users';
+import TicketPage from './TicketPage';
+import CreateTicketPage from './pages/CreateTicketPage';
+import CreateNewCategory from './CreateNewCategory';
+import { Category, User } from './utils/Types';
+import React from 'react';
+import { API_BASE_URL } from './EnvironmentVariables';
 
 const mdTheme = createTheme();
 
@@ -31,7 +31,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/"
+            path='/'
             element={
               <Base
                 user={user}
@@ -40,12 +40,12 @@ export default function App() {
               />
             }
           >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="tickets">
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='tickets'>
               <Route index element={<TicketsPage />} />
-              <Route path="edit">
+              <Route path='edit'>
                 <Route
-                  path=":ticketId"
+                  path=':ticketId'
                   element={
                     <CreateTicketPage
                       categories={categories}
@@ -56,7 +56,7 @@ export default function App() {
                 />
               </Route>
               <Route
-                path="new"
+                path='new'
                 element={
                   <CreateTicketPage
                     categories={categories}
@@ -64,18 +64,18 @@ export default function App() {
                   />
                 }
               />
-              <Route path=":ticketId" element={<TicketPage user={user} />} />
+              <Route path=':ticketId' element={<TicketPage user={user} />} />
             </Route>
-            <Route path="categories">
+            <Route path='categories'>
               <Route
-                path="new"
+                path='new'
                 element={<CreateNewCategory setCategories={setCategories} />}
               />
             </Route>
-            <Route path="users" element={<Users />} />
+            <Route path='users' element={<Users />} />
           </Route>
-          <Route path="/login" element={<LoginPage setUser={setUser} />} />
-          <Route path="*" element={<h1>Page not found</h1>} />
+          <Route path='/login' element={<LoginPage setUser={setUser} />} />
+          <Route path='*' element={<h1>Page not found</h1>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

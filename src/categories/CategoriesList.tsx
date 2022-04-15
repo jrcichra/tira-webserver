@@ -1,14 +1,14 @@
-import { StarBorder } from "@mui/icons-material";
+import { StarBorder } from '@mui/icons-material';
 import {
   Collapse,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-} from "@mui/material";
-import { useEffect } from "react";
-import { API_BASE_URL } from "../EnvironmentVariables";
-import { Category } from "../utils/Types";
+} from '@mui/material';
+import { useEffect } from 'react';
+import { API_BASE_URL } from '../EnvironmentVariables';
+import { Category } from '../utils/Types';
 
 export default function CategoriesList({
   open,
@@ -35,8 +35,8 @@ export default function CategoriesList({
   ));
 
   return (
-    <Collapse in={open} timeout="auto" unmountOnExit>
-      <List component="div" disablePadding>
+    <Collapse in={open} timeout='auto' unmountOnExit>
+      <List component='div' disablePadding>
         {categoryElements}
       </List>
     </Collapse>

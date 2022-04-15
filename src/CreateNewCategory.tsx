@@ -1,9 +1,9 @@
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { useState, ChangeEvent } from "react";
-import "react-quill/dist/quill.snow.css";
-import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "./EnvironmentVariables";
-import { Category } from "./utils/Types";
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import { useState, ChangeEvent } from 'react';
+import 'react-quill/dist/quill.snow.css';
+import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from './EnvironmentVariables';
+import { Category } from './utils/Types';
 
 export default function CreateNewCategory({
   setCategories,
@@ -11,8 +11,8 @@ export default function CreateNewCategory({
   setCategories: (category: Category[]) => void;
 }) {
   const [fields, setFields] = useState({
-    name: "",
-    description: "",
+    name: '',
+    description: '',
   });
 
   const handleTextFieldChange =
@@ -23,9 +23,9 @@ export default function CreateNewCategory({
 
   const handleSubmit = () => {
     fetch(`${API_BASE_URL}/categories`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(fields),
     }).then(() => {
@@ -42,32 +42,32 @@ export default function CreateNewCategory({
       <Paper
         sx={{
           p: 2,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
-        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+        <Typography component='h2' variant='h6' color='primary' gutterBottom>
           Create new category
         </Typography>
         <TextField
           value={fields.name}
-          onChange={handleTextFieldChange("name")}
-          id="outlined-basic"
-          label="Name"
-          variant="outlined"
+          onChange={handleTextFieldChange('name')}
+          id='outlined-basic'
+          label='Name'
+          variant='outlined'
         />
         <TextField
           value={fields.description}
-          onChange={handleTextFieldChange("description")}
-          margin="normal"
-          id="outlined-basic"
-          label="Description"
-          variant="outlined"
+          onChange={handleTextFieldChange('description')}
+          margin='normal'
+          id='outlined-basic'
+          label='Description'
+          variant='outlined'
         />
         <Button
           onClick={handleSubmit}
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           sx={{
             mt: 2,
           }}

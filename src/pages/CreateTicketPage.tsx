@@ -6,19 +6,19 @@ import {
   SelectChangeEvent,
   TextField,
   Typography,
-} from "@mui/material";
-import { GridSelectionModel } from "@mui/x-data-grid";
-import React from "react";
-import { useState, ChangeEvent } from "react";
-import "react-quill/dist/quill.snow.css";
-import { useNavigate, useParams } from "react-router-dom";
-import CategorySelect from "../components/CategorySelect";
-import Heading from "../components/Heading";
-import PrioritySelect from "../components/PrioritySelect";
-import { API_BASE_URL } from "../EnvironmentVariables";
-import UsersTable from "../tables/UsersTable";
-import { Category, CreatedTicket, ErrorMessage } from "../utils/Types";
-import Wysiwyg from "../Wysiwyg";
+} from '@mui/material';
+import { GridSelectionModel } from '@mui/x-data-grid';
+import React from 'react';
+import { useState, ChangeEvent } from 'react';
+import 'react-quill/dist/quill.snow.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import CategorySelect from '../components/CategorySelect';
+import Heading from '../components/Heading';
+import PrioritySelect from '../components/PrioritySelect';
+import { API_BASE_URL } from '../EnvironmentVariables';
+import UsersTable from '../tables/UsersTable';
+import { Category, CreatedTicket, ErrorMessage } from '../utils/Types';
+import Wysiwyg from '../Wysiwyg';
 
 export default function CreateTicketPage({
   categories,
@@ -40,23 +40,23 @@ export default function CreateTicketPage({
     let ticketId = parseInt(ticketIdStr, 10);
   }
 
-  const [subject, setSubject] = React.useState("");
-  const [description, setDescription] = React.useState("");
+  const [subject, setSubject] = React.useState('');
+  const [description, setDescription] = React.useState('');
   const [categoryId, setCategoryId] = React.useState(0);
-  const [priority, setPriority] = React.useState("Medium");
+  const [priority, setPriority] = React.useState('Medium');
   const [assigneeIds, setAssigneeIds] = React.useState<GridSelectionModel>([]);
 
   const [subjectError, setSubjectError] = React.useState(false);
   const [assigneeIdsHasError, setAssigneeIdsHasError] = React.useState<
     number | undefined
   >(1);
-  const [formError, setFormError] = useState("");
+  const [formError, setFormError] = useState('');
 
   const handleSubjectChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const newUsername = event.target.value;
-    setSubjectError(newUsername === "");
+    setSubjectError(newUsername === '');
     setSubject(newUsername);
   };
 
@@ -66,7 +66,7 @@ export default function CreateTicketPage({
 
   const handleCategorySelectChange = (event: SelectChangeEvent<number>) => {
     let newCategoryId = event.target.value;
-    if (typeof newCategoryId === "string") {
+    if (typeof newCategoryId === 'string') {
       newCategoryId = parseInt(newCategoryId);
     }
 
@@ -102,16 +102,16 @@ export default function CreateTicketPage({
       category_id: categoryId === 0 ? null : categoryId,
       subject,
       description,
-      status: "Backlog",
+      status: 'Backlog',
       priority,
       assignee_ids: assigneeIds,
     };
 
     try {
       let response = await fetch(`${API_BASE_URL}/tickets`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(ticket),
       });
@@ -128,21 +128,21 @@ export default function CreateTicketPage({
     } catch (e) {
       console.error(e);
 
-      if (typeof e === "string") {
+      if (typeof e === 'string') {
         setFormError(e);
       }
     }
   };
 
-  const subjectHelperText = subjectError ? "Subject is required" : "";
+  const subjectHelperText = subjectError ? 'Subject is required' : '';
 
   return (
     <Grid>
       <Paper
         sx={{
           p: 2,
-          display: "flex",
-          flexDirection: "column",
+          display: 'flex',
+          flexDirection: 'column',
         }}
       >
         <Heading gutterBottom>Create New Ticket</Heading>
@@ -151,16 +151,16 @@ export default function CreateTicketPage({
           onChange={handleSubjectChange}
           error={subjectError}
           helperText={subjectHelperText}
-          margin="normal"
-          id="outlined-basic"
-          label="Subject"
-          variant="outlined"
+          margin='normal'
+          id='outlined-basic'
+          label='Subject'
+          variant='outlined'
         />
         <Box sx={{ mt: 1, mb: 1 }}>
           <Wysiwyg
             value={description}
             onChange={handleDescriptionChange}
-            placeholder="Description"
+            placeholder='Description'
           />
         </Box>
         <CategorySelect
@@ -180,10 +180,10 @@ export default function CreateTicketPage({
         />
         {formError && (
           <Typography
-            align="center"
-            component="h2"
-            variant="h6"
-            color="error"
+            align='center'
+            component='h2'
+            variant='h6'
+            color='error'
             sx={{ mt: 2 }}
           >
             ERROR: {formError}
@@ -191,8 +191,8 @@ export default function CreateTicketPage({
         )}
         <Button
           onClick={handleSubmit}
-          variant="contained"
-          color="primary"
+          variant='contained'
+          color='primary'
           sx={{
             mt: 2,
           }}

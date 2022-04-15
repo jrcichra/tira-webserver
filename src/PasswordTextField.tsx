@@ -1,4 +1,4 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   FormControl,
   InputLabel,
@@ -6,8 +6,8 @@ import {
   InputAdornment,
   IconButton,
   FormHelperText,
-} from "@mui/material";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
+} from '@mui/material';
+import { ChangeEvent, ChangeEventHandler, useState } from 'react';
 
 export default function PasswordTextField({
   value,
@@ -27,28 +27,28 @@ export default function PasswordTextField({
   };
 
   return (
-    <FormControl error={error} margin="normal" fullWidth>
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+    <FormControl error={error} margin='normal' fullWidth>
+      <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
       <OutlinedInput
-        id="outlined-adornment-password"
-        type={showPassword ? "text" : "password"}
+        id='outlined-adornment-password'
+        type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={onChange}
         endAdornment={
-          <InputAdornment position="end">
+          <InputAdornment position='end'>
             <IconButton
-              aria-label="toggle password visibility"
+              aria-label='toggle password visibility'
               onClick={toggleShowPassword}
-              edge="end"
+              edge='end'
             >
               {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
+        label='Password'
       />
       {error && (
-        <FormHelperText id="outlined-adornment-password">
+        <FormHelperText id='outlined-adornment-password'>
           Password is required
         </FormHelperText>
       )}

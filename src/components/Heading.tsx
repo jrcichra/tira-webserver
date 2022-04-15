@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
 
 export default function Heading({
   children,
@@ -9,9 +9,9 @@ export default function Heading({
 }) {
   return (
     <Typography
-      component="h2"
-      variant="h6"
-      color="primary"
+      component='h2'
+      variant='h6'
+      color='primary'
       gutterBottom={gutterBottom}
     >
       {children}

@@ -1,14 +1,14 @@
-import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { API_BASE_URL } from "./EnvironmentVariables";
-import { Comment, Ticket, User } from "./utils/Types";
-import Wysiwyg from "./Wysiwyg";
+import { Button, Divider, Grid, Paper, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { API_BASE_URL } from './EnvironmentVariables';
+import { Comment, Ticket, User } from './utils/Types';
+import Wysiwyg from './Wysiwyg';
 
 export default function TicketPage({ user }: { user: User | undefined }) {
   const [ticket, setTicket] = useState<Ticket | undefined>();
   const [comments, setComments] = useState<Comment[] | undefined>();
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
 
   let params = useParams();
   let ticketIdStr = params.ticketId;
@@ -46,10 +46,10 @@ export default function TicketPage({ user }: { user: User | undefined }) {
     };
 
     fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(request),
     }).then((response) => {
-      setComment("");
+      setComment('');
       fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`)
         .then((response) => response.json())
         .then((data) => setComments(data));
@@ -68,8 +68,8 @@ export default function TicketPage({ user }: { user: User | undefined }) {
           <Paper
             sx={{
               p: 2,
-              display: "flex",
-              flexDirection: "column",
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             {`${c.commenter_id} ${c.commented}`}
@@ -86,12 +86,12 @@ export default function TicketPage({ user }: { user: User | undefined }) {
         <Paper
           sx={{
             p: 2,
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
           }}
         >
-          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+          <Typography component='h2' variant='h6' color='primary' gutterBottom>
             {ticket?.subject}
           </Typography>
           <br />
@@ -104,14 +104,14 @@ export default function TicketPage({ user }: { user: User | undefined }) {
         <Paper
           sx={{
             p: 2,
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
           }}
         >
           Category:
           <br />
-          {ticket?.category_id ?? "N/A"}
+          {ticket?.category_id ?? 'N/A'}
           <br />
           {ticket?.created}
           <br />
@@ -123,8 +123,8 @@ export default function TicketPage({ user }: { user: User | undefined }) {
           <br />
           <Button
             onClick={handleSubmitComment}
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             sx={{
               mt: 2,
             }}
@@ -137,22 +137,22 @@ export default function TicketPage({ user }: { user: User | undefined }) {
         <Paper
           sx={{
             p: 2,
-            display: "flex",
-            flexDirection: "column",
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+          <Typography component='h2' variant='h6' color='primary' gutterBottom>
             Comments
           </Typography>
           <Wysiwyg
             value={comment}
             onChange={setComment}
-            placeholder="Comment"
+            placeholder='Comment'
           />
           <Button
             onClick={handleSubmitComment}
-            variant="contained"
-            color="primary"
+            variant='contained'
+            color='primary'
             sx={{
               mt: 2,
             }}

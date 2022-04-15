@@ -1,8 +1,8 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { Avatar, IconButton } from "@mui/material";
-import React from "react";
-import ProfilePictureMenu from "./ProfilePictureMenu";
-import { User } from "./utils/Types";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { Avatar, IconButton } from '@mui/material';
+import React from 'react';
+import ProfilePictureMenu from './ProfilePictureMenu';
+import { User } from './utils/Types';
 
 export default function ProfilePicture({ user }: { user: User }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -18,9 +18,9 @@ export default function ProfilePicture({ user }: { user: User }) {
   return (
     <>
       <IconButton
-        size="large"
-        color="inherit"
-        aria-label="account"
+        size='large'
+        color='inherit'
+        aria-label='account'
         onClick={handleMenu}
       >
         <Avatar></Avatar>

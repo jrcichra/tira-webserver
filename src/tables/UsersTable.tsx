@@ -6,29 +6,29 @@ import {
   GridSelectionModel,
   GridToolbar,
   GridValueGetterParams,
-} from "@mui/x-data-grid";
-import React from "react";
-import { API_BASE_URL } from "../EnvironmentVariables";
-import { ErrorMessage, User } from "../utils/Types";
+} from '@mui/x-data-grid';
+import React from 'react';
+import { API_BASE_URL } from '../EnvironmentVariables';
+import { ErrorMessage, User } from '../utils/Types';
 
 const columns: GridColDef<User>[] = [
-  { field: "username", headerName: "Username", width: 130 },
+  { field: 'username', headerName: 'Username', width: 130 },
   {
-    field: "name",
-    headerName: "Name",
+    field: 'name',
+    headerName: 'Name',
     width: 130,
     valueGetter: (params: GridValueGetterParams<string, User>) =>
       `${params.row.first_name} ${params.row.last_name}`,
   },
   {
-    field: "email_address",
-    headerName: "Email Address",
+    field: 'email_address',
+    headerName: 'Email Address',
     width: 130,
     renderCell: (params: GridValueGetterParams<string, User>) => (
-      <a href={"mailto:" + params.value}>{params.value}</a>
+      <a href={'mailto:' + params.value}>{params.value}</a>
     ),
   },
-  { field: "created", headerName: "Created", width: 230 },
+  { field: 'created', headerName: 'Created', width: 230 },
 ];
 
 export default function UsersTable({

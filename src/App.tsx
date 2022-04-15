@@ -2,12 +2,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Base from "./Base";
 import LoginPage from "./LoginPage";
-import * as cookie from "cookie";
 import Dashboard from "./Dashboard";
 import TicketsPage from "./TicketsPage";
 import Users from "./Users";
 import TicketPage from "./TicketPage";
-import CreateTicketPage from "./CreateTicketPage";
+import CreateTicketPage from "./pages/CreateTicketPage";
 import CreateNewCategory from "./CreateNewCategory";
 import { Category, User } from "./utils/Types";
 import React from "react";
@@ -36,6 +35,9 @@ export default function App() {
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="tickets">
                             <Route index element={<TicketsPage />} />
+                            <Route path="edit">
+                                <Route path=":ticketId" element={<CreateTicketPage categories={categories} setCategories={setCategories} editMode />} />
+                            </Route>
                             <Route path="new" element={<CreateTicketPage categories={categories} setCategories={setCategories} />} />
                             <Route path=":ticketId" element={<TicketPage user={user} />} />
                         </Route>

@@ -13,43 +13,71 @@ import React from "react";
 import { API_BASE_URL } from "./EnvironmentVariables";
 
 const mdTheme = createTheme();
- 
+
 export default function App() {
-    const [user, setUser] = React.useState<User|undefined>();
-    const [categories, setCategories] = React.useState<Category[]>([]);
+  const [user, setUser] = React.useState<User | undefined>();
+  const [categories, setCategories] = React.useState<Category[]>([]);
 
-    React.useEffect(() => {
-        fetch(`${API_BASE_URL}/users/current`)
-            .then(response => {
-                if(response.ok) {
-                    response.json().then((data: User) => setUser(data))
+  React.useEffect(() => {
+    fetch(`${API_BASE_URL}/users/current`).then((response) => {
+      if (response.ok) {
+        response.json().then((data: User) => setUser(data));
+      }
+    });
+  }, []);
+
+  return (
+    <ThemeProvider theme={mdTheme}>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Base
+                user={user}
+                categories={categories}
+                setCategories={setCategories}
+              />
+            }
+          >
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="tickets">
+              <Route index element={<TicketsPage />} />
+              <Route path="edit">
+                <Route
+                  path=":ticketId"
+                  element={
+                    <CreateTicketPage
+                      categories={categories}
+                      setCategories={setCategories}
+                      editMode
+                    />
+                  }
+                />
+              </Route>
+              <Route
+                path="new"
+                element={
+                  <CreateTicketPage
+                    categories={categories}
+                    setCategories={setCategories}
+                  />
                 }
-            });
-    }, []);
-
-    return (
-        <ThemeProvider theme={mdTheme}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Base user={user} categories={categories} setCategories={setCategories} />}>
-                        <Route path="dashboard" element={<Dashboard />} />
-                        <Route path="tickets">
-                            <Route index element={<TicketsPage />} />
-                            <Route path="edit">
-                                <Route path=":ticketId" element={<CreateTicketPage categories={categories} setCategories={setCategories} editMode />} />
-                            </Route>
-                            <Route path="new" element={<CreateTicketPage categories={categories} setCategories={setCategories} />} />
-                            <Route path=":ticketId" element={<TicketPage user={user} />} />
-                        </Route>
-                        <Route path="categories">
-                            <Route path="new" element={<CreateNewCategory setCategories={setCategories} />} />
-                        </Route>
-                        <Route path="users" element={<Users />} />
-                    </Route>
-                    <Route path="/login" element={<LoginPage setUser={setUser} />} />
-                    <Route path="*" element={<h1>Page not found</h1>} />
-                </Routes>
-            </BrowserRouter>
-        </ThemeProvider>
-    )
+              />
+              <Route path=":ticketId" element={<TicketPage user={user} />} />
+            </Route>
+            <Route path="categories">
+              <Route
+                path="new"
+                element={<CreateNewCategory setCategories={setCategories} />}
+              />
+            </Route>
+            <Route path="users" element={<Users />} />
+          </Route>
+          <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route path="*" element={<h1>Page not found</h1>} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }

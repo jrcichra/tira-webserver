@@ -5,56 +5,57 @@ import { API_BASE_URL } from "./EnvironmentVariables";
 import { User } from "./utils/Types";
 
 const columns: GridColDef<User>[] = [
-    { field: 'username', headerName: 'Username', width: 130 },
-    {
-        field: 'name',
-        headerName: 'Name',
-        width: 130,
-        valueGetter: (params: GridValueGetterParams<string, User>) => `${params.row.first_name} ${params.row.last_name}`,
-    },
-    {
-        field: 'email_address',
-        headerName: 'Email Address',
-        width: 130,        
-        renderCell: (params: GridValueGetterParams<string, User>) => (
-            <a href={"mailto:" + params.value}>{params.value}</a>
-        ),
-    },
-    { field: 'created', headerName: 'Created', width: 230 },
-]
+  { field: "username", headerName: "Username", width: 130 },
+  {
+    field: "name",
+    headerName: "Name",
+    width: 130,
+    valueGetter: (params: GridValueGetterParams<string, User>) =>
+      `${params.row.first_name} ${params.row.last_name}`,
+  },
+  {
+    field: "email_address",
+    headerName: "Email Address",
+    width: 130,
+    renderCell: (params: GridValueGetterParams<string, User>) => (
+      <a href={"mailto:" + params.value}>{params.value}</a>
+    ),
+  },
+  { field: "created", headerName: "Created", width: 230 },
+];
 
 export default function Users() {
-    const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetch(`${API_BASE_URL}/users`)
-            .then(response => response.json())
-            .then(data => setUsers(data))
-            .then(() => setLoading(false))
-            .catch(() => console.log("tim"));
-    }, []);
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/users`)
+      .then((response) => response.json())
+      .then((data) => setUsers(data))
+      .then(() => setLoading(false))
+      .catch(() => console.log("tim"));
+  }, []);
 
-    return (
-        <Grid>
-            <Paper
-                sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                }}
-            >
-                <Typography component="h2" variant="h6" color="primary" gutterBottom>
-                    List of users
-                </Typography>
-                <DataGrid
-                    rows={users}
-                    columns={columns}
-                    loading={loading}
-                    disableSelectionOnClick
-                />
-            </Paper>
-        </Grid>
-    )
+  return (
+    <Grid>
+      <Paper
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: "column",
+          height: 240,
+        }}
+      >
+        <Typography component="h2" variant="h6" color="primary" gutterBottom>
+          List of users
+        </Typography>
+        <DataGrid
+          rows={users}
+          columns={columns}
+          loading={loading}
+          disableSelectionOnClick
+        />
+      </Paper>
+    </Grid>
+  );
 }

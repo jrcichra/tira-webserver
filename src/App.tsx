@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import * as cookie from 'cookie';
 import Base from './Base';
 import LoginPage from './LoginPage';
 import Dashboard from './Dashboard';
@@ -15,16 +16,24 @@ import { API_BASE_URL } from './EnvironmentVariables';
 const mdTheme = createTheme();
 
 export default function App() {
-  const [user, setUser] = React.useState<User | undefined>();
+  const [loggedIn, setLoggedIn] = React.useState<boolean>(() => {
+    const cookies = cookie.parse(document.cookie);
+    return 'tirauth' in cookies;
+  });
+  const [currentUser, setCurrentUser] = React.useState<User | undefined>();
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   React.useEffect(() => {
-    fetch(`${API_BASE_URL}/users/current`).then((response) => {
-      if (response.ok) {
-        response.json().then((data: User) => setUser(data));
-      }
-    });
-  }, []);
+    if (loggedIn) {
+      fetch(`${API_BASE_URL}/users/current`).then((response) => {
+        if (response.ok) {
+          response.json().then((data: User) => setCurrentUser(data));
+        }
+      });
+    } else {
+      setCurrentUser(undefined);
+    }
+  }, [loggedIn]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -34,13 +43,18 @@ export default function App() {
             path='/'
             element={
               <Base
-                user={user}
+                user={currentUser}
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
                 categories={categories}
                 setCategories={setCategories}
               />
             }
           >
-            <Route path='dashboard' element={<Dashboard />} />
+            <Route
+              path='dashboard'
+              element={<Dashboard currentUser={currentUser} />}
+            />
             <Route path='tickets'>
               <Route index element={<TicketsPage />} />
               <Route path='edit'>
@@ -64,7 +78,10 @@ export default function App() {
                   />
                 }
               />
-              <Route path=':ticketId' element={<TicketPage user={user} />} />
+              <Route
+                path=':ticketId'
+                element={<TicketPage user={currentUser} />}
+              />
             </Route>
             <Route path='categories'>
               <Route
@@ -74,10 +91,18 @@ export default function App() {
             </Route>
             <Route
               path='users'
-              element={<Users currentUser={user} setCurrentUser={setUser} />}
+              element={
+                <Users
+                  currentUser={currentUser}
+                  setCurrentUser={setCurrentUser}
+                />
+              }
             />
           </Route>
-          <Route path='/login' element={<LoginPage setUser={setUser} />} />
+          <Route
+            path='/login'
+            element={<LoginPage setLoggedIn={setLoggedIn} />}
+          />
           <Route path='*' element={<h1>Page not found</h1>} />
         </Routes>
       </BrowserRouter>

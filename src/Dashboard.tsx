@@ -2,7 +2,7 @@ import { Grid, Paper, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { API_BASE_URL } from './EnvironmentVariables';
-import { Assignment, Ticket } from './utils/Types';
+import { Assignment, Ticket, User } from './utils/Types';
 
 const assignmentsColumns: GridColDef[] = [
   { field: 'ticket_id', headerName: 'Ticket ID', width: 130 },
@@ -16,23 +16,29 @@ const reportedTicketsColumns: GridColDef[] = [
   { field: 'priority', headerName: 'Priority', width: 130 },
 ];
 
-export default function DashBoard() {
+export default function DashBoard({
+  currentUser,
+}: {
+  currentUser: User | undefined;
+}) {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [assignmentsLoading, setAssignmentsLoading] = useState(true);
   const [reportedTickets, setReportedTickets] = useState<Ticket[]>([]);
   const [reportedTicketsLoading, setReportedTicketsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/users/assignments`)
-      .then((response) => response.json())
-      .then((data: Assignment[]) => setAssignments(data))
-      .finally(() => setAssignmentsLoading(false));
+    if (typeof currentUser !== 'undefined') {
+      fetch(`${API_BASE_URL}/users/${currentUser.id}/assignments`)
+        .then((response) => response.json())
+        .then((data: Assignment[]) => setAssignments(data))
+        .finally(() => setAssignmentsLoading(false));
 
-    fetch(`${API_BASE_URL}/users/tickets/reported`)
-      .then((response) => response.json())
-      .then((data: Ticket[]) => setReportedTickets(data))
-      .finally(() => setReportedTicketsLoading(false));
-  }, []);
+      fetch(`${API_BASE_URL}/tickets?reporter=${currentUser.id}`)
+        .then((response) => response.json())
+        .then((data: Ticket[]) => setReportedTickets(data))
+        .finally(() => setReportedTicketsLoading(false));
+    }
+  }, [currentUser]);
 
   return (
     <Grid container spacing={3}>

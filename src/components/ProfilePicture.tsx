@@ -1,13 +1,9 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Avatar, IconButton } from '@mui/material';
 import React from 'react';
-import { API_BASE_URL } from '../EnvironmentVariables';
-import ProfilePictureMenu from '../ProfilePictureMenu';
 import { User } from '../utils/Types';
 
 export default function ProfilePicture({ user }: { user: User }) {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const stringToColor = (string: string) => {
     let hash = 0;
     let i;

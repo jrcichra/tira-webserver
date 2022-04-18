@@ -36,10 +36,14 @@ export default function Base({
   user,
   categories,
   setCategories,
+  loggedIn,
+  setLoggedIn,
 }: {
   user?: User;
   categories: Category[];
   setCategories: (category: Category[]) => void;
+  loggedIn: boolean;
+  setLoggedIn: (newLoggedIn: boolean) => void;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const toggleDrawer = () => {
@@ -53,6 +57,8 @@ export default function Base({
         user={user}
         drawerOpen={drawerOpen}
         toggleDrawer={toggleDrawer}
+        loggedIn={loggedIn}
+        setLoggedIn={setLoggedIn}
       />
       <TiraDrawer
         open={drawerOpen}

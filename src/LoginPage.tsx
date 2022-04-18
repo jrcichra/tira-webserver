@@ -1,5 +1,6 @@
 import { Box, Button, Container, TextField } from '@mui/material';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import * as cookie from 'cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PasswordTextField from './PasswordTextField';
 import SHA256 from 'crypto-js/sha256';
@@ -7,9 +8,9 @@ import { API_BASE_URL } from './EnvironmentVariables';
 import { User } from './utils/Types';
 
 export default function LoginPage({
-  setUser,
+  setLoggedIn,
 }: {
-  setUser: (user: User) => void;
+  setLoggedIn: (newLoggedIn: boolean) => void;
 }) {
   const linkState = useLocation().state as any;
 
@@ -70,10 +71,10 @@ export default function LoginPage({
       body: JSON.stringify(loginJSON),
     })
       .then((response) => {
-        console.log('Success:', response);
         if (response.ok) {
           response.json().then((data: User) => {
-            setUser(data);
+            const cookies = cookie.parse(document.cookie);
+            setLoggedIn('tirauth' in cookies);
 
             if (linkState && linkState.prevPath) {
               navigate(linkState.prevPath);

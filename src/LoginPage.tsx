@@ -1,4 +1,12 @@
-import { Box, Button, Container, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  FormGroup,
+  TextField,
+} from '@mui/material';
 import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
 import * as cookie from 'cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -22,6 +30,8 @@ export default function LoginPage({
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState(false);
 
+  const [rememberMe, setRememberMe] = useState(false);
+
   const [loginFailure, setLoginFailure] = useState(false);
 
   const handleUsernameChange = (
@@ -38,6 +48,10 @@ export default function LoginPage({
     const newPassword = event.target.value;
     setPasswordError(!newPassword);
     setPassword(newPassword);
+  };
+
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
   };
 
   const verifyFields = () => {
@@ -60,6 +74,7 @@ export default function LoginPage({
     const loginJSON = {
       username,
       password: SHA256(password).toString(),
+      remember_me: rememberMe,
     };
 
     console.log(loginJSON);
@@ -121,6 +136,17 @@ export default function LoginPage({
               error={passwordError}
             />
           </Box>
+          <FormGroup sx={{ alignItems: 'center' }}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onClick={handleRememberMeChange}
+                />
+              }
+              label='Remember me'
+            />
+          </FormGroup>
           {loginFailure && <span>Login Failed</span>}
           <Button
             type='submit'

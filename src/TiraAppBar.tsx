@@ -8,7 +8,7 @@ import CreateMenu from './CreateMenu';
 import { useState } from 'react';
 import { drawerWidth } from './Base';
 import { Link } from 'react-router-dom';
-import ProfilePicture from './ProfilePicture';
+import ProfilePicture from './components/ProfilePicture';
 import { User } from './utils/Types';
 
 interface AppBarProps extends MuiAppBarProps {

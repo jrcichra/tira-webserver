@@ -72,7 +72,10 @@ export default function App() {
                 element={<CreateNewCategory setCategories={setCategories} />}
               />
             </Route>
-            <Route path='users' element={<Users />} />
+            <Route
+              path='users'
+              element={<Users currentUser={user} setCurrentUser={setUser} />}
+            />
           </Route>
           <Route path='/login' element={<LoginPage setUser={setUser} />} />
           <Route path='*' element={<h1>Page not found</h1>} />

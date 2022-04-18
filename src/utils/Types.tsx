@@ -37,6 +37,14 @@ export interface Ticket {
   reporter_id: number;
 }
 
+export interface TicketAssignment {
+  id: number;
+  ticket_id: number;
+  assignee_id: number;
+  assigner_id: number;
+  assigned: string;
+}
+
 export interface CreatedTicket {
   id: number;
 }
@@ -51,6 +59,7 @@ export interface User {
   email_address: string;
   first_name: string;
   last_name: string;
+  profile_picture_url: string;
   created: string;
   archived: boolean;
 }

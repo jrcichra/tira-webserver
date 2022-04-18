@@ -3,35 +3,49 @@ import {
   GridCallbackDetails,
   GridColDef,
   GridInputSelectionModel,
+  GridRenderCellParams,
   GridSelectionModel,
   GridToolbar,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
 import React from 'react';
+import ProfilePicture from '../components/ProfilePicture';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { ErrorMessage, User } from '../utils/Types';
 
-const columns: GridColDef<User>[] = [
-  { field: 'username', headerName: 'Username', width: 130 },
+const columns: GridColDef[] = [
+  {
+    field: 'username',
+    headerName: 'Username',
+    flex: 1,
+    renderCell: (params: GridRenderCellParams<string, User>) => {
+      return (
+        <>
+          <ProfilePicture user={params.row} />
+          <span style={{ marginLeft: 10 }}>{params.row.username}</span>
+        </>
+      );
+    },
+  },
   {
     field: 'name',
     headerName: 'Name',
-    width: 130,
+    flex: 1,
     valueGetter: (params: GridValueGetterParams<string, User>) =>
       `${params.row.first_name} ${params.row.last_name}`,
   },
   {
     field: 'email_address',
     headerName: 'Email Address',
-    width: 130,
+    flex: 1,
     renderCell: (params: GridValueGetterParams<string, User>) => (
       <a href={'mailto:' + params.value}>{params.value}</a>
     ),
   },
-  { field: 'created', headerName: 'Created', width: 230 },
+  { field: 'created', headerName: 'Created', flex: 1 },
 ];
 
-export default function UsersTable({
+export function UsersTable({
   checkboxSelection,
   selectionModel,
   onSelectionModelChange,
@@ -89,3 +103,5 @@ export default function UsersTable({
     />
   );
 }
+
+export const MemoizedUsersTable = React.memo(UsersTable);

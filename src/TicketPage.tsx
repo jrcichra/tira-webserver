@@ -1,6 +1,6 @@
 import { Button, Divider, Grid, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { API_BASE_URL } from './EnvironmentVariables';
 import { Comment, Ticket, User } from './utils/Types';
 import Wysiwyg from './Wysiwyg';
@@ -39,6 +39,8 @@ export default function TicketPage({ user }: { user: User | undefined }) {
     getTickets();
   }, []);
 
+  let navigate = useNavigate();
+
   const handleSubmitComment = () => {
     console.log(comment);
     const request = {
@@ -56,6 +58,10 @@ export default function TicketPage({ user }: { user: User | undefined }) {
     });
 
     // .then(data => setTicket(data));
+  };
+
+  const handleEditTicket = () => {
+    navigate(`/tickets/edit/${ticketId}`);
   };
 
   let commentElements = undefined;
@@ -122,7 +128,7 @@ export default function TicketPage({ user }: { user: User | undefined }) {
           {ticket?.reporter_id}
           <br />
           <Button
-            onClick={handleSubmitComment}
+            onClick={handleEditTicket}
             variant='contained'
             color='primary'
             sx={{

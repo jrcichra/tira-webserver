@@ -15,9 +15,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import CategorySelect from '../components/CategorySelect';
 import Heading from '../components/Heading';
 import PrioritySelect from '../components/PrioritySelect';
+import StatusSelect from '../components/StatusSelect';
 import { API_BASE_URL } from '../EnvironmentVariables';
-import UsersTable from '../tables/UsersTable';
-import { Category, CreatedTicket, ErrorMessage } from '../utils/Types';
+import { MemoizedUsersTable, UsersTable } from '../tables/UsersTable';
+import {
+  Category,
+  CreatedTicket,
+  ErrorMessage,
+  Ticket,
+  TicketAssignment,
+} from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 
 export default function CreateTicketPage({
@@ -29,6 +36,8 @@ export default function CreateTicketPage({
   setCategories: (newCategories: Category[]) => void;
   editMode?: boolean;
 }) {
+  let ticketId: number | undefined;
+
   if (editMode) {
     let params = useParams();
     let ticketIdStr = params.ticketId;
@@ -37,13 +46,14 @@ export default function CreateTicketPage({
       return <h1>Error: ticketId not found</h1>;
     }
 
-    let ticketId = parseInt(ticketIdStr, 10);
+    ticketId = parseInt(ticketIdStr, 10);
   }
 
   const [subject, setSubject] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [categoryId, setCategoryId] = React.useState(0);
   const [priority, setPriority] = React.useState('Medium');
+  const [status, setStatus] = React.useState('Backlog');
   const [assigneeIds, setAssigneeIds] = React.useState<GridSelectionModel>([]);
 
   const [subjectError, setSubjectError] = React.useState(false);
@@ -51,6 +61,46 @@ export default function CreateTicketPage({
     number | undefined
   >(1);
   const [formError, setFormError] = useState('');
+
+  let navigate = useNavigate();
+
+  React.useEffect(() => {
+    async function getTicketInfo() {
+      if (!editMode || !ticketId) {
+        return;
+      }
+
+      let ticketResponse = await fetch(`${API_BASE_URL}/tickets/${ticketId}`);
+      if (!ticketResponse.ok) {
+        return;
+      }
+
+      let ticketData: Ticket = await ticketResponse.json();
+
+      setSubject(ticketData.subject);
+      setDescription(ticketData.description);
+      setCategoryId(ticketData.category_id ? ticketData.category_id : 0);
+      setPriority(ticketData.priority);
+      setStatus(ticketData.status);
+
+      let assigneesResponse = await fetch(
+        `${API_BASE_URL}/tickets/${ticketId}/assignments`
+      );
+      if (!assigneesResponse.ok) {
+        return;
+      }
+
+      let assignees: number[] = [];
+      let assigneesData: TicketAssignment[] = await assigneesResponse.json();
+      assigneesData.forEach((assignee: TicketAssignment) => {
+        assignees.push(assignee.assignee_id);
+      });
+
+      setAssigneeIds(assignees);
+    }
+
+    getTicketInfo();
+  }, []);
 
   const handleSubjectChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -81,6 +131,10 @@ export default function CreateTicketPage({
     setPriority(event.target.value);
   };
 
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStatus(event.target.value);
+  };
+
   const handleAssigneesChange = (newAssigneeIds: GridSelectionModel) => {
     setAssigneeIds(newAssigneeIds);
   };
@@ -108,22 +162,37 @@ export default function CreateTicketPage({
     };
 
     try {
-      let response = await fetch(`${API_BASE_URL}/tickets`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ticket),
-      });
+      if (editMode) {
+        let response = await fetch(`${API_BASE_URL}/tickets/${ticketId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(ticket),
+        });
 
-      if (response.ok) {
-        let data: CreatedTicket = await response.json();
-
-        let navigate = useNavigate();
-        navigate(`/tickets/${data.id}`);
+        if (response.ok) {
+          navigate(`/tickets/${ticketId}`);
+        } else {
+          let data: ErrorMessage = await response.json();
+          setFormError(data.message);
+        }
       } else {
-        let data: ErrorMessage = await response.json();
-        setFormError(data.message);
+        let response = await fetch(`${API_BASE_URL}/tickets`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(ticket),
+        });
+
+        if (response.ok) {
+          let data: CreatedTicket = await response.json();
+          navigate(`/tickets/${data.id}`);
+        } else {
+          let data: ErrorMessage = await response.json();
+          setFormError(data.message);
+        }
       }
     } catch (e) {
       console.error(e);
@@ -134,6 +203,7 @@ export default function CreateTicketPage({
     }
   };
 
+  const actionLabel = editMode ? 'Edit Ticket' : 'Create Ticket';
   const subjectHelperText = subjectError ? 'Subject is required' : '';
 
   return (
@@ -145,7 +215,7 @@ export default function CreateTicketPage({
           flexDirection: 'column',
         }}
       >
-        <Heading gutterBottom>Create New Ticket</Heading>
+        <Heading gutterBottom>{actionLabel}</Heading>
         <TextField
           value={subject}
           onChange={handleSubjectChange}
@@ -170,6 +240,9 @@ export default function CreateTicketPage({
           onChange={handleCategorySelectChange}
         />
         <PrioritySelect priority={priority} onChange={handlePriorityChange} />
+        {editMode && (
+          <StatusSelect status={status} onChange={handleStatusChange} />
+        )}
         <UsersTable
           autoHeight
           checkboxSelection
@@ -198,7 +271,7 @@ export default function CreateTicketPage({
           }}
           fullWidth
         >
-          Create Ticket
+          {actionLabel}
         </Button>
       </Paper>
     </Grid>

@@ -7,7 +7,7 @@ import {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { API_BASE_URL } from './EnvironmentVariables';
+import { fetchTickets } from './utils/RestUtil';
 import { Ticket } from './utils/Types';
 
 const columns: GridColDef[] = [
@@ -35,11 +35,12 @@ export default function TicketsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/tickets`)
-      .then((response) => response.json())
-      .then((data) => setTickets(data))
-      .then(() => setLoading(false))
-      .catch(() => setLoading(false));
+    const retrieveTickets = async () => {
+      let tickets = await fetchTickets();
+      setTickets(tickets);
+      setLoading(false);
+    };
+    retrieveTickets();
   }, []);
 
   return (

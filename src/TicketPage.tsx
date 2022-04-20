@@ -2,6 +2,7 @@ import { Button, Divider, Grid, Paper, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_BASE_URL } from './EnvironmentVariables';
+import { fetchTicketById } from './utils/RestUtil';
 import { Comment, Ticket, User } from './utils/Types';
 import Wysiwyg from './Wysiwyg';
 
@@ -25,11 +26,8 @@ export default function TicketPage({ user }: { user: User | undefined }) {
 
   useEffect(() => {
     async function getTickets() {
-      let ticketsResponse = await fetch(`${API_BASE_URL}/tickets/${ticketId}`);
-      if (!ticketsResponse.ok) {
-        return;
-      }
-      setTicket(await ticketsResponse.json());
+      let ticket = await fetchTicketById(ticketId);
+      setTicket(ticket);
       let commentsResponse = await fetch(
         `${API_BASE_URL}/tickets/${ticketId}/comments`
       );

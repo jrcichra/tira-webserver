@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import * as cookie from 'cookie';
 import Base from './Base';
 import LoginPage from './LoginPage';
-import Dashboard from './Dashboard';
+import Dashboard from './pages/DashboardPage';
 import TicketsPage from './TicketsPage';
 import Users from './Users';
 import TicketPage from './TicketPage';
@@ -53,7 +53,9 @@ export default function App() {
           >
             <Route
               path='dashboard'
-              element={<Dashboard currentUser={currentUser} />}
+              element={
+                <Dashboard loggedIn={loggedIn} currentUser={currentUser} />
+              }
             />
             <Route path='tickets'>
               <Route index element={<TicketsPage />} />

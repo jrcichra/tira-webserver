@@ -6,7 +6,7 @@ import LoginPage from './LoginPage';
 import Dashboard from './pages/DashboardPage';
 import TicketsPage from './TicketsPage';
 import Users from './Users';
-import TicketPage from './TicketPage';
+import TicketPage from './pages/TicketPage';
 import CreateTicketPage from './pages/CreateTicketPage';
 import CreateNewCategory from './CreateNewCategory';
 import { Category, User } from './utils/Types';
@@ -82,7 +82,7 @@ export default function App() {
               />
               <Route
                 path=':ticketId'
-                element={<TicketPage user={currentUser} />}
+                element={<TicketPage loggedIn={loggedIn} user={currentUser} />}
               />
             </Route>
             <Route path='categories'>

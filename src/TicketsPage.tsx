@@ -7,8 +7,10 @@ import {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProfilePicture from './components/ProfilePicture';
 import { fetchTickets } from './utils/RestUtil';
 import { Ticket } from './utils/Types';
+import { getDisplayName } from './utils/UserUtils';
 
 const columns: GridColDef[] = [
   {
@@ -27,7 +29,19 @@ const columns: GridColDef[] = [
       params.row.category_id ?? 'N/A',
   },
   { field: 'status', headerName: 'Status', flex: 1 },
-  { field: 'reporter_id', headerName: 'Reported By', flex: 1 },
+  {
+    field: 'reporter_id',
+    headerName: 'Reported By',
+    flex: 1,
+    renderCell: (params: GridValueGetterParams<string, Ticket>) => (
+      <>
+        <ProfilePicture user={params.row.reporter} />
+        <span style={{ marginLeft: 10 }}>
+          {getDisplayName(params.row.reporter)}
+        </span>
+      </>
+    ),
+  },
 ];
 
 export default function TicketsPage() {

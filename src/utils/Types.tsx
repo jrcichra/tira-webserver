@@ -20,8 +20,7 @@ export interface Category {
 
 export interface Comment {
   id: number;
-  ticket_id: number;
-  commenter_id: number;
+  commenter: User;
   content: string;
   commented: string;
 }
@@ -34,7 +33,7 @@ export interface Ticket {
   status: string;
   priority: string;
   created: string;
-  reporter_id: number;
+  reporter: User;
 }
 
 export interface TicketAssignment {

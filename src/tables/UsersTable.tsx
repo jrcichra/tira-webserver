@@ -11,7 +11,8 @@ import {
 import React from 'react';
 import ProfilePicture from '../components/ProfilePicture';
 import { API_BASE_URL } from '../EnvironmentVariables';
-import { ErrorMessage, User } from '../utils/Types';
+import { getLocalTime } from '../utils/TimeUtils';
+import { User } from '../utils/Types';
 
 const columns: GridColDef[] = [
   {
@@ -42,7 +43,13 @@ const columns: GridColDef[] = [
       <a href={'mailto:' + params.value}>{params.value}</a>
     ),
   },
-  { field: 'created', headerName: 'Created', flex: 1 },
+  {
+    field: 'created',
+    headerName: 'Created',
+    flex: 1,
+    valueGetter: (params: GridValueGetterParams<string, User>) =>
+      getLocalTime(params.row.created),
+  },
 ];
 
 export default function UsersTable({

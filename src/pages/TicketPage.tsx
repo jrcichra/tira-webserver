@@ -16,6 +16,10 @@ import { fetchTicketById } from '../utils/RestUtil';
 import { Comment, Ticket, User } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ProfilePicture from '../components/ProfilePicture';
+import CommentDisplay from '../components/CommentDisplay';
+import { getDisplayName } from '../utils/UserUtils';
+import { getLocalTime } from '../utils/TimeUtils';
 
 export default function TicketPage({
   loggedIn,
@@ -28,10 +32,8 @@ export default function TicketPage({
   const [comments, setComments] = React.useState<Comment[] | undefined>();
   const [comment, setComment] = React.useState('');
 
-  const [editingCommentId, setEditingCommentId] = React.useState<number | null>(
-    null
-  );
-  const [editingComment, setEditingComment] = React.useState('');
+  const [editCommentId, setEditCommentId] = React.useState<number | null>(null);
+  const [editComment, setEditComment] = React.useState('');
 
   let params = useParams();
   let ticketIdStr = params.ticketId;
@@ -83,158 +85,132 @@ export default function TicketPage({
     navigate(`/tickets/edit/${ticketId}`);
   };
 
-  const handleEditComment = (commentContent: string, commentId: number) => {
-    setEditingComment(commentContent);
-    setEditingCommentId(commentId);
+  const handleEditComment = (commentId: number) => {
+    setEditCommentId(commentId);
   };
 
-  const handleCancelEditComment = () => {
-    setEditingCommentId(null);
-  };
-
-  const handleSubmitEditComment = (commentId: number) => {
-    const request = {
-      content: editingComment,
-    };
-
-    fetch(`${API_BASE_URL}/comments/${commentId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(request),
-    }).then((response) => {
-      if (response.ok) {
-        setEditingCommentId(null);
-        fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`)
-          .then((response) => response.json())
-          .then((data) => setComments(data));
-      }
-    });
+  const handleEditCommentCancel = () => {
+    setEditCommentId(null);
   };
 
   let commentElements = undefined;
 
   if (comments) {
+    const handleEditCommentSubmit = () => {
+      if (!editCommentId) {
+        return;
+      }
+
+      const request = {
+        content: editComment,
+      };
+
+      fetch(`${API_BASE_URL}/comments/${editCommentId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(request),
+      }).then((response) => {
+        if (response.ok) {
+          setEditCommentId(null);
+          fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`)
+            .then((response) => response.json())
+            .then((data) => setComments(data));
+        }
+      });
+    };
+
     commentElements = comments
       .sort((a, b) => b.commented.localeCompare(a.commented))
-      .map((c: Comment) => {
-        let commentDisplay = (
-          <div dangerouslySetInnerHTML={{ __html: c.content }} />
-        );
+      .map((c: Comment) => (
+        <Grid key={c.id} item lg={12}>
+          <Paper
+            sx={{
+              p: 2,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <CommentDisplay
+              comment={c}
+              loggedIn={loggedIn}
+              editing={editCommentId === c.id}
+              editComment={editComment}
+              setEditComment={setEditComment}
+              handleEditComment={() => handleEditComment(c.id)}
+              handleEditCommentSubmit={handleEditCommentSubmit}
+              handleEditCommentCancel={handleEditCommentCancel}
+            />
+          </Paper>
+        </Grid>
+      ));
+  }
 
-        if (editingCommentId && editingCommentId === c.id) {
-          commentDisplay = (
-            <>
-              <Wysiwyg
-                value={editingComment}
-                onChange={setEditingComment}
-                placeholder='Description'
-              />
-              <Button
-                onClick={() => handleSubmitEditComment(c.id)}
-                variant='contained'
-                color='primary'
-              >
-                Edit Comment
-              </Button>
-              <Button
-                onClick={handleCancelEditComment}
-                variant='contained'
-                color='primary'
-              >
-                Cancel
-              </Button>
-            </>
-          );
-        }
-
-        return (
-          <Grid key={c.id} item lg={12}>
+  return (
+    <Grid container spacing={3}>
+      {ticket && (
+        <>
+          <Grid item lg={8}>
             <Paper
               sx={{
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
+                height: '100%',
               }}
             >
+              <Typography
+                component='h2'
+                variant='h6'
+                color='primary'
+                gutterBottom
+              >
+                {ticket?.subject}
+              </Typography>
+              <br />
+              {ticket && (
+                <div
+                  dangerouslySetInnerHTML={{ __html: ticket?.description }}
+                />
+              )}
+            </Paper>
+          </Grid>
+          <Grid item lg={4}>
+            <Paper
+              sx={{
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+              }}
+            >
+              <span>Category: {ticket.category_id ?? 'N/A'}</span>
+              <span>Created: {getLocalTime(ticket.created)}</span>
+              <span>Piority: {ticket.priority}</span>
+              <span>Status: {ticket.status}</span>
               <Box
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
+                  alignItems: 'center',
                 }}
               >
-                <Avatar>TC</Avatar>
-                {`${c.commenter_id} ${c.commented}`}
-                {loggedIn && !editingCommentId && (
-                  <IconButton
-                    onClick={() => handleEditComment(c.content, c.id)}
-                    sx={{
-                      marginLeft: 'auto',
-                    }}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                )}
+                <span>Reporter:</span>
+                <ProfilePicture user={ticket.reporter} />
+                <span>{getDisplayName(ticket.reporter)}</span>
               </Box>
-              <Divider />
-              {commentDisplay}
+              <Button
+                onClick={handleEditTicket}
+                variant='contained'
+                color='primary'
+                sx={{
+                  mt: 2,
+                }}
+              >
+                Edit Ticket
+              </Button>
             </Paper>
           </Grid>
-        );
-      });
-  }
-
-  return (
-    <Grid container spacing={3}>
-      <Grid item lg={8}>
-        <Paper
-          sx={{
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-          <Typography component='h2' variant='h6' color='primary' gutterBottom>
-            {ticket?.subject}
-          </Typography>
-          <br />
-          {ticket && (
-            <div dangerouslySetInnerHTML={{ __html: ticket?.description }} />
-          )}
-        </Paper>
-      </Grid>
-      <Grid item lg={4}>
-        <Paper
-          sx={{
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-          Category:
-          <br />
-          {ticket?.category_id ?? 'N/A'}
-          <br />
-          {ticket?.created}
-          <br />
-          {ticket?.priority}
-          <br />
-          {ticket?.status}
-          <br />
-          {ticket?.reporter_id}
-          <br />
-          <Button
-            onClick={handleEditTicket}
-            variant='contained'
-            color='primary'
-            sx={{
-              mt: 2,
-            }}
-          >
-            Edit Ticket
-          </Button>
-        </Paper>
-      </Grid>
+        </>
+      )}
       {loggedIn && (
         <Grid item lg={12}>
           <Paper

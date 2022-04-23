@@ -45,7 +45,7 @@ const columns: GridColDef[] = [
   { field: 'created', headerName: 'Created', flex: 1 },
 ];
 
-export function UsersTable({
+export default function UsersTable({
   checkboxSelection,
   selectionModel,
   onSelectionModelChange,
@@ -103,5 +103,3 @@ export function UsersTable({
     />
   );
 }
-
-export const MemoizedUsersTable = React.memo(UsersTable);

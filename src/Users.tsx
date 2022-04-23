@@ -3,7 +3,7 @@ import { GridColDef, GridValueGetterParams, DataGrid } from '@mui/x-data-grid';
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from './EnvironmentVariables';
-import { UsersTable } from './tables/UsersTable';
+import UsersTable from './tables/UsersTable';
 import { User } from './utils/Types';
 import { uploadImage } from './utils/UploadFilesUtils';
 

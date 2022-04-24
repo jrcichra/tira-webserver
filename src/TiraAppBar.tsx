@@ -126,7 +126,7 @@ export default function TiraAppBar({
           noWrap
           sx={{ flexGrow: 1 }}
         >
-          Tira Dashboard
+          Tira
         </Typography>
         {rightSection}
       </Toolbar>

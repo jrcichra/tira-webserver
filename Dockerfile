@@ -11,6 +11,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+RUN yarn install --network-timeout 100000
 
 RUN yarn build

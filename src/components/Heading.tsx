@@ -4,7 +4,7 @@ export default function Heading({
   children,
   gutterBottom,
 }: {
-  children: Element | string;
+  children: React.ReactNode | string;
   gutterBottom: boolean | undefined;
 }) {
   return (

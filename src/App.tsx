@@ -24,6 +24,12 @@ export default function App() {
   const [categories, setCategories] = React.useState<Category[]>([]);
 
   React.useEffect(() => {
+    if (import.meta.env.MODE === 'development') {
+      document.title = 'Tira (Local)';
+    }
+  }, []);
+
+  React.useEffect(() => {
     if (loggedIn) {
       fetch(`${API_BASE_URL}/users/current`).then((response) => {
         if (response.ok) {

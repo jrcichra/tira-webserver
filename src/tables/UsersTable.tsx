@@ -13,6 +13,7 @@ import ProfilePicture from '../components/ProfilePicture';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { getLocalTime } from '../utils/TimeUtils';
 import { User } from '../utils/Types';
+import { getDisplayRealName } from '../utils/UserUtils';
 
 const columns: GridColDef[] = [
   {
@@ -33,7 +34,7 @@ const columns: GridColDef[] = [
     headerName: 'Name',
     flex: 1,
     valueGetter: (params: GridValueGetterParams<string, User>) =>
-      `${params.row.first_name} ${params.row.last_name}`,
+      getDisplayRealName(params.row),
   },
   {
     field: 'email_address',

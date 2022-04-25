@@ -1,18 +1,24 @@
 import { User } from './Types';
 
-export const getDisplayName = (user: User) => {
-  let displayName = '';
+export const getDisplayRealName = (user: User) => {
+  let displayRealName = '';
 
   if (user.first_name) {
-    displayName += user.first_name;
+    displayRealName += user.first_name;
     if (user.last_name) {
-      displayName += ' ';
+      displayRealName += ' ';
     }
   }
 
   if (user.last_name) {
-    displayName += user.last_name;
+    displayRealName += user.last_name;
   }
+
+  return displayRealName;
+};
+
+export const getDisplayName = (user: User) => {
+  let displayName = getDisplayRealName(user);
 
   if (!displayName) {
     displayName += user.username;

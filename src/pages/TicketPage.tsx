@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { fetchTicketById } from '../utils/RestUtil';
-import { Comment, Ticket, User } from '../utils/Types';
+import { Assignment, Comment, Ticket, User } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ProfilePicture from '../components/ProfilePicture';
@@ -29,6 +29,7 @@ export default function TicketPage({
   user: User | undefined;
 }) {
   const [ticket, setTicket] = React.useState<Ticket | undefined>();
+  const [assignees, setAssignees] = React.useState<Assignment[] | undefined>();
   const [comments, setComments] = React.useState<Comment[] | undefined>();
   const [comment, setComment] = React.useState('');
 
@@ -52,10 +53,16 @@ export default function TicketPage({
     async function getTickets() {
       let ticket = await fetchTicketById(ticketId);
       setTicket(ticket);
+
       let commentsResponse = await fetch(
         `${API_BASE_URL}/tickets/${ticketId}/comments`
       );
       setComments(await commentsResponse.json());
+
+      let assigneesResponse = await fetch(
+        `${API_BASE_URL}/tickets/${ticketId}/assignments`
+      );
+      setAssignees(await assigneesResponse.json());
     }
 
     getTickets();
@@ -121,7 +128,7 @@ export default function TicketPage({
     commentElements = comments
       .sort((a, b) => b.commented.localeCompare(a.commented))
       .map((c: Comment) => (
-        <Grid key={c.id} item lg={12}>
+        <Grid key={c.id} item xs={12}>
           <Paper
             sx={{
               p: 2,
@@ -148,7 +155,7 @@ export default function TicketPage({
     <Grid container spacing={3}>
       {ticket && (
         <>
-          <Grid item lg={8}>
+          <Grid item xs={8}>
             <Paper
               sx={{
                 p: 2,
@@ -173,7 +180,7 @@ export default function TicketPage({
               )}
             </Paper>
           </Grid>
-          <Grid item lg={4}>
+          <Grid item xs={4}>
             <Paper
               sx={{
                 p: 2,
@@ -212,7 +219,7 @@ export default function TicketPage({
         </>
       )}
       {loggedIn && (
-        <Grid item lg={12}>
+        <Grid item xs={12}>
           <Paper
             sx={{
               p: 2,

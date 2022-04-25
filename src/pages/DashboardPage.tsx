@@ -66,7 +66,7 @@ export default function DashBoard({
   }, [currentUser]);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/tickets`)
+    fetch(`${API_BASE_URL}/tickets?open`)
       .then((response) => response.json())
       .then((data: Ticket[]) => setTickets(data))
       .finally(() => setTicketsLoading(false));
@@ -76,14 +76,14 @@ export default function DashBoard({
     <Grid container spacing={3}>
       {loggedIn && (
         <>
-          <Grid item xs={12} md={6} lg={6}>
+          <Grid item xs={6}>
             {assignments && (
               <Paper
                 sx={{
                   p: 2,
                   display: 'flex',
                   flexDirection: 'column',
-                  height: 240,
+                  height: 500,
                 }}
               >
                 <Typography
@@ -102,13 +102,13 @@ export default function DashBoard({
               </Paper>
             )}
           </Grid>
-          <Grid item xs={12} md={6} lg={6}>
+          <Grid item xs={6}>
             <Paper
               sx={{
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                height: 240,
+                height: 500,
               }}
             >
               <Typography
@@ -130,7 +130,7 @@ export default function DashBoard({
       )}
       <Grid item xs={12}>
         <Paper
-          sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 240 }}
+          sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 700 }}
         >
           <Typography component='h2' variant='h6' color='primary' gutterBottom>
             All Open Tickets

@@ -19,7 +19,7 @@ export default function StatusSelect({
       <Select value={status} label='Status' onChange={onChange}>
         <MenuItem value={'Backlog'}>Backlog</MenuItem>
         <MenuItem value={'In Progress'}>In Progress</MenuItem>
-        <MenuItem value={'In Review'}>In Review</MenuItem>
+        <MenuItem value={'Not Deployed Yet'}>Not Deployed Yet</MenuItem>
         <MenuItem value={'Done'}>Done</MenuItem>
         <MenuItem value={'Closed'}>Closed</MenuItem>
       </Select>

@@ -1,9 +1,16 @@
 import { Grid, Paper, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProfilePicture from '../components/ProfilePicture';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { Assignment, Ticket, User } from '../utils/Types';
+import { getDisplayName } from '../utils/UserUtils';
 
 const assignmentsColumns: GridColDef[] = [
   { field: 'ticket_id', headerName: 'Ticket ID', width: 130 },
@@ -31,10 +38,25 @@ const ticketsColumns: GridColDef[] = [
     headerName: 'Category',
     flex: 1,
     valueGetter: (params: GridValueGetterParams<string, Ticket>) =>
-      params.row.category_id ?? 'N/A',
+      params.row.category ? params.row.category.name : 'N/A',
   },
+  { field: 'priority', headerName: 'Priority', flex: 1 },
   { field: 'status', headerName: 'Status', flex: 1 },
-  { field: 'reporter_id', headerName: 'Reported By', flex: 1 },
+  {
+    field: 'reporter_id',
+    headerName: 'Reported By',
+    flex: 1,
+    renderCell: (params: GridRenderCellParams<string, Ticket>) => {
+      return (
+        <>
+          <ProfilePicture user={params.row.reporter} />
+          <span style={{ marginLeft: 10 }}>
+            {getDisplayName(params.row.reporter)}
+          </span>
+        </>
+      );
+    },
+  },
 ];
 
 export default function DashBoard({

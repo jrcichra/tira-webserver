@@ -27,7 +27,7 @@ export interface Comment {
 
 export interface Ticket {
   id: number;
-  category_id?: number;
+  category?: Category;
   subject: string;
   description: string;
   status: string;

@@ -189,7 +189,9 @@ export default function TicketPage({
                 height: '100%',
               }}
             >
-              <span>Category: {ticket.category_id ?? 'N/A'}</span>
+              <span>
+                Category: {ticket.category ? ticket.category.name : 'N/A'}
+              </span>
               <span>Created: {getLocalTime(ticket.created)}</span>
               <span>Piority: {ticket.priority}</span>
               <span>Status: {ticket.status}</span>

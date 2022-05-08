@@ -23,7 +23,7 @@ const columns: GridColDef[] = [
     headerName: 'Category',
     flex: 1,
     valueGetter: (params: GridValueGetterParams<string, Ticket>) =>
-      params.row.category_id ?? 'N/A',
+      params.row.category ? params.row.category.name : 'N/A',
   },
   { field: 'status', headerName: 'Status', flex: 1 },
   { field: 'reporter_id', headerName: 'Reported By', flex: 1 },

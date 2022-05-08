@@ -55,7 +55,7 @@ export default function CreateTicketTextFields({
 
         setSubject(ticketData.subject);
         setDescription(ticketData.description);
-        setCategoryId(ticketData.category_id ? ticketData.category_id : 0);
+        setCategoryId(ticketData.category ? ticketData.category.id : 0);
         setPriority(ticketData.priority);
         setStatus(ticketData.status);
       } catch (err) {

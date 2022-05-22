@@ -11,17 +11,13 @@ import TiraAppBar from './TiraAppBar';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Category, User } from './utils/Types';
+import React from 'react';
 
 export const drawerWidth = 240;
 
-function Copyright(props: any) {
+function Copyright({ sx }: { sx: { pt: number } }) {
   return (
-    <Typography
-      variant='body2'
-      color='text.secondary'
-      align='center'
-      {...props}
-    >
+    <Typography variant='body2' color='text.secondary' align='center' sx={sx}>
       {'Copyright © '}
       <Link color='inherit' href='https://mui.com/'>
         Timmy Joe

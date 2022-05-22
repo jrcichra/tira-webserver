@@ -1,12 +1,9 @@
 export interface Assignment {
   id: number;
-  category_id?: number;
-  subject: string;
-  description: string;
-  status: string;
-  priority: string;
-  created: string;
-  reporter_id: number;
+  ticket_id: number;
+  assignee_id: number;
+  assigner_id: number;
+  assigned: string;
 }
 
 export interface Category {
@@ -34,6 +31,7 @@ export interface Ticket {
   priority: string;
   created: string;
   reporter: User;
+  assignees: User[];
 }
 
 export interface TicketAssignment {

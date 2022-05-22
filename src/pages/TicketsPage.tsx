@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from '@mui/material';
+import { AvatarGroup, Grid, Paper, Tooltip, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -7,10 +7,10 @@ import {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import ProfilePicture from './components/ProfilePicture';
-import { fetchTickets } from './utils/RestUtil';
-import { Ticket } from './utils/Types';
-import { getDisplayName } from './utils/UserUtils';
+import ProfilePicture from '../components/ProfilePicture';
+import { fetchTickets } from '../utils/RestUtil';
+import { Ticket } from '../utils/Types';
+import { getDisplayName } from '../utils/UserUtils';
 
 const columns: GridColDef[] = [
   {
@@ -42,6 +42,18 @@ const columns: GridColDef[] = [
       </>
     ),
   },
+  {
+    field: 'assignees',
+    headerName: 'Assignees',
+    flex: 1,
+    renderCell: (params: GridValueGetterParams<string, Ticket>) => (
+      <AvatarGroup>
+        {params.row.assignees.map((assignee) => (
+          <ProfilePicture key={assignee.id} user={assignee} />
+        ))}
+      </AvatarGroup>
+    ),
+  },
 ];
 
 export default function TicketsPage() {
@@ -54,6 +66,7 @@ export default function TicketsPage() {
       setTickets(tickets);
       setLoading(false);
     };
+
     retrieveTickets();
   }, []);
 

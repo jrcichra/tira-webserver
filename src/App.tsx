@@ -4,7 +4,7 @@ import * as cookie from 'cookie';
 import Base from './Base';
 import LoginPage from './LoginPage';
 import Dashboard from './pages/DashboardPage';
-import TicketsPage from './TicketsPage';
+import TicketsPage from './pages/TicketsPage';
 import Users from './Users';
 import TicketPage from './pages/TicketPage';
 import CreateTicketPage from './pages/CreateTicketPage';

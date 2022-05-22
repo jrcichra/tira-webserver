@@ -29,7 +29,6 @@ export default function TicketPage({
   user: User | undefined;
 }) {
   const [ticket, setTicket] = React.useState<Ticket | undefined>();
-  const [assignees, setAssignees] = React.useState<Assignment[] | undefined>();
   const [comments, setComments] = React.useState<Comment[] | undefined>();
   const [comment, setComment] = React.useState('');
 
@@ -58,11 +57,6 @@ export default function TicketPage({
         `${API_BASE_URL}/tickets/${ticketId}/comments`
       );
       setComments(await commentsResponse.json());
-
-      let assigneesResponse = await fetch(
-        `${API_BASE_URL}/tickets/${ticketId}/assignments`
-      );
-      setAssignees(await assigneesResponse.json());
     }
 
     getTickets();
@@ -206,6 +200,12 @@ export default function TicketPage({
                 <ProfilePicture user={ticket.reporter} />
                 <span>{getDisplayName(ticket.reporter)}</span>
               </Box>
+              <span>
+                Assignees:{' '}
+                {ticket.assignees
+                  .map((assignee) => getDisplayName(assignee))
+                  .join(',')}
+              </span>
               <Button
                 onClick={handleEditTicket}
                 variant='contained'

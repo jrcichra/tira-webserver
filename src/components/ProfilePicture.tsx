@@ -1,5 +1,4 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Avatar, IconButton } from '@mui/material';
+import { Avatar } from '@mui/material';
 import React from 'react';
 import { User } from '../utils/Types';
 import { getDisplayInitials } from '../utils/UserUtils';

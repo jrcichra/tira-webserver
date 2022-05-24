@@ -95,7 +95,7 @@ export default function UsersTable({
     };
 
     retrieveUsers();
-  }, []);
+  }, [setError]);
 
   return (
     <DataGrid

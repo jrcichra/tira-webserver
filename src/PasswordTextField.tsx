@@ -7,7 +7,7 @@ import {
   IconButton,
   FormHelperText,
 } from '@mui/material';
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 export default function PasswordTextField({
   value,

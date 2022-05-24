@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill';
 import { API_BASE_URL } from './EnvironmentVariables';
+import React from 'react';
 
 export default function Wysiwyg({
   value,
@@ -10,7 +11,7 @@ export default function Wysiwyg({
   onChange: (value: string) => void;
   placeholder?: string;
 }) {
-  var quillObj: ReactQuill | null;
+  let quillObj: ReactQuill | null;
 
   const handleImageUpload = async () => {
     const input = document.createElement('input');
@@ -57,7 +58,6 @@ export default function Wysiwyg({
   };
 
   return (
-    // @ts-ignore
     <ReactQuill
       ref={(el) => {
         quillObj = el;

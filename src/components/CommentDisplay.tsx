@@ -1,6 +1,5 @@
 import {
   Box,
-  Avatar,
   IconButton,
   Divider,
   Button,
@@ -20,7 +19,6 @@ export default function CommentDisplay({
   editing,
   editComment,
   setEditComment,
-  handleEditComment,
   handleEditCommentSubmit,
   handleEditCommentCancel,
 }: {

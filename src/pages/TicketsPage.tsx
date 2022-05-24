@@ -1,11 +1,11 @@
-import { AvatarGroup, Grid, Paper, Tooltip, Typography } from '@mui/material';
+import { AvatarGroup, Grid, Paper, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
   GridToolbar,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
 import { fetchTickets } from '../utils/RestUtil';
@@ -62,7 +62,7 @@ export default function TicketsPage() {
 
   useEffect(() => {
     const retrieveTickets = async () => {
-      let tickets = await fetchTickets();
+      const tickets = await fetchTickets();
       setTickets(tickets);
       setLoading(false);
     };

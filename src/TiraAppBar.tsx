@@ -1,14 +1,12 @@
 import { Button, IconButton, Toolbar, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
 import CreateMenu from './CreateMenu';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { drawerWidth } from './Base';
 import { Link } from 'react-router-dom';
-import ProfilePicture from './components/ProfilePicture';
 import { User } from './utils/Types';
 import ClickableProfilePicture from './components/ClickableProfilePicture';
 

@@ -7,22 +7,25 @@ import {
   FormGroup,
   TextField,
 } from '@mui/material';
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import * as cookie from 'cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PasswordTextField from './PasswordTextField';
 import SHA256 from 'crypto-js/sha256';
 import { API_BASE_URL } from './EnvironmentVariables';
-import { User } from './utils/Types';
+
+interface StateType {
+  prevPath: string;
+}
 
 export default function LoginPage({
   setLoggedIn,
 }: {
   setLoggedIn: (newLoggedIn: boolean) => void;
 }) {
-  const linkState = useLocation().state as any;
+  const linkState = useLocation().state as StateType;
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState(false);
@@ -87,7 +90,7 @@ export default function LoginPage({
     })
       .then((response) => {
         if (response.ok) {
-          response.json().then((data: User) => {
+          response.json().then(() => {
             const cookies = cookie.parse(document.cookie);
             setLoggedIn('tirauth' in cookies);
 

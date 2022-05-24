@@ -35,7 +35,7 @@ export function TicketsTable() {
 
   React.useEffect(() => {
     const retrieveTickets = async () => {
-      let tickets = await fetchTickets();
+      const tickets = await fetchTickets();
       setTickets(tickets);
       setLoading(false);
     };

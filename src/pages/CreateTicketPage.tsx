@@ -1,7 +1,6 @@
 import { Grid, Paper, Typography } from '@mui/material';
 import { GridSelectionModel } from '@mui/x-data-grid';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { useParams } from 'react-router-dom';
 import CreateTicketTextFields from '../components/CreateTicketTextFields';
@@ -19,25 +18,16 @@ export default function CreateTicketPage({
   setCategories: (newCategories: Category[]) => void;
   editMode?: boolean;
 }) {
-  let ticketId: number | undefined;
-
-  if (editMode) {
-    let params = useParams();
-    let ticketIdStr = params.ticketId;
-
-    if (!ticketIdStr) {
-      return <h1>Error: ticketId not found</h1>;
-    }
-
-    ticketId = parseInt(ticketIdStr, 10);
-  }
-
   const [assigneeIds, setAssigneeIds] = React.useState<GridSelectionModel>([]);
   const [assigneeIdsHasError, setAssigneeIdsHasError] = React.useState<
     number | undefined
   >(1);
 
   const [formError, setFormError] = useState('');
+
+  const params = useParams();
+
+  let ticketId: number | undefined;
 
   React.useEffect(() => {
     async function getAssignees() {
@@ -46,7 +36,7 @@ export default function CreateTicketPage({
       }
 
       try {
-        let assigneesResponse = await fetch(
+        const assigneesResponse = await fetch(
           `${API_BASE_URL}/tickets/${ticketId}/assignments`
         );
 
@@ -54,9 +44,10 @@ export default function CreateTicketPage({
           throw new Error('Error retrieving ticket assignments');
         }
 
-        let assigneeIds: number[] = [];
+        const assigneeIds: number[] = [];
 
-        let assigneesData: TicketAssignment[] = await assigneesResponse.json();
+        const assigneesData: TicketAssignment[] =
+          await assigneesResponse.json();
         assigneesData.forEach((assignee: TicketAssignment) => {
           assigneeIds.push(assignee.assignee_id);
         });
@@ -68,7 +59,17 @@ export default function CreateTicketPage({
     }
 
     getAssignees();
-  }, []);
+  }, [editMode, ticketId]);
+
+  if (editMode) {
+    const ticketIdStr = params.ticketId;
+
+    if (!ticketIdStr) {
+      return <h1>Error: ticketId not found</h1>;
+    }
+
+    ticketId = parseInt(ticketIdStr, 10);
+  }
 
   const handleAssigneesChange = (newAssigneeIds: GridSelectionModel) => {
     setAssigneeIds(newAssigneeIds);

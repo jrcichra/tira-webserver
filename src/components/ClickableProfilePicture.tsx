@@ -27,7 +27,7 @@ export default function ProfilePictureMenu({
     fetch(`${API_BASE_URL}/logout`, {
       method: 'POST',
     })
-      .then((response: Response) => {
+      .then(() => {
         const cookies = cookie.parse(document.cookie);
         setLoggedIn('tirauth' in cookies);
       })

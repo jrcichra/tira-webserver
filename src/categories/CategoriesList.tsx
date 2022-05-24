@@ -6,7 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { Category } from '../utils/Types';
 
@@ -23,7 +23,7 @@ export default function CategoriesList({
     fetch(`${API_BASE_URL}/categories?archived=false`)
       .then((response) => response.json())
       .then((data: Category[]) => setCategories(data));
-  }, []);
+  }, [setCategories]);
 
   const categoryElements = categories.map((c: Category) => (
     <ListItemButton key={c.id} sx={{ pl: 4 }}>

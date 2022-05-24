@@ -88,7 +88,7 @@ export default function App() {
               />
               <Route
                 path=':ticketId'
-                element={<TicketPage loggedIn={loggedIn} user={currentUser} />}
+                element={<TicketPage loggedIn={loggedIn} />}
               />
             </Route>
             <Route path='categories'>

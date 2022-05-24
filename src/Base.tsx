@@ -8,10 +8,9 @@ import {
 import { Box } from '@mui/system';
 import TiraDrawer from './TiraDrawer';
 import TiraAppBar from './TiraAppBar';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Category, User } from './utils/Types';
-import React from 'react';
 
 export const drawerWidth = 240;
 

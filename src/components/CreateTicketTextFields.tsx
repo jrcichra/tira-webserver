@@ -36,7 +36,7 @@ export default function CreateTicketTextFields({
 
   const [subjectError, setSubjectError] = React.useState(false);
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     async function getTicketInfo() {
@@ -45,13 +45,15 @@ export default function CreateTicketTextFields({
       }
 
       try {
-        let ticketResponse = await fetch(`${API_BASE_URL}/tickets/${ticketId}`);
+        const ticketResponse = await fetch(
+          `${API_BASE_URL}/tickets/${ticketId}`
+        );
 
         if (!ticketResponse.ok) {
           throw new Error('Failed to retrieve users');
         }
 
-        let ticketData: Ticket = await ticketResponse.json();
+        const ticketData: Ticket = await ticketResponse.json();
 
         setSubject(ticketData.subject);
         setDescription(ticketData.description);
@@ -66,7 +68,7 @@ export default function CreateTicketTextFields({
     }
 
     getTicketInfo();
-  }, []);
+  }, [editMode, setFormError, ticketId]);
 
   const handleSubjectChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -122,7 +124,7 @@ export default function CreateTicketTextFields({
 
     try {
       if (editMode) {
-        let response = await fetch(`${API_BASE_URL}/tickets/${ticketId}`, {
+        const response = await fetch(`${API_BASE_URL}/tickets/${ticketId}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -133,13 +135,13 @@ export default function CreateTicketTextFields({
         if (response.ok) {
           navigate(`/tickets/${ticketId}`);
         } else {
-          let data: ErrorMessage = await response.json();
+          const data: ErrorMessage = await response.json();
           setFormError(data.message);
         }
       } else {
         ticket.status = 'Backlog';
 
-        let response = await fetch(`${API_BASE_URL}/tickets`, {
+        const response = await fetch(`${API_BASE_URL}/tickets`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -148,10 +150,10 @@ export default function CreateTicketTextFields({
         });
 
         if (response.ok) {
-          let data: CreatedTicket = await response.json();
+          const data: CreatedTicket = await response.json();
           navigate(`/tickets/${data.id}`);
         } else {
-          let data: ErrorMessage = await response.json();
+          const data: ErrorMessage = await response.json();
           setFormError(data.message);
         }
       }

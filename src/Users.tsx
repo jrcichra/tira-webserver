@@ -1,7 +1,5 @@
 import { Button, Grid, Paper, Typography } from '@mui/material';
-import { GridColDef, GridValueGetterParams, DataGrid } from '@mui/x-data-grid';
 import React from 'react';
-import { useState, useEffect } from 'react';
 import { API_BASE_URL } from './EnvironmentVariables';
 import UsersTable from './tables/UsersTable';
 import { User } from './utils/Types';
@@ -19,12 +17,12 @@ export default function Users({
   );
 
   const handleUploadProfilePictureClick = async () => {
-    await uploadImage(async (uploadedImageUrl: String) => {
+    await uploadImage(async (uploadedImageUrl: string) => {
       const patchUser = {
         profile_picture_url: uploadedImageUrl,
       };
 
-      let response = await fetch(`${API_BASE_URL}/users/${currentUser?.id}`, {
+      const response = await fetch(`${API_BASE_URL}/users/${currentUser?.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +31,9 @@ export default function Users({
       });
 
       if (response.ok) {
-        let response2 = await fetch(`${API_BASE_URL}/users/${currentUser?.id}`);
+        const response2 = await fetch(
+          `${API_BASE_URL}/users/${currentUser?.id}`
+        );
 
         if (response2.ok) {
           response2.json().then((data: User) => setCurrentUser(data));

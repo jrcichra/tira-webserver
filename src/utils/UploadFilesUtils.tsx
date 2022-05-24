@@ -1,7 +1,7 @@
 import { API_BASE_URL } from '../EnvironmentVariables';
 
 export const uploadImage = async (
-  onSuccess: (uploadedImageUrl: String) => void
+  onSuccess: (uploadedImageUrl: string) => void
 ) => {
   const input = document.createElement('input');
 

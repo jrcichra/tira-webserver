@@ -5,7 +5,7 @@ export const fetchTicketById = async (
   ticketId: number,
   queryParam?: string[][]
 ) => {
-  let response = await fetch(
+  const response = await fetch(
     `${API_BASE_URL}/tickets/${ticketId}` + new URLSearchParams(queryParam)
   );
 
@@ -13,13 +13,13 @@ export const fetchTicketById = async (
     throw `Failed to retrieve tickets for ticket id ${ticketId}`;
   }
 
-  let data: Ticket = await response.json();
+  const data: Ticket = await response.json();
 
   return data;
 };
 
 export const fetchTickets = async (queryParam?: string[][]) => {
-  let response = await fetch(
+  const response = await fetch(
     `${API_BASE_URL}/tickets` + new URLSearchParams(queryParam)
   );
 
@@ -27,7 +27,7 @@ export const fetchTickets = async (queryParam?: string[][]) => {
     throw 'Failed to retrieve tickets';
   }
 
-  let data: Ticket[] = await response.json();
+  const data: Ticket[] = await response.json();
 
   return data;
 };

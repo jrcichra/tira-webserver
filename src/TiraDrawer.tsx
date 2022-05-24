@@ -16,7 +16,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import FeedIcon from '@mui/icons-material/Feed';
 import { drawerWidth } from './Base';
 import CategoriesList from './categories/CategoriesList';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { Category } from './utils/Types';

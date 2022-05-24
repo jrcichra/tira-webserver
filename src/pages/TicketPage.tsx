@@ -1,33 +1,16 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  Paper,
-  Typography,
-} from '@mui/material';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import { Box, Button, Divider, Grid, Paper, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { fetchTicketById } from '../utils/RestUtil';
-import { Assignment, Comment, Ticket, User } from '../utils/Types';
+import { Comment, Ticket } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ProfilePicture from '../components/ProfilePicture';
 import CommentDisplay from '../components/CommentDisplay';
 import { getDisplayName } from '../utils/UserUtils';
 import { getLocalTime } from '../utils/TimeUtils';
 
-export default function TicketPage({
-  loggedIn,
-  user,
-}: {
-  loggedIn: boolean;
-  user: User | undefined;
-}) {
+export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
   const [ticket, setTicket] = React.useState<Ticket | undefined>();
   const [comments, setComments] = React.useState<Comment[] | undefined>();
   const [comment, setComment] = React.useState('');
@@ -35,34 +18,44 @@ export default function TicketPage({
   const [editCommentId, setEditCommentId] = React.useState<number | null>(null);
   const [editComment, setEditComment] = React.useState('');
 
-  let params = useParams();
-  let ticketIdStr = params.ticketId;
-
-  if (!ticketIdStr) {
-    return <h1>Error: ticketId not found</h1>;
-  }
-
-  let ticketId = parseInt(ticketIdStr, 10);
-
-  if (isNaN(ticketId)) {
-    return <h1>Error: ticketId not a number</h1>;
-  }
+  const params = useParams();
+  const ticketIdStr = params.ticketId;
 
   useEffect(() => {
-    async function getTickets() {
-      let ticket = await fetchTicketById(ticketId);
+    if (!ticketIdStr) {
+      return;
+    }
+
+    const ticketId = parseInt(ticketIdStr, 10);
+
+    if (isNaN(ticketId)) {
+      return;
+    }
+
+    async function getTickets(ticketId: number) {
+      const ticket = await fetchTicketById(ticketId);
       setTicket(ticket);
 
-      let commentsResponse = await fetch(
+      const commentsResponse = await fetch(
         `${API_BASE_URL}/tickets/${ticketId}/comments`
       );
       setComments(await commentsResponse.json());
     }
 
-    getTickets();
-  }, []);
+    getTickets(ticketId);
+  }, [ticketIdStr]);
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+
+  if (!ticketIdStr) {
+    return <h1>Error: ticketId not found</h1>;
+  }
+
+  const ticketId = parseInt(ticketIdStr, 10);
+
+  if (isNaN(ticketId)) {
+    return <h1>Error: ticketId not a number</h1>;
+  }
 
   const handleSubmitComment = () => {
     const request = {
@@ -72,14 +65,12 @@ export default function TicketPage({
     fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`, {
       method: 'POST',
       body: JSON.stringify(request),
-    }).then((response) => {
+    }).then(() => {
       setComment('');
       fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`)
         .then((response) => response.json())
         .then((data) => setComments(data));
     });
-
-    // .then(data => setTicket(data));
   };
 
   const handleEditTicket = () => {

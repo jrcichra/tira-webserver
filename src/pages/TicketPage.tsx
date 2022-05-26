@@ -197,16 +197,18 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
                   .map((assignee) => getDisplayName(assignee))
                   .join(',')}
               </span>
-              <Button
-                onClick={handleEditTicket}
-                variant='contained'
-                color='primary'
-                sx={{
-                  mt: 2,
-                }}
-              >
-                Edit Ticket
-              </Button>
+              {loggedIn && (
+                <Button
+                  onClick={handleEditTicket}
+                  variant='contained'
+                  color='primary'
+                  sx={{
+                    mt: 2,
+                  }}
+                >
+                  Edit Ticket
+                </Button>
+              )}
             </Paper>
           </Grid>
         </>

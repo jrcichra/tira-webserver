@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
 import { API_BASE_URL } from '../EnvironmentVariables';
+import { TicketsTable } from '../tables/TicketsTable';
 import { Assignment, Ticket, User } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
 
@@ -24,41 +25,6 @@ const reportedTicketsColumns: GridColDef[] = [
   { field: 'priority', headerName: 'Priority', width: 130 },
 ];
 
-const ticketsColumns: GridColDef[] = [
-  {
-    field: 'subject',
-    headerName: 'Subject',
-    flex: 2,
-    renderCell: (params: GridValueGetterParams<string, Ticket>) => (
-      <Link to={`/tickets/${params.row.id}`}>{params.value}</Link>
-    ),
-  },
-  {
-    field: 'category_id',
-    headerName: 'Category',
-    flex: 1,
-    valueGetter: (params: GridValueGetterParams<string, Ticket>) =>
-      params.row.category ? params.row.category.name : 'N/A',
-  },
-  { field: 'priority', headerName: 'Priority', flex: 1 },
-  { field: 'status', headerName: 'Status', flex: 1 },
-  {
-    field: 'reporter_id',
-    headerName: 'Reported By',
-    flex: 1,
-    renderCell: (params: GridRenderCellParams<string, Ticket>) => {
-      return (
-        <>
-          <ProfilePicture user={params.row.reporter} />
-          <span style={{ marginLeft: 10 }}>
-            {getDisplayName(params.row.reporter)}
-          </span>
-        </>
-      );
-    },
-  },
-];
-
 export default function DashBoard({
   loggedIn,
   currentUser,
@@ -70,8 +36,6 @@ export default function DashBoard({
   const [assignmentsLoading, setAssignmentsLoading] = useState(true);
   const [reportedTickets, setReportedTickets] = useState<Ticket[]>([]);
   const [reportedTicketsLoading, setReportedTicketsLoading] = useState(true);
-  const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [ticketsLoading, setTicketsLoading] = useState(true);
 
   useEffect(() => {
     if (typeof currentUser !== 'undefined') {
@@ -86,13 +50,6 @@ export default function DashBoard({
         .finally(() => setReportedTicketsLoading(false));
     }
   }, [currentUser]);
-
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/tickets?open`)
-      .then((response) => response.json())
-      .then((data: Ticket[]) => setTickets(data))
-      .finally(() => setTicketsLoading(false));
-  }, []);
 
   return (
     <Grid container spacing={3}>
@@ -124,30 +81,28 @@ export default function DashBoard({
               </Paper>
             )}
           </Grid>
-          <Grid item xs={6}>
-            <Paper
-              sx={{
-                p: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                height: 500,
-              }}
-            >
-              <Typography
-                component='h2'
-                variant='h6'
-                color='primary'
-                gutterBottom
+          {currentUser && (
+            <Grid item xs={6}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: 500,
+                }}
               >
-                Open Tickets Reported By You
-              </Typography>
-              <DataGrid
-                rows={reportedTickets}
-                columns={reportedTicketsColumns}
-                loading={reportedTicketsLoading}
-              />
-            </Paper>
-          </Grid>
+                <Typography
+                  component='h2'
+                  variant='h6'
+                  color='primary'
+                  gutterBottom
+                >
+                  Open Tickets Reported By You
+                </Typography>
+                <TicketsTable reporter={currentUser.id} open={true} />
+              </Paper>
+            </Grid>
+          )}
         </>
       )}
       <Grid item xs={12}>
@@ -157,11 +112,7 @@ export default function DashBoard({
           <Typography component='h2' variant='h6' color='primary' gutterBottom>
             All Open Tickets
           </Typography>
-          <DataGrid
-            rows={tickets}
-            columns={ticketsColumns}
-            loading={ticketsLoading}
-          />
+          <TicketsTable open={true} />
         </Paper>
       </Grid>
     </Grid>

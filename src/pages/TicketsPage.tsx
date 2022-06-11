@@ -1,4 +1,4 @@
-import { AvatarGroup, Grid, Paper, Typography } from '@mui/material';
+import { AvatarGroup, Box, Grid, Paper, Typography } from '@mui/material';
 import {
   DataGrid,
   GridColDef,
@@ -36,9 +36,9 @@ const columns: GridColDef[] = [
     renderCell: (params: GridValueGetterParams<string, Ticket>) => (
       <>
         <ProfilePicture user={params.row.reporter} />
-        <span style={{ marginLeft: 10 }}>
+        <Box component={'span'} style={{ marginLeft: 10 }}>
           {getDisplayName(params.row.reporter)}
-        </span>
+        </Box>
       </>
     ),
   },

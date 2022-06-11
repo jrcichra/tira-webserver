@@ -18,21 +18,20 @@ export const fetchTicketById = async (
   return data;
 };
 
-export const fetchTickets = async ({
-  reporter,
-  open,
-}: {
+export const fetchTickets = async (props?: {
   reporter?: number;
   open?: boolean;
 }) => {
   const url = new URL(`${API_BASE_URL}/tickets`);
 
-  if (reporter != undefined) {
-    url.searchParams.append('reporter', String(reporter));
-  }
+  if (props != undefined) {
+    if (props.reporter != undefined) {
+      url.searchParams.append('reporter', String(props.reporter));
+    }
 
-  if (open != undefined) {
-    url.searchParams.append('open', String(open));
+    if (props.open != undefined) {
+      url.searchParams.append('open', String(open));
+    }
   }
 
   const response = await fetch(url.toString());
@@ -44,4 +43,40 @@ export const fetchTickets = async ({
   const data: Ticket[] = await response.json();
 
   return data;
+};
+
+export const updateUser = async (
+  userId: number,
+  props: {
+    username?: string;
+    password?: string;
+    emailAddress?: string;
+    firstName?: string;
+    lastName?: string;
+    profilePictureURL?: string;
+    archived?: boolean;
+  }
+) => {
+  const url = `${API_BASE_URL}/users/${userId}`;
+
+  const body = {
+    username: props.username,
+    password: props.password,
+    email_address: props.emailAddress,
+    first_name: props.firstName,
+    last_name: props.lastName,
+    profile_picture_url: props.profilePictureURL,
+    archived: props.archived,
+  };
+
+  console.log(JSON.stringify(body));
+
+  const response = await fetch(url, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    throw 'Failed to update user';
+  }
 };

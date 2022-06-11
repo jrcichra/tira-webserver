@@ -12,6 +12,7 @@ import CreateNewCategory from './CreateNewCategory';
 import { Category, User } from './utils/Types';
 import React from 'react';
 import { API_BASE_URL } from './EnvironmentVariables';
+import ProfilePage from './pages/ProfilePage';
 
 const mdTheme = createTheme();
 
@@ -97,6 +98,10 @@ export default function App() {
                 element={<CreateNewCategory setCategories={setCategories} />}
               />
             </Route>
+            <Route
+              path='profile'
+              element={<ProfilePage user={currentUser} />}
+            />
             <Route
               path='users'
               element={

@@ -1,6 +1,7 @@
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import * as cookie from 'cookie';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../EnvironmentVariables';
 import { User } from '../utils/Types';
 import ProfilePicture from './ProfilePicture';
@@ -56,6 +57,9 @@ export default function ProfilePictureMenu({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+        <MenuItem onClick={handleClose} component={Link} to='/profile'>
+          Profile
+        </MenuItem>
         <MenuItem onClick={handleLogout}>Log out</MenuItem>
       </Menu>
     </>

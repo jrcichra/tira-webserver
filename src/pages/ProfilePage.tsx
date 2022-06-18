@@ -1,8 +1,9 @@
 import { Box, Button, Paper, TextField } from '@mui/material';
 import React from 'react';
 import Heading from '../components/Heading';
-import { updateUser } from '../utils/RestUtil';
+import { fetchCurrentUser, updateUser } from '../utils/RestUtil';
 import { User } from '../utils/Types';
+import { uploadImage } from '../utils/UploadFilesUtils';
 
 export default function ProfilePage({
   user,
@@ -35,8 +36,26 @@ export default function ProfilePage({
           emailAddress: emailAddress,
         });
 
-        setCurrentUser();
+        const currentUser = await fetchCurrentUser();
+        setCurrentUser(currentUser);
+
+        setEditMode(false);
       }
+    }
+  };
+
+  const handleUploadProfilePictureClick = async () => {
+    if (user) {
+      await uploadImage(async (uploadedImageUrl: string) => {
+        const patchUserBody = {
+          profilePictureURL: uploadedImageUrl,
+        };
+
+        await updateUser(user.id, patchUserBody);
+
+        const currentUser = await fetchCurrentUser();
+        setCurrentUser(currentUser);
+      });
     }
   };
 
@@ -132,6 +151,13 @@ export default function ProfilePage({
         }}
       >
         {buttonText}
+      </Button>
+      <Button
+        onClick={handleUploadProfilePictureClick}
+        variant='contained'
+        color='primary'
+      >
+        Upload Profile Picture
       </Button>
     </Paper>
   );

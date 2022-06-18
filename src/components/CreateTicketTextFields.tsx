@@ -2,7 +2,6 @@ import { TextField, Box, SelectChangeEvent, Button } from '@mui/material';
 import { GridSelectionModel } from '@mui/x-data-grid';
 import React, { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { Category, CreatedTicket, ErrorMessage, Ticket } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 import CategorySelect from './CategorySelect';
@@ -45,9 +44,7 @@ export default function CreateTicketTextFields({
       }
 
       try {
-        const ticketResponse = await fetch(
-          `${API_BASE_URL}/tickets/${ticketId}`
-        );
+        const ticketResponse = await fetch(`/api/tickets/${ticketId}`);
 
         if (!ticketResponse.ok) {
           throw new Error('Failed to retrieve users');
@@ -124,7 +121,7 @@ export default function CreateTicketTextFields({
 
     try {
       if (editMode) {
-        const response = await fetch(`${API_BASE_URL}/tickets/${ticketId}`, {
+        const response = await fetch(`/api/tickets/${ticketId}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -141,7 +138,7 @@ export default function CreateTicketTextFields({
       } else {
         ticket.status = 'Backlog';
 
-        const response = await fetch(`${API_BASE_URL}/tickets`, {
+        const response = await fetch(`/api/tickets`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

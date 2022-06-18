@@ -7,7 +7,6 @@ import {
   ListItemText,
 } from '@mui/material';
 import React, { useEffect } from 'react';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { Category } from '../utils/Types';
 
 export default function CategoriesList({
@@ -20,7 +19,7 @@ export default function CategoriesList({
   setCategories: (category: Category[]) => void;
 }) {
   useEffect(() => {
-    fetch(`${API_BASE_URL}/categories?archived=false`)
+    fetch(`/api/categories?archived=false`)
       .then((response) => response.json())
       .then((data: Category[]) => setCategories(data));
   }, [setCategories]);

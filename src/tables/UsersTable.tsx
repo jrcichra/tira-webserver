@@ -10,7 +10,6 @@ import {
 } from '@mui/x-data-grid';
 import React from 'react';
 import ProfilePicture from '../components/ProfilePicture';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { getLocalTime } from '../utils/TimeUtils';
 import { User } from '../utils/Types';
 import { getDisplayRealName } from '../utils/UserUtils';
@@ -78,7 +77,7 @@ export default function UsersTable({
     const retrieveUsers = async () => {
       setError(undefined);
       try {
-        const response = await fetch(`${API_BASE_URL}/users`);
+        const response = await fetch(`/api/users`);
 
         if (response.ok) {
           const data: User[] = await response.json();

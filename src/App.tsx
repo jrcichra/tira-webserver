@@ -11,7 +11,6 @@ import CreateTicketPage from './pages/CreateTicketPage';
 import CreateNewCategory from './CreateNewCategory';
 import { Category, User } from './utils/Types';
 import React from 'react';
-import { API_BASE_URL } from './EnvironmentVariables';
 import ProfilePage from './pages/ProfilePage';
 
 const mdTheme = createTheme();
@@ -32,7 +31,7 @@ export default function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-      fetch(`${API_BASE_URL}/users/current`).then((response) => {
+      fetch(`/api/users/current`).then((response) => {
         if (response.ok) {
           response.json().then((data: User) => setCurrentUser(data));
         }
@@ -100,7 +99,12 @@ export default function App() {
             </Route>
             <Route
               path='profile'
-              element={<ProfilePage user={currentUser} />}
+              element={
+                <ProfilePage
+                  user={currentUser}
+                  setCurrentUser={setCurrentUser}
+                />
+              }
             />
             <Route
               path='users'

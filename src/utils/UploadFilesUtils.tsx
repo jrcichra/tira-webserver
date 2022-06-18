@@ -1,5 +1,3 @@
-import { API_BASE_URL } from '../EnvironmentVariables';
-
 export const uploadImage = async (
   onSuccess: (uploadedImageUrl: string) => void
 ) => {
@@ -22,13 +20,13 @@ export const uploadImage = async (
         currentdate.getTime().toString();
       const filename = fileNamePredecessor + file.name;
 
-      const response = await fetch(`${API_BASE_URL}/images/${filename}`, {
+      const response = await fetch(`/api/images/${filename}`, {
         method: 'POST',
         body: file,
       });
 
       if (response.ok) {
-        onSuccess(`${API_BASE_URL}/images/${filename}`);
+        onSuccess(`/api/images/${filename}`);
       }
     }
   };

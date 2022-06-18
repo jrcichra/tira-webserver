@@ -1,7 +1,6 @@
 import { Box, Button, Divider, Grid, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { fetchTicketById } from '../utils/RestUtil';
 import { Comment, Ticket } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
@@ -36,9 +35,7 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
       const ticket = await fetchTicketById(ticketId);
       setTicket(ticket);
 
-      const commentsResponse = await fetch(
-        `${API_BASE_URL}/tickets/${ticketId}/comments`
-      );
+      const commentsResponse = await fetch(`/api/tickets/${ticketId}/comments`);
       setComments(await commentsResponse.json());
     }
 
@@ -62,12 +59,12 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
       content: comment,
     };
 
-    fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`, {
+    fetch(`/api/tickets/${ticketId}/comments`, {
       method: 'POST',
       body: JSON.stringify(request),
     }).then(() => {
       setComment('');
-      fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`)
+      fetch(`/api/tickets/${ticketId}/comments`)
         .then((response) => response.json())
         .then((data) => setComments(data));
     });
@@ -97,13 +94,13 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
         content: editComment,
       };
 
-      fetch(`${API_BASE_URL}/comments/${editCommentId}`, {
+      fetch(`/api/comments/${editCommentId}`, {
         method: 'PATCH',
         body: JSON.stringify(request),
       }).then((response) => {
         if (response.ok) {
           setEditCommentId(null);
-          fetch(`${API_BASE_URL}/tickets/${ticketId}/comments`)
+          fetch(`/api/tickets/${ticketId}/comments`)
             .then((response) => response.json())
             .then((data) => setComments(data));
         }

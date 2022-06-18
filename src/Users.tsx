@@ -1,6 +1,5 @@
 import { Button, Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
-import { API_BASE_URL } from './EnvironmentVariables';
 import UsersTable from './tables/UsersTable';
 import { User } from './utils/Types';
 import { uploadImage } from './utils/UploadFilesUtils';
@@ -22,7 +21,7 @@ export default function Users({
         profile_picture_url: uploadedImageUrl,
       };
 
-      const response = await fetch(`${API_BASE_URL}/users/${currentUser?.id}`, {
+      const response = await fetch(`/api/users/${currentUser?.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -31,9 +30,7 @@ export default function Users({
       });
 
       if (response.ok) {
-        const response2 = await fetch(
-          `${API_BASE_URL}/users/${currentUser?.id}`
-        );
+        const response2 = await fetch(`/api/users/${currentUser?.id}`);
 
         if (response2.ok) {
           response2.json().then((data: User) => setCurrentUser(data));

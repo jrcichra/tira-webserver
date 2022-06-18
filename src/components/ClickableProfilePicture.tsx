@@ -2,7 +2,6 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import * as cookie from 'cookie';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { User } from '../utils/Types';
 import ProfilePicture from './ProfilePicture';
 
@@ -25,7 +24,7 @@ export default function ProfilePictureMenu({
 
   const handleLogout = () => {
     setAnchorEl(null);
-    fetch(`${API_BASE_URL}/logout`, {
+    fetch(`/api/logout`, {
       method: 'POST',
     })
       .then(() => {

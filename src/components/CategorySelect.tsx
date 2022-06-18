@@ -10,7 +10,6 @@ import {
   FormHelperText,
 } from '@mui/material';
 import React from 'react';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { Category, ErrorMessage } from '../utils/Types';
 
 export default function CategorySelect({
@@ -29,7 +28,7 @@ export default function CategorySelect({
   const handleRefreshButtonClick = async () => {
     setErrorMessage('');
     try {
-      const response = await fetch(`${API_BASE_URL}/categories?archived=false`);
+      const response = await fetch(`/api/categories?archived=false`);
       if (response.ok) {
         const json: Category[] = await response.json();
         setCategories(json);

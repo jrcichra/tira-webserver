@@ -2,7 +2,6 @@ import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
 import React, { useState, ChangeEvent } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from './EnvironmentVariables';
 import { Category } from './utils/Types';
 
 export default function CreateNewCategory({
@@ -22,14 +21,14 @@ export default function CreateNewCategory({
     };
 
   const handleSubmit = () => {
-    fetch(`${API_BASE_URL}/categories`, {
+    fetch(`/api/categories`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(fields),
     }).then(() => {
-      fetch(`${API_BASE_URL}/categories?archived=false`)
+      fetch(`/api/categories?archived=false`)
         .then((response) => response.json())
         .then((data: Category[]) => setCategories(data));
     });

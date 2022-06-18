@@ -12,7 +12,6 @@ import * as cookie from 'cookie';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PasswordTextField from './PasswordTextField';
 import SHA256 from 'crypto-js/sha256';
-import { API_BASE_URL } from './EnvironmentVariables';
 
 interface StateType {
   prevPath: string;
@@ -81,7 +80,7 @@ export default function LoginPage({
     };
 
     console.log(loginJSON);
-    fetch(`${API_BASE_URL}/login`, {
+    fetch(`/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

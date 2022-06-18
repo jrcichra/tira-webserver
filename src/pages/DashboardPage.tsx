@@ -8,7 +8,6 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import { TicketsTable } from '../tables/TicketsTable';
 import { Assignment, Ticket, User } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
@@ -39,12 +38,12 @@ export default function DashBoard({
 
   useEffect(() => {
     if (typeof currentUser !== 'undefined') {
-      fetch(`${API_BASE_URL}/users/${currentUser.id}/assignments`)
+      fetch(`/api/users/${currentUser.id}/assignments`)
         .then((response) => response.json())
         .then((data: Assignment[]) => setAssignments(data))
         .finally(() => setAssignmentsLoading(false));
 
-      fetch(`${API_BASE_URL}/tickets?reporter=${currentUser.id}`)
+      fetch(`/api/tickets?reporter=${currentUser.id}`)
         .then((response) => response.json())
         .then((data: Ticket[]) => setReportedTickets(data))
         .finally(() => setReportedTicketsLoading(false));

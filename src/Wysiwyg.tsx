@@ -1,5 +1,4 @@
 import ReactQuill from 'react-quill';
-import { API_BASE_URL } from './EnvironmentVariables';
 import React from 'react';
 
 export default function Wysiwyg({
@@ -37,7 +36,7 @@ export default function Wysiwyg({
               currentdate.getTime().toString();
             const filename = fileNamePredecessor + file.name;
 
-            const response = await fetch(`${API_BASE_URL}/images/${filename}`, {
+            const response = await fetch(`/api/images/${filename}`, {
               method: 'POST',
               body: file,
             });
@@ -45,11 +44,7 @@ export default function Wysiwyg({
             if (response.ok) {
               quillObj
                 .getEditor()
-                .insertEmbed(
-                  range.index,
-                  'image',
-                  `${API_BASE_URL}/images/${filename}`
-                );
+                .insertEmbed(range.index, 'image', `/api/images/${filename}`);
             }
           }
         }

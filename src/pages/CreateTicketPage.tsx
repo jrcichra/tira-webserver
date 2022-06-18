@@ -5,7 +5,6 @@ import 'react-quill/dist/quill.snow.css';
 import { useParams } from 'react-router-dom';
 import CreateTicketTextFields from '../components/CreateTicketTextFields';
 import Heading from '../components/Heading';
-import { API_BASE_URL } from '../EnvironmentVariables';
 import UsersTable from '../tables/UsersTable';
 import { Category, TicketAssignment } from '../utils/Types';
 
@@ -37,7 +36,7 @@ export default function CreateTicketPage({
 
       try {
         const assigneesResponse = await fetch(
-          `${API_BASE_URL}/tickets/${ticketId}/assignments`
+          `/api/tickets/${ticketId}/assignments`
         );
 
         if (!assigneesResponse.ok) {

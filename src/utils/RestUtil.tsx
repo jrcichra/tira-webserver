@@ -1,12 +1,11 @@
-import { API_BASE_URL } from '../EnvironmentVariables';
-import { Ticket } from './Types';
+import { Ticket, User } from './Types';
 
 export const fetchTicketById = async (
   ticketId: number,
   queryParam?: string[][]
 ) => {
   const response = await fetch(
-    `${API_BASE_URL}/tickets/${ticketId}` + new URLSearchParams(queryParam)
+    `/api/tickets/${ticketId}` + new URLSearchParams(queryParam)
   );
 
   if (!response.ok) {
@@ -22,7 +21,7 @@ export const fetchTickets = async (props?: {
   reporter?: number;
   open?: boolean;
 }) => {
-  const url = new URL(`${API_BASE_URL}/tickets`);
+  const url = new URL(`/api/tickets`, window.location.href);
 
   if (props != undefined) {
     if (props.reporter != undefined) {
@@ -45,6 +44,20 @@ export const fetchTickets = async (props?: {
   return data;
 };
 
+export const fetchCurrentUser = async () => {
+  const url = '/api/users/current';
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw 'Failed to retrieve current user';
+  }
+
+  const data: User = await response.json();
+
+  return data;
+};
+
 export const updateUser = async (
   userId: number,
   props: {
@@ -57,7 +70,7 @@ export const updateUser = async (
     archived?: boolean;
   }
 ) => {
-  const url = `${API_BASE_URL}/users/${userId}`;
+  const url = `/api/users/${userId}`;
 
   const body = {
     username: props.username,
@@ -68,8 +81,6 @@ export const updateUser = async (
     profile_picture_url: props.profilePictureURL,
     archived: props.archived,
   };
-
-  console.log(JSON.stringify(body));
 
   const response = await fetch(url, {
     method: 'PATCH',

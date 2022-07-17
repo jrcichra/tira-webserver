@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
-import { fetchTickets } from '../utils/RestUtil';
+import { retrieveTickets } from '../services/TicketService';
 import { Ticket } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
 
@@ -70,12 +70,12 @@ export function TicketsTable({
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const retrieveTickets = async () => {
-      const tickets = await fetchTickets({ reporter, open });
+    const retrieveTicketsForTable = async () => {
+      const tickets = await retrieveTickets({ reporter, open });
       setTickets(tickets);
       setLoading(false);
     };
-    retrieveTickets();
+    retrieveTicketsForTable();
   }, [open, reporter]);
 
   return (

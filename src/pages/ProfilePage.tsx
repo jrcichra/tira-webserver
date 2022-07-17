@@ -1,7 +1,7 @@
 import { Box, Button, Paper, TextField } from '@mui/material';
 import React from 'react';
 import Heading from '../components/Heading';
-import { fetchCurrentUser, updateUser } from '../utils/RestUtil';
+import { retrieveCurrentUser, updateUser } from '../services/UserService';
 import { User } from '../utils/Types';
 import { uploadImage } from '../utils/UploadFilesUtils';
 
@@ -36,7 +36,7 @@ export default function ProfilePage({
           emailAddress: emailAddress,
         });
 
-        const currentUser = await fetchCurrentUser();
+        const currentUser = await retrieveCurrentUser();
         setCurrentUser(currentUser);
 
         setEditMode(false);
@@ -48,12 +48,12 @@ export default function ProfilePage({
     if (user) {
       await uploadImage(async (uploadedImageUrl: string) => {
         const patchUserBody = {
-          profilePictureURL: uploadedImageUrl,
+          profilePictureUrl: uploadedImageUrl,
         };
 
         await updateUser(user.id, patchUserBody);
 
-        const currentUser = await fetchCurrentUser();
+        const currentUser = await retrieveCurrentUser();
         setCurrentUser(currentUser);
       });
     }

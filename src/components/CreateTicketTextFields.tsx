@@ -2,6 +2,11 @@ import { TextField, Box, SelectChangeEvent, Button } from '@mui/material';
 import { GridSelectionModel } from '@mui/x-data-grid';
 import React, { ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  createTicket,
+  retrieveTicketById,
+  updateTicket,
+} from '../services/TicketService';
 import { Category, CreatedTicket, ErrorMessage, Ticket } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 import CategorySelect from './CategorySelect';
@@ -44,19 +49,13 @@ export default function CreateTicketTextFields({
       }
 
       try {
-        const ticketResponse = await fetch(`/api/tickets/${ticketId}`);
+        const ticketToEdit = await retrieveTicketById(ticketId);
 
-        if (!ticketResponse.ok) {
-          throw new Error('Failed to retrieve users');
-        }
-
-        const ticketData: Ticket = await ticketResponse.json();
-
-        setSubject(ticketData.subject);
-        setDescription(ticketData.description);
-        setCategoryId(ticketData.category ? ticketData.category.id : 0);
-        setPriority(ticketData.priority);
-        setStatus(ticketData.status);
+        setSubject(ticketToEdit.subject);
+        setDescription(ticketToEdit.description);
+        setCategoryId(ticketToEdit.category ? ticketToEdit.category.id : 0);
+        setPriority(ticketToEdit.priority);
+        setStatus(ticketToEdit.status);
       } catch (err) {
         if (err instanceof Error) {
           setFormError(err.message);
@@ -111,47 +110,36 @@ export default function CreateTicketTextFields({
     }
 
     const ticket = {
-      category_id: categoryId === 0 ? null : categoryId,
+      categoryId: categoryId === 0 ? null : categoryId,
       subject,
       description,
       status,
       priority,
-      assignee_ids: assigneeIds,
+      assigneeIds: assigneeIds.map((row) =>
+        typeof row === 'string' ? parseInt(row) : row
+      ),
     };
 
     try {
-      if (editMode) {
-        const response = await fetch(`/api/tickets/${ticketId}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(ticket),
-        });
-
-        if (response.ok) {
+      if (editMode && ticketId) {
+        try {
+          await updateTicket(ticketId, ticket);
           navigate(`/tickets/${ticketId}`);
-        } else {
-          const data: ErrorMessage = await response.json();
-          setFormError(data.message);
+        } catch (error) {
+          if (typeof error === 'string') {
+            setFormError(error);
+          }
         }
       } else {
         ticket.status = 'Backlog';
 
-        const response = await fetch(`/api/tickets`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(ticket),
-        });
-
-        if (response.ok) {
-          const data: CreatedTicket = await response.json();
-          navigate(`/tickets/${data.id}`);
-        } else {
-          const data: ErrorMessage = await response.json();
-          setFormError(data.message);
+        try {
+          const createdTicketId = await createTicket(ticket);
+          navigate(`/tickets/${createdTicketId}`);
+        } catch (error) {
+          if (typeof error === 'string') {
+            setFormError(error);
+          }
         }
       }
     } catch (e) {

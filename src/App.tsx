@@ -12,6 +12,7 @@ import CreateNewCategory from './CreateNewCategory';
 import { Category, User } from './utils/Types';
 import React from 'react';
 import ProfilePage from './pages/ProfilePage';
+import { retrieveCurrentUser } from './services/UserService';
 
 const mdTheme = createTheme();
 
@@ -30,15 +31,16 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
-    if (loggedIn) {
-      fetch(`/api/users/current`).then((response) => {
-        if (response.ok) {
-          response.json().then((data: User) => setCurrentUser(data));
-        }
-      });
-    } else {
-      setCurrentUser(undefined);
-    }
+    const retrieveCurrentUserOnStart = async () => {
+      if (loggedIn) {
+        const currentUser = await retrieveCurrentUser();
+        setCurrentUser(currentUser);
+      } else {
+        setCurrentUser(undefined);
+      }
+    };
+
+    retrieveCurrentUserOnStart();
   }, [loggedIn]);
 
   return (

@@ -43,6 +43,7 @@ export interface TicketAssignment {
 }
 
 export interface CreatedTicket {
+  message: string;
   id: number;
 }
 

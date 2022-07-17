@@ -6,7 +6,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { fetchCategories } from '../services/CategoryService';
 import { Category } from '../utils/Types';
 
 export default function CategoriesList({
@@ -18,10 +19,16 @@ export default function CategoriesList({
   categories: Category[];
   setCategories: (category: Category[]) => void;
 }) {
-  useEffect(() => {
-    fetch(`/api/categories?archived=false`)
-      .then((response) => response.json())
-      .then((data: Category[]) => setCategories(data));
+  React.useEffect(() => {
+    async function refreshCategories() {
+      const categories = await fetchCategories({
+        archived: false,
+      });
+
+      setCategories(categories);
+    }
+
+    refreshCategories();
   }, [setCategories]);
 
   const categoryElements = categories.map((c: Category) => (

@@ -1,5 +1,6 @@
 import { Button, Grid, Paper, Typography } from '@mui/material';
 import React from 'react';
+import { retrieveUserById, updateUser } from './services/UserService';
 import UsersTable from './tables/UsersTable';
 import { User } from './utils/Types';
 import { uploadImage } from './utils/UploadFilesUtils';
@@ -17,24 +18,13 @@ export default function Users({
 
   const handleUploadProfilePictureClick = async () => {
     await uploadImage(async (uploadedImageUrl: string) => {
-      const patchUser = {
-        profile_picture_url: uploadedImageUrl,
-      };
+      if (currentUser) {
+        await updateUser(currentUser.id, {
+          profilePictureUrl: uploadedImageUrl,
+        });
 
-      const response = await fetch(`/api/users/${currentUser?.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(patchUser),
-      });
-
-      if (response.ok) {
-        const response2 = await fetch(`/api/users/${currentUser?.id}`);
-
-        if (response2.ok) {
-          response2.json().then((data: User) => setCurrentUser(data));
-        }
+        const updatedCurrentUser = await retrieveUserById(currentUser.id);
+        setCurrentUser(updatedCurrentUser);
       }
     });
   };

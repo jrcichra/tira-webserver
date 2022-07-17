@@ -8,7 +8,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
-import { fetchTickets } from '../utils/RestUtil';
+import { retrieveTickets } from '../services/TicketService';
 import { Ticket } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
 
@@ -61,13 +61,13 @@ export default function TicketsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const retrieveTickets = async () => {
-      const tickets = await fetchTickets();
+    const retrieveTicketsForTable = async () => {
+      const tickets = await retrieveTickets();
       setTickets(tickets);
       setLoading(false);
     };
 
-    retrieveTickets();
+    retrieveTicketsForTable();
   }, []);
 
   return (

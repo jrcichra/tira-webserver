@@ -10,7 +10,7 @@ export default function Wysiwyg({
   onChange: (value: string) => void;
   placeholder?: string;
 }) {
-  let quillObj: ReactQuill | null;
+  const quillObj = React.useRef<ReactQuill | null>(null);
 
   const handleImageUpload = async () => {
     const input = document.createElement('input');
@@ -20,8 +20,8 @@ export default function Wysiwyg({
     input.click();
 
     input.onchange = async () => {
-      if (quillObj) {
-        const range = quillObj.getEditorSelection();
+      if (quillObj.current) {
+        const range = quillObj.current.getEditorSelection();
 
         if (range) {
           const files = input.files;
@@ -42,7 +42,7 @@ export default function Wysiwyg({
             });
 
             if (response.ok) {
-              quillObj
+              quillObj.current
                 .getEditor()
                 .insertEmbed(range.index, 'image', `/api/images/${filename}`);
             }
@@ -55,7 +55,7 @@ export default function Wysiwyg({
   return (
     <ReactQuill
       ref={(el) => {
-        quillObj = el;
+        quillObj.current = el;
       }}
       value={value}
       onChange={onChange}

@@ -14,7 +14,9 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
   const [comments, setComments] = React.useState<Comment[] | undefined>();
   const [comment, setComment] = React.useState('');
 
-  const [editCommentId, setEditCommentId] = React.useState<number | null>(null);
+  const [editingCommentId, setEditingCommentId] = React.useState<number | null>(
+    null
+  );
   const [editComment, setEditComment] = React.useState('');
 
   const params = useParams();
@@ -75,18 +77,18 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
   };
 
   const handleEditComment = (commentId: number) => {
-    setEditCommentId(commentId);
+    setEditingCommentId(commentId);
   };
 
   const handleEditCommentCancel = () => {
-    setEditCommentId(null);
+    setEditingCommentId(null);
   };
 
   let commentElements = undefined;
 
   if (comments) {
     const handleEditCommentSubmit = () => {
-      if (!editCommentId) {
+      if (!editingCommentId) {
         return;
       }
 
@@ -94,12 +96,12 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
         content: editComment,
       };
 
-      fetch(`/api/comments/${editCommentId}`, {
+      fetch(`/api/comments/${editingCommentId}`, {
         method: 'PATCH',
         body: JSON.stringify(request),
       }).then((response) => {
         if (response.ok) {
-          setEditCommentId(null);
+          setEditingCommentId(null);
           fetch(`/api/tickets/${ticketId}/comments`)
             .then((response) => response.json())
             .then((data) => setComments(data));
@@ -121,7 +123,7 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
             <CommentDisplay
               comment={c}
               loggedIn={loggedIn}
-              editing={editCommentId === c.id}
+              editing={editingCommentId === c.id}
               editComment={editComment}
               setEditComment={setEditComment}
               handleEditComment={() => handleEditComment(c.id)}

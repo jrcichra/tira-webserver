@@ -19,6 +19,7 @@ export default function CommentDisplay({
   editing,
   editComment,
   setEditComment,
+  handleEditComment,
   handleEditCommentSubmit,
   handleEditCommentCancel,
 }: {
@@ -39,6 +40,11 @@ export default function CommentDisplay({
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleEditCommentClick = () => {
+    handleMenuClose();
+    handleEditComment();
   };
 
   let commentDisplay = (
@@ -111,7 +117,7 @@ export default function CommentDisplay({
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem>Edit Comment</MenuItem>
+        <MenuItem onClick={handleEditCommentClick}>Edit Comment</MenuItem>
         <MenuItem>Delete Comment</MenuItem>
       </Menu>
     </>

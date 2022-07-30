@@ -84,6 +84,14 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
     setEditingCommentId(null);
   };
 
+  const isCommentButtonDisabled = () => {
+    const contentWithoutTags = comment.replace(
+      /(<\/?[^>]+(>|$)|&nbsp;|\s)/g,
+      ''
+    );
+    return contentWithoutTags === '';
+  };
+
   let commentElements = undefined;
 
   if (comments) {
@@ -238,6 +246,7 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
               onClick={handleSubmitComment}
               variant='contained'
               color='primary'
+              disabled={isCommentButtonDisabled()}
               sx={{
                 mt: 2,
               }}

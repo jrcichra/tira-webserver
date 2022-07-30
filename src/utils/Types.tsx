@@ -1,8 +1,8 @@
 export interface Assignment {
   id: number;
-  ticket_id: number;
-  assignee_id: number;
-  assigner_id: number;
+  ticket: Ticket;
+  assignee: User;
+  assigner: User;
   assigned: string;
 }
 
@@ -24,7 +24,7 @@ export interface Comment {
 
 export interface Ticket {
   id: number;
-  category?: Category;
+  category: Category | null;
   subject: string;
   description: string;
   status: string;

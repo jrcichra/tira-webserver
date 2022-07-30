@@ -35,7 +35,7 @@ export default function Base({
   setLoggedIn,
 }: {
   user?: User;
-  categories: Category[];
+  categories?: Category[];
   setCategories: (category: Category[]) => void;
   loggedIn: boolean;
   setLoggedIn: (newLoggedIn: boolean) => void;

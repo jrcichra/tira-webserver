@@ -20,6 +20,7 @@ import React, { useState } from 'react';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { Category } from './utils/Types';
+import { fetchCategories } from './services/CategoryService';
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -55,13 +56,25 @@ export default function TiraDrawer({
 }: {
   open: boolean;
   toggleDrawer: () => void;
-  categories: Category[];
+  categories?: Category[];
   setCategories: (category: Category[]) => void;
 }) {
   const [categoriesOpen, setCategoriesOpen] = useState(true);
   const toggleCategories = () => {
     setCategoriesOpen(!categoriesOpen);
   };
+
+  React.useEffect(() => {
+    async function refreshCategories() {
+      const categories = await fetchCategories({
+        archived: false,
+      });
+
+      setCategories(categories);
+    }
+
+    refreshCategories();
+  }, [setCategories]);
 
   return (
     <Drawer variant='permanent' open={open}>
@@ -91,18 +104,23 @@ export default function TiraDrawer({
           </ListItemIcon>
           <ListItemText primary='Tickets' />
         </ListItemButton>
-        <ListItemButton onClick={toggleCategories}>
-          <ListItemIcon>
-            <FeedIcon />
-          </ListItemIcon>
-          <ListItemText primary='Categories' />
-          {categoriesOpen ? <ExpandLess /> : <ExpandMore />}
-        </ListItemButton>
-        <CategoriesList
-          open={categoriesOpen}
-          categories={categories}
-          setCategories={setCategories}
-        />
+        {categories && categories.length > 0 && (
+          <>
+            <ListItemButton onClick={toggleCategories}>
+              <ListItemIcon>
+                <FeedIcon />
+              </ListItemIcon>
+              <ListItemText primary='Categories' />
+              {categoriesOpen ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+
+            <CategoriesList
+              open={categoriesOpen}
+              categories={categories}
+              setCategories={setCategories}
+            />
+          </>
+        )}
         <ListItemButton component={Link} to='/users'>
           <ListItemIcon>
             <GroupIcon />

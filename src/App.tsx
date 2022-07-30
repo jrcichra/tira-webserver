@@ -22,7 +22,7 @@ export default function App() {
     return 'tirauth' in cookies;
   });
   const [currentUser, setCurrentUser] = React.useState<User | undefined>();
-  const [categories, setCategories] = React.useState<Category[]>([]);
+  const [categories, setCategories] = React.useState<Category[]>();
 
   React.useEffect(() => {
     if (import.meta.env.MODE === 'development') {

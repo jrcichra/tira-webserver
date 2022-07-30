@@ -69,7 +69,7 @@ export default function CreateNewCategory({
           }}
           fullWidth
         >
-          Create Categories
+          Create Category
         </Button>
       </Paper>
     </Grid>

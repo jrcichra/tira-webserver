@@ -3,6 +3,7 @@ import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
+  GridToolbar,
   GridValueGetterParams,
 } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
@@ -13,8 +14,45 @@ import { Assignment, Ticket, User } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
 
 const assignmentsColumns: GridColDef[] = [
-  { field: 'ticket_id', headerName: 'Ticket ID', width: 130 },
-  { field: 'assigned', headerName: 'Assigned', width: 130 },
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    flex: 2,
+    valueGetter: (params: GridValueGetterParams<string, Assignment>) =>
+      params.row.ticket.subject,
+    renderCell: (params: GridValueGetterParams<string, Assignment>) => (
+      <Link to={`/tickets/${params.row.ticket.id}`}>{params.value}</Link>
+    ),
+  },
+  {
+    field: 'category_id',
+    headerName: 'Category',
+    flex: 1,
+    valueGetter: (params: GridValueGetterParams<string, Assignment>) =>
+      params.row.ticket.category ? params.row.ticket.category.name : 'N/A',
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    flex: 1,
+    valueGetter: (params: GridValueGetterParams<string, Assignment>) =>
+      params.row.ticket.status,
+  },
+  {
+    field: 'reporter_id',
+    headerName: 'Reported By',
+    flex: 1,
+    renderCell: (params: GridRenderCellParams<string, Assignment>) => {
+      return (
+        <>
+          <ProfilePicture user={params.row.ticket.reporter} />
+          <span style={{ marginLeft: 10 }}>
+            {getDisplayName(params.row.ticket.reporter)}
+          </span>
+        </>
+      );
+    },
+  },
 ];
 
 const reportedTicketsColumns: GridColDef[] = [
@@ -76,6 +114,7 @@ export default function DashBoard({
                   rows={assignments}
                   columns={assignmentsColumns}
                   loading={assignmentsLoading}
+                  components={{ Toolbar: GridToolbar }}
                 />
               </Paper>
             )}

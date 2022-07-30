@@ -45,6 +45,7 @@ export default function CommentDisplay({
   const handleEditCommentClick = () => {
     handleMenuClose();
     handleEditComment();
+    setEditComment(comment.content);
   };
 
   let commentDisplay = (

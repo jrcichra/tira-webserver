@@ -13,7 +13,7 @@ export default function CreateTicketPage({
   setCategories,
   editMode,
 }: {
-  categories: Category[];
+  categories?: Category[];
   setCategories: (newCategories: Category[]) => void;
   editMode?: boolean;
 }) {

@@ -67,7 +67,7 @@ export const retrieveTickets = async (props?: {
     }
 
     if (props.open != undefined) {
-      url.searchParams.append('open', String(open));
+      url.searchParams.append('open', String(props.open));
     }
   }
 

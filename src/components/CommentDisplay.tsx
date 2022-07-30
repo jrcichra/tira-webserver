@@ -12,6 +12,7 @@ import React from 'react';
 import Wysiwyg from '../Wysiwyg';
 import ProfilePicture from './ProfilePicture';
 import { getDisplayName } from '../utils/UserUtils';
+import { getLocalTime } from '../utils/TimeUtils';
 
 export default function CommentDisplay({
   comment,
@@ -89,7 +90,9 @@ export default function CommentDisplay({
         }}
       >
         <ProfilePicture user={comment.commenter} />
-        <span>{`${getDisplayName(comment.commenter)}`}</span>
+        <span style={{ marginLeft: 8 }}>{`${getDisplayName(
+          comment.commenter
+        )} commented on ${getLocalTime(comment.commented)}`}</span>
         {loggedIn && !editing && (
           <IconButton
             onClick={handleMenu}

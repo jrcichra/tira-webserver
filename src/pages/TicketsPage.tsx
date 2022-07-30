@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
 import { retrieveTickets } from '../services/TicketService';
+import { getLocalTime } from '../utils/TimeUtils';
 import { Ticket } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
 
@@ -53,6 +54,13 @@ const columns: GridColDef[] = [
         ))}
       </AvatarGroup>
     ),
+  },
+  {
+    field: 'created',
+    headerName: 'Created',
+    flex: 1,
+    valueGetter: (params: GridValueGetterParams<string, Ticket>) =>
+      getLocalTime(params.row.created),
   },
 ];
 

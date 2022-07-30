@@ -19,7 +19,7 @@ export default function CategorySelect({
   selectedIndex,
   onChange,
 }: {
-  categories: Category[];
+  categories?: Category[];
   setCategories: (category: Category[]) => void;
   selectedIndex: number;
   onChange: (event: SelectChangeEvent<number>) => void;
@@ -44,11 +44,13 @@ export default function CategorySelect({
 
   const error = errorMessage != '';
 
-  const categoryElements = categories.map((c: Category) => (
-    <MenuItem key={c.id} value={c.id}>
-      {c.name}
-    </MenuItem>
-  ));
+  const categoryElements = categories
+    ? categories.map((c: Category) => (
+        <MenuItem key={c.id} value={c.id}>
+          {c.name}
+        </MenuItem>
+      ))
+    : [];
 
   categoryElements.unshift(
     <MenuItem key={0} value={0}>

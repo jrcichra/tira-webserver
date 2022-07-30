@@ -7,7 +7,7 @@ import {
   retrieveTicketById,
   updateTicket,
 } from '../services/TicketService';
-import { Category, CreatedTicket, ErrorMessage, Ticket } from '../utils/Types';
+import { Category } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 import CategorySelect from './CategorySelect';
 import PrioritySelect from './PrioritySelect';
@@ -23,7 +23,7 @@ export default function CreateTicketTextFields({
   actionLabel,
   setFormError,
 }: {
-  categories: Category[];
+  categories?: Category[];
   setCategories: (newCategories: Category[]) => void;
   editMode: boolean | undefined;
   ticketId: number | undefined;

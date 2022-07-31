@@ -11,6 +11,7 @@ import TiraAppBar from './TiraAppBar';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Category, User } from './utils/Types';
+import LoginModal from './LoginModal';
 
 export const drawerWidth = 240;
 
@@ -41,44 +42,54 @@ export default function Base({
   setLoggedIn: (newLoggedIn: boolean) => void;
 }) {
   const [drawerOpen, setDrawerOpen] = useState(true);
+  const [loginModalOpen, setLoginModalOpen] = React.useState<boolean>(false);
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <TiraAppBar
-        user={user}
-        drawerOpen={drawerOpen}
-        toggleDrawer={toggleDrawer}
-        loggedIn={loggedIn}
-        setLoggedIn={setLoggedIn}
-      />
-      <TiraDrawer
-        open={drawerOpen}
-        toggleDrawer={toggleDrawer}
-        categories={categories}
-        setCategories={setCategories}
-      />
-      <Box
-        component='main'
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
-          <Outlet />
-          <Copyright sx={{ pt: 4 }} />
-        </Container>
+    <>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        <TiraAppBar
+          user={user}
+          drawerOpen={drawerOpen}
+          toggleDrawer={toggleDrawer}
+          loggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+          setLoginModalOpen={setLoginModalOpen}
+        />
+        <TiraDrawer
+          open={drawerOpen}
+          toggleDrawer={toggleDrawer}
+          categories={categories}
+          setCategories={setCategories}
+        />
+        <Box
+          component='main'
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
+            <Outlet />
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
+        </Box>
       </Box>
-    </Box>
+      <LoginModal
+        setLoggedIn={setLoggedIn}
+        loginModalOpen={loginModalOpen}
+        setLoginModalOpen={setLoginModalOpen}
+      />
+    </>
   );
 }

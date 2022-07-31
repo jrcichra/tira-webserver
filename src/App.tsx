@@ -2,7 +2,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import * as cookie from 'cookie';
 import Base from './Base';
-import LoginPage from './LoginPage';
 import Dashboard from './pages/DashboardPage';
 import TicketsPage from './pages/TicketsPage';
 import Users from './Users';
@@ -118,10 +117,6 @@ export default function App() {
               }
             />
           </Route>
-          <Route
-            path='/login'
-            element={<LoginPage setLoggedIn={setLoggedIn} />}
-          />
           <Route path='*' element={<h1>Page not found</h1>} />
         </Routes>
       </BrowserRouter>

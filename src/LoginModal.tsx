@@ -2,30 +2,38 @@ import {
   Box,
   Button,
   Checkbox,
-  Container,
   FormControlLabel,
   FormGroup,
+  Modal,
   TextField,
+  Typography,
 } from '@mui/material';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import * as cookie from 'cookie';
-import { useLocation, useNavigate } from 'react-router-dom';
 import PasswordTextField from './PasswordTextField';
 import SHA256 from 'crypto-js/sha256';
 
-interface StateType {
-  prevPath: string;
-}
+const loginModalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
-export default function LoginPage({
+export default function LoginModal({
   setLoggedIn,
+  loginModalOpen,
+  setLoginModalOpen,
 }: {
   setLoggedIn: (newLoggedIn: boolean) => void;
+  loginModalOpen: boolean;
+  setLoginModalOpen: (loginModalOpen: boolean) => void;
 }) {
-  const linkState = useLocation().state as StateType;
-
-  const navigate = useNavigate();
-
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState(false);
 
@@ -35,6 +43,10 @@ export default function LoginPage({
   const [rememberMe, setRememberMe] = useState(false);
 
   const [loginFailure, setLoginFailure] = useState(false);
+
+  const handleOnCloseLoginModal = () => {
+    setLoginModalOpen(false);
+  };
 
   const handleUsernameChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -79,7 +91,6 @@ export default function LoginPage({
       remember_me: rememberMe,
     };
 
-    console.log(loginJSON);
     fetch(`/api/login`, {
       method: 'POST',
       headers: {
@@ -92,12 +103,7 @@ export default function LoginPage({
           response.json().then(() => {
             const cookies = cookie.parse(document.cookie);
             setLoggedIn('tirauth' in cookies);
-
-            if (linkState && linkState.prevPath) {
-              navigate(linkState.prevPath);
-            } else {
-              navigate('/dashboard');
-            }
+            setLoginModalOpen(false);
           });
         } else {
           setLoginFailure(true);
@@ -109,17 +115,17 @@ export default function LoginPage({
   };
 
   return (
-    <Container component='main' maxWidth='xs'>
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
+    <Modal
+      open={loginModalOpen}
+      onClose={handleOnCloseLoginModal}
+      aria-labelledby='login-modal-title'
+      aria-describedby='login-modal-description'
+    >
+      <Box sx={loginModalStyle}>
+        <Typography id='login-modal-title' variant='h6' component='h2'>
+          Login
+        </Typography>
+        <form id='login-modal-description' onSubmit={handleSubmit}>
           <Box sx={{ mt: 1 }}>
             <TextField
               value={username}
@@ -164,6 +170,6 @@ export default function LoginPage({
           </Button>
         </form>
       </Box>
-    </Container>
+    </Modal>
   );
 }

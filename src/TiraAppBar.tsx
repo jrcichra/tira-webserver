@@ -38,12 +38,14 @@ export default function TiraAppBar({
   toggleDrawer,
   loggedIn,
   setLoggedIn,
+  setLoginModalOpen,
 }: {
   user?: User;
   drawerOpen: boolean;
   toggleDrawer: () => void;
   loggedIn: boolean;
   setLoggedIn: (newLoggedIn: boolean) => void;
+  setLoginModalOpen: (loginModalOpen: boolean) => void;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -53,6 +55,10 @@ export default function TiraAppBar({
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOnClickLoginButton = () => {
+    setLoginModalOpen(true);
   };
 
   let rightSection;
@@ -81,13 +87,9 @@ export default function TiraAppBar({
   } else {
     rightSection = (
       <Button
+        onClick={handleOnClickLoginButton}
         variant='contained'
         color='secondary'
-        component={Link}
-        to='/login'
-        state={{
-          prevPath: location.pathname,
-        }}
         sx={{
           mr: 2,
           alignItems: 'flex-start',

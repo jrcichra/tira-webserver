@@ -77,6 +77,12 @@ export default function LoginModal({
     return true;
   };
 
+  const clearFields = () => {
+    setUsername('');
+    setPassword('');
+    setRememberMe(false);
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoginFailure(false);
@@ -104,6 +110,7 @@ export default function LoginModal({
             const cookies = cookie.parse(document.cookie);
             setLoggedIn('tirauth' in cookies);
             setLoginModalOpen(false);
+            clearFields();
           });
         } else {
           setLoginFailure(true);

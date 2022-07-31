@@ -97,6 +97,11 @@ export default function TicketsPage() {
             rows={tickets}
             columns={columns}
             loading={loading}
+            initialState={{
+              sorting: {
+                sortModel: [{ field: 'created', sort: 'desc' }],
+              },
+            }}
             disableSelectionOnClick
           />
         </div>

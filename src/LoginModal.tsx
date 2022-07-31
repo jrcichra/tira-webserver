@@ -44,8 +44,18 @@ export default function LoginModal({
 
   const [loginFailure, setLoginFailure] = useState(false);
 
+  const clearFields = () => {
+    setUsername('');
+    setUsernameError(false);
+    setPassword('');
+    setPasswordError(false);
+    setRememberMe(false);
+    setLoginFailure(false);
+  };
+
   const handleOnCloseLoginModal = () => {
     setLoginModalOpen(false);
+    clearFields();
   };
 
   const handleUsernameChange = (
@@ -75,12 +85,6 @@ export default function LoginModal({
       return false;
     }
     return true;
-  };
-
-  const clearFields = () => {
-    setUsername('');
-    setPassword('');
-    setRememberMe(false);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {

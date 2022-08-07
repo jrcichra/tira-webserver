@@ -1,4 +1,4 @@
-import { User } from '../utils/Types';
+import { Assignment, User } from '../utils/Types';
 
 export const retrieveCurrentUser = async (): Promise<User> => {
   const response = await fetch('/api/users/current');
@@ -54,4 +54,20 @@ export const updateUser = async (
   if (!response.ok) {
     throw `Failed to update user #${userId}`;
   }
+};
+
+export const retrieveAssignmentsByUserId = async (
+  userId: number
+): Promise<Assignment[]> => {
+  const response = await fetch(`/api/users/${userId}/assignments`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw `Failed to retrieve assignments for user id ${userId}`;
+  }
+
+  return await response.json();
 };

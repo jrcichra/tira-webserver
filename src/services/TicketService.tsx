@@ -1,4 +1,10 @@
-import { Comment, CreatedTicket, ErrorMessage, Ticket } from '../utils/Types';
+import {
+  Comment,
+  CreatedTicket,
+  ErrorMessage,
+  Ticket,
+  TicketAssignment,
+} from '../utils/Types';
 
 export const createTicket = async (props: {
   categoryId: number | null;
@@ -33,6 +39,48 @@ export const createTicket = async (props: {
 
   const reponseBody: CreatedTicket = await response.json();
   return reponseBody.id;
+};
+
+export const createCommentInTicketByTicketId = async (
+  ticketId: number,
+  props: { content: string }
+) => {
+  const requestBody = {
+    content: props.content,
+  };
+
+  const response = await fetch(`/api/tickets/${ticketId}/comments`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  if (!response.ok) {
+    const error: ErrorMessage = await response.json();
+    throw error.message;
+  }
+
+  const reponseBody: CreatedTicket = await response.json();
+  return reponseBody.id;
+};
+
+export const retrieveAssignmentsByTicketId = async (
+  ticketId: number
+): Promise<TicketAssignment[]> => {
+  const response = await fetch(`/api/tickets/${ticketId}/assignments`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw `Failed to retrieve assignments for ticket id ${ticketId}`;
+  }
+
+  return await response.json();
 };
 
 export const retrieveCommentsByTicketId = async (

@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useParams } from 'react-router-dom';
 import CreateTicketTextFields from '../components/CreateTicketTextFields';
 import Heading from '../components/Heading';
+import { retrieveAssignmentsByTicketId } from '../services/TicketService';
 import UsersTable from '../tables/UsersTable';
 import { Category, TicketAssignment } from '../utils/Types';
 
@@ -35,24 +36,17 @@ export default function CreateTicketPage({
       }
 
       try {
-        const assigneesResponse = await fetch(
-          `/api/tickets/${ticketId}/assignments`
-        );
-
-        if (!assigneesResponse.ok) {
-          throw new Error('Error retrieving ticket assignments');
-        }
+        const assignees = await retrieveAssignmentsByTicketId(ticketId);
 
         const assigneeIds: number[] = [];
 
-        const assigneesData: TicketAssignment[] =
-          await assigneesResponse.json();
-        assigneesData.forEach((assignee: TicketAssignment) => {
+        assignees.forEach((assignee: TicketAssignment) => {
           assigneeIds.push(assignee.assignee_id);
         });
 
         setAssigneeIds(assigneeIds);
       } catch (e) {
+        console.error(e);
         setAssigneeIdsHasError(1);
       }
     }

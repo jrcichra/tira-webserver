@@ -9,6 +9,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProfilePicture from '../components/ProfilePicture';
+import { retrieveTickets } from '../services/TicketService';
+import { retrieveAssignmentsByUserId } from '../services/UserService';
 import { TicketsTable } from '../tables/TicketsTable';
 import { Assignment, Ticket, User } from '../utils/Types';
 import { getDisplayName } from '../utils/UserUtils';
@@ -75,16 +77,35 @@ export default function DashBoard({
   const [reportedTicketsLoading, setReportedTicketsLoading] = useState(true);
 
   useEffect(() => {
-    if (typeof currentUser !== 'undefined') {
-      fetch(`/api/users/${currentUser.id}/assignments`)
-        .then((response) => response.json())
-        .then((data: Assignment[]) => setAssignments(data))
-        .finally(() => setAssignmentsLoading(false));
+    async function getTicketsReportedByCurrentUser(currentUserId: number) {
+      try {
+        const tickets: Ticket[] = await retrieveTickets({
+          reporter: currentUserId,
+        });
 
-      fetch(`/api/tickets?reporter=${currentUser.id}`)
-        .then((response) => response.json())
-        .then((data: Ticket[]) => setReportedTickets(data))
-        .finally(() => setReportedTicketsLoading(false));
+        setReportedTickets(tickets);
+      } catch (error) {
+        console.error(error);
+      }
+      setReportedTicketsLoading(false);
+    }
+
+    async function getAssignmentsForCurrentUser(currentUserId: number) {
+      try {
+        const assignments: Assignment[] = await retrieveAssignmentsByUserId(
+          currentUserId
+        );
+
+        setAssignments(assignments);
+      } catch (error) {
+        console.error(error);
+      }
+      setAssignmentsLoading(false);
+    }
+
+    if (typeof currentUser !== 'undefined') {
+      getAssignmentsForCurrentUser(currentUser.id);
+      getTicketsReportedByCurrentUser(currentUser.id);
     }
   }, [currentUser]);
 

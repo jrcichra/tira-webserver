@@ -12,6 +12,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import * as cookie from 'cookie';
 import PasswordTextField from './PasswordTextField';
 import SHA256 from 'crypto-js/sha256';
+import { performLogin } from './services/SessionService';
 
 const loginModalStyle = {
   position: 'absolute',
@@ -87,7 +88,7 @@ export default function LoginModal({
     return true;
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoginFailure(false);
 
@@ -95,34 +96,23 @@ export default function LoginModal({
       return;
     }
 
-    const loginJSON = {
-      username,
-      password: SHA256(password).toString(),
-      remember_me: rememberMe,
-    };
-
-    fetch(`/api/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(loginJSON),
-    })
-      .then((response) => {
-        if (response.ok) {
-          response.json().then(() => {
-            const cookies = cookie.parse(document.cookie);
-            setLoggedIn('tirauth' in cookies);
-            setLoginModalOpen(false);
-            clearFields();
-          });
-        } else {
-          setLoginFailure(true);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
+    try {
+      await performLogin({
+        username,
+        password: SHA256(password).toString(),
+        rememberMe,
       });
+
+      const cookies = cookie.parse(document.cookie);
+
+      setLoggedIn('tirauth' in cookies);
+      setLoginModalOpen(false);
+
+      clearFields();
+    } catch (error) {
+      console.error(error);
+      setLoginFailure(true);
+    }
   };
 
   return (

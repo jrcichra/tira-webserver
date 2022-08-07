@@ -1,5 +1,6 @@
 import ReactQuill from 'react-quill';
 import React from 'react';
+import { uploadImage } from './services/ImageService';
 
 export default function Wysiwyg({
   value,
@@ -36,15 +37,14 @@ export default function Wysiwyg({
               currentdate.getTime().toString();
             const filename = fileNamePredecessor + file.name;
 
-            const response = await fetch(`/api/images/${filename}`, {
-              method: 'POST',
-              body: file,
-            });
+            try {
+              await uploadImage(filename, file);
 
-            if (response.ok) {
               quillObj.current
                 .getEditor()
                 .insertEmbed(range.index, 'image', `/api/images/${filename}`);
+            } catch (error) {
+              console.error(error);
             }
           }
         }

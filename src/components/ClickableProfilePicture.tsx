@@ -2,6 +2,7 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import * as cookie from 'cookie';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { performLogout } from '../services/SessionService';
 import { User } from '../utils/Types';
 import ProfilePicture from './ProfilePicture';
 
@@ -24,16 +25,15 @@ export default function ProfilePictureMenu({
 
   const handleLogout = () => {
     setAnchorEl(null);
-    fetch(`/api/logout`, {
-      method: 'POST',
-    })
-      .then(() => {
-        const cookies = cookie.parse(document.cookie);
-        setLoggedIn('tirauth' in cookies);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+
+    try {
+      performLogout();
+
+      const cookies = cookie.parse(document.cookie);
+      setLoggedIn('tirauth' in cookies);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

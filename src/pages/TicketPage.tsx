@@ -2,6 +2,7 @@ import { Box, Button, Divider, Grid, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
+  createCommentInTicketByTicketId,
   retrieveCommentsByTicketId,
   retrieveTicketById,
 } from '../services/TicketService';
@@ -11,6 +12,7 @@ import ProfilePicture from '../components/ProfilePicture';
 import CommentDisplay from '../components/CommentDisplay';
 import { getDisplayName } from '../utils/UserUtils';
 import { getLocalTime } from '../utils/TimeUtils';
+import { updateComment } from '../services/CommentService';
 
 export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
   const [ticket, setTicket] = React.useState<Ticket | undefined>();
@@ -56,20 +58,19 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
     return <h1>Error: ticketId not a number</h1>;
   }
 
-  const handleSubmitComment = () => {
-    const request = {
+  const handleSubmitComment = async () => {
+    const requestBody = {
       content: comment,
     };
 
-    fetch(`/api/tickets/${ticketId}/comments`, {
-      method: 'POST',
-      body: JSON.stringify(request),
-    }).then(() => {
+    try {
+      await createCommentInTicketByTicketId(ticketId, requestBody);
+
       setComment('');
-      fetch(`/api/tickets/${ticketId}/comments`)
-        .then((response) => response.json())
-        .then((data) => setComments(data));
-    });
+      setComments(await retrieveCommentsByTicketId(ticketId));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleEditTicket = () => {
@@ -95,7 +96,7 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
   let commentElements = undefined;
 
   if (comments) {
-    const handleEditCommentSubmit = () => {
+    const handleEditCommentSubmit = async () => {
       if (!editingCommentId) {
         return;
       }
@@ -104,17 +105,14 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
         content: editComment,
       };
 
-      fetch(`/api/comments/${editingCommentId}`, {
-        method: 'PATCH',
-        body: JSON.stringify(request),
-      }).then((response) => {
-        if (response.ok) {
-          setEditingCommentId(null);
-          fetch(`/api/tickets/${ticketId}/comments`)
-            .then((response) => response.json())
-            .then((data) => setComments(data));
-        }
-      });
+      try {
+        await updateComment(editingCommentId, request);
+
+        setEditingCommentId(null);
+        setComments(await retrieveCommentsByTicketId(ticketId));
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     commentElements = comments

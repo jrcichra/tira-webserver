@@ -1,7 +1,10 @@
 import { Box, Button, Divider, Grid, Paper, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { retrieveTicketById } from '../services/TicketService';
+import {
+  retrieveCommentsByTicketId,
+  retrieveTicketById,
+} from '../services/TicketService';
 import { Comment, Ticket } from '../utils/Types';
 import Wysiwyg from '../Wysiwyg';
 import ProfilePicture from '../components/ProfilePicture';
@@ -34,11 +37,8 @@ export default function TicketPage({ loggedIn }: { loggedIn: boolean }) {
     }
 
     async function getTickets(ticketId: number) {
-      const ticket = await retrieveTicketById(ticketId);
-      setTicket(ticket);
-
-      const commentsResponse = await fetch(`/api/tickets/${ticketId}/comments`);
-      setComments(await commentsResponse.json());
+      setTicket(await retrieveTicketById(ticketId));
+      setComments(await retrieveCommentsByTicketId(ticketId));
     }
 
     getTickets(ticketId);

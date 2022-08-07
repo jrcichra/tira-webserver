@@ -1,4 +1,4 @@
-import { CreatedTicket, ErrorMessage, Ticket } from '../utils/Types';
+import { Comment, CreatedTicket, ErrorMessage, Ticket } from '../utils/Types';
 
 export const createTicket = async (props: {
   categoryId: number | null;
@@ -35,6 +35,22 @@ export const createTicket = async (props: {
   return reponseBody.id;
 };
 
+export const retrieveCommentsByTicketId = async (
+  ticketId: number
+): Promise<Comment[]> => {
+  const response = await fetch(`/api/tickets/${ticketId}/comments`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw `Failed to retrieve comments for ticket id ${ticketId}`;
+  }
+
+  return await response.json();
+};
+
 export const retrieveTicketById = async (
   ticketId: number,
   queryParam?: string[][]
@@ -58,7 +74,7 @@ export const retrieveTicketById = async (
 export const retrieveTickets = async (props?: {
   reporter?: number;
   open?: boolean;
-}) => {
+}): Promise<Ticket[]> => {
   const url = new URL(`/api/tickets`, window.location.href);
 
   if (props != undefined) {
@@ -77,9 +93,7 @@ export const retrieveTickets = async (props?: {
     throw 'Failed to retrieve tickets';
   }
 
-  const data: Ticket[] = await response.json();
-
-  return data;
+  return await response.json();
 };
 
 export const updateTicket = async (

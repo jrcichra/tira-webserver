@@ -1,6 +1,3 @@
-import { SHA256 } from 'crypto-js';
-import { User } from '../utils/Types';
-
 export const performLogin = async (props: {
   username: string;
   password: string;
@@ -8,7 +5,7 @@ export const performLogin = async (props: {
 }) => {
   const requestBody = {
     username: props.username,
-    password: SHA256(props.password).toString(),
+    password: props.password,
     remember_me: props.rememberMe,
   };
 

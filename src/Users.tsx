@@ -3,7 +3,7 @@ import React from 'react';
 import { retrieveUserById, updateUser } from './services/UserService';
 import UsersTable from './tables/UsersTable';
 import { User } from './utils/Types';
-import { uploadImage } from './utils/UploadFilesUtils';
+import { uploadImageUtil } from './utils/UploadFilesUtils';
 
 export default function Users({
   currentUser,
@@ -17,7 +17,7 @@ export default function Users({
   );
 
   const handleUploadProfilePictureClick = async () => {
-    await uploadImage(async (uploadedImageUrl: string) => {
+    await uploadImageUtil(async (uploadedImageUrl: string) => {
       if (currentUser) {
         await updateUser(currentUser.id, {
           profilePictureUrl: uploadedImageUrl,

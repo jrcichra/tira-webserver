@@ -1,4 +1,6 @@
-export const uploadImage = async (
+import { uploadImage } from '../services/ImageService';
+
+export const uploadImageUtil = async (
   onSuccess: (uploadedImageUrl: string) => void
 ) => {
   const input = document.createElement('input');
@@ -20,13 +22,11 @@ export const uploadImage = async (
         currentdate.getTime().toString();
       const filename = fileNamePredecessor + file.name;
 
-      const response = await fetch(`/api/images/${filename}`, {
-        method: 'POST',
-        body: file,
-      });
-
-      if (response.ok) {
+      try {
+        uploadImage(filename, file);
         onSuccess(`/api/images/${filename}`);
+      } catch (error) {
+        console.error(error);
       }
     }
   };

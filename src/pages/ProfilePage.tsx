@@ -3,7 +3,7 @@ import React from 'react';
 import Heading from '../components/Heading';
 import { retrieveCurrentUser, updateUser } from '../services/UserService';
 import { User } from '../utils/Types';
-import { uploadImage } from '../utils/UploadFilesUtils';
+import { uploadImageUtil } from '../utils/UploadFilesUtils';
 
 export default function ProfilePage({
   user,
@@ -46,7 +46,7 @@ export default function ProfilePage({
 
   const handleUploadProfilePictureClick = async () => {
     if (user) {
-      await uploadImage(async (uploadedImageUrl: string) => {
+      await uploadImageUtil(async (uploadedImageUrl: string) => {
         const patchUserBody = {
           profilePictureUrl: uploadedImageUrl,
         };

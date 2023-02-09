@@ -15,5 +15,14 @@
     "react": {
       "version": "detect"
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "react/jsx-key": "off",
+        "react/prop-types": "off"
+      }
+    }
+  ]
 }

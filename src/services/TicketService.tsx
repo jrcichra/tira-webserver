@@ -1,7 +1,10 @@
+import { IdType } from 'react-table';
 import {
   Comment,
+  CountResponse,
   CreatedTicket,
   ErrorMessage,
+  TableOrder,
   Ticket,
   TicketAssignment,
 } from '../utils/Types';
@@ -119,20 +122,33 @@ export const retrieveTicketById = async (
   return await response.json();
 };
 
-export const retrieveTickets = async (props?: {
-  reporter?: number;
-  open?: boolean;
-}): Promise<Ticket[]> => {
+export const retrieveTickets = async (
+  limit: number,
+  offset: number,
+  filterReporter?: number,
+  filterOpen?: boolean,
+  sortBy?: IdType<Ticket>,
+  orderBy?: TableOrder
+): Promise<CountResponse<Ticket>> => {
   const url = new URL(`/api/tickets`, window.location.href);
 
-  if (props != undefined) {
-    if (props.reporter != undefined) {
-      url.searchParams.append('reporter', String(props.reporter));
-    }
+  url.searchParams.append('limit', String(limit));
+  url.searchParams.append('offset', String(offset));
 
-    if (props.open != undefined) {
-      url.searchParams.append('open', String(props.open));
-    }
+  if (filterReporter != undefined) {
+    url.searchParams.append('reporter', String(filterReporter));
+  }
+
+  if (filterOpen != undefined) {
+    url.searchParams.append('open', String(filterOpen));
+  }
+
+  if (sortBy != undefined) {
+    url.searchParams.append('sort_by', String(sortBy));
+  }
+
+  if (orderBy != undefined) {
+    url.searchParams.append('order_by', String(orderBy));
   }
 
   const response = await fetch(url.toString());

@@ -80,7 +80,7 @@ export default function DashBoard({
     async function getTicketsReportedByCurrentUser(currentUserId: number) {
       try {
         const tickets: Ticket[] = await retrieveTickets({
-          reporter: currentUserId,
+          filterReporter: currentUserId,
         });
 
         setReportedTickets(tickets);

@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Category, User } from './utils/Types';
 import LoginModal from './LoginModal';
+import ErrorSnackbar from './components/ErrorSnackbar';
 
 export const drawerWidth = 240;
 
@@ -90,6 +91,7 @@ export default function Base({
         loginModalOpen={loginModalOpen}
         setLoginModalOpen={setLoginModalOpen}
       />
+      <ErrorSnackbar />
     </>
   );
 }

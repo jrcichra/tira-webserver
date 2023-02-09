@@ -65,7 +65,7 @@ export default function App() {
               }
             />
             <Route path='tickets'>
-              <Route index element={<TicketsPage />} />
+              <Route index element={<TicketsPage categories={categories} />} />
               <Route path='edit'>
                 <Route
                   path=':ticketId'

@@ -34,6 +34,11 @@ export interface Ticket {
   assignees: User[];
 }
 
+export interface CountResponse<T> {
+  data: T[];
+  total_count: number;
+}
+
 export interface TicketAssignment {
   id: number;
   ticket_id: number;
@@ -61,3 +66,5 @@ export interface User {
   created: string;
   archived: boolean;
 }
+
+export type TableOrder = 'asc' | 'desc';

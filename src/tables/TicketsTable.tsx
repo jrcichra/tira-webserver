@@ -71,7 +71,10 @@ export function TicketsTable({
 
   React.useEffect(() => {
     const retrieveTicketsForTable = async () => {
-      const tickets = await retrieveTickets({ reporter, open });
+      const tickets = await retrieveTickets({
+        filterReporter: reporter,
+        filterOpen: open,
+      });
       setTickets(tickets);
       setLoading(false);
     };
